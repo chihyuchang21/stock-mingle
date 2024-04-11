@@ -44,9 +44,18 @@ public class ArticleService {
             dtClickLength += Math.pow(userClick.getDtClick(), 2);
         }
 
+        System.out.println("usClickLength(pow): " + usClickLength);
+        System.out.println("twClickLength(pow): " + twClickLength);
+        System.out.println("dtClickLength(pow): " + dtClickLength);
+
         usClickLength = Math.sqrt(usClickLength);
         twClickLength = Math.sqrt(twClickLength);
         dtClickLength = Math.sqrt(dtClickLength);
+
+        System.out.println("usClickLength(sqrt): " + usClickLength);
+        System.out.println("twClickLength(sqrt): " + twClickLength);
+        System.out.println("dtClickLength(sqrt): " + dtClickLength);
+
 
         // 話題間的內積
         double usTwDotProduct = 0.0;

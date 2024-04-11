@@ -31,7 +31,5 @@ public class User {
         this.nickname = nickname;
         this.genderId = genderId;
     }
-
-
 }
 

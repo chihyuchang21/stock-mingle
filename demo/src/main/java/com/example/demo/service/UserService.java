@@ -41,11 +41,11 @@ public class UserService {
         return userRepository.getAllUsersWithoutFavoriteTopicAndImage();
     }
 
-public double calculateSimilarity(Long userId1, Long userId2) {
-    Set<String> user1Hashtags = getUserHashtags(userId1);
-    Set<String> user2Hashtags = getUserHashtags(userId2);
-    return BagOfWordsAlgorithm.calculateSimilarity(user1Hashtags, user2Hashtags);
-}
+    public double calculateSimilarity(Long userId1, Long userId2) {
+        Set<String> user1Hashtags = getUserHashtags(userId1);
+        Set<String> user2Hashtags = getUserHashtags(userId2);
+        return BagOfWordsAlgorithm.calculateSimilarity(user1Hashtags, user2Hashtags);
+    }
 
     private Set<String> getUserHashtags(Long userId) {
         Set<String> hashtags = new HashSet<>();
@@ -57,6 +57,5 @@ public double calculateSimilarity(Long userId1, Long userId2) {
         }
         return hashtags;
     }
-
 }
 
