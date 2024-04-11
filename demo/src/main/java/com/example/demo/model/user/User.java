@@ -21,5 +21,17 @@ public class User {
     private String favoriteTopic;
     private String image;
 
+    public User() {
+        // no-argument constructor
+    }
+
+    public User(Long id, String accountName, String nickname, Integer genderId) {
+        this.id = id;
+        this.accountName = accountName;
+        this.nickname = nickname;
+        this.genderId = genderId;
+    }
+
+
 }
 
