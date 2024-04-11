@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
@@ -16,5 +17,5 @@ public class StockInformation {
     private Integer id;
     private String Name;
     private String Value;
-    private LocalTime timeStamp;
+    private LocalDateTime timestamp;
 }

@@ -13,11 +13,13 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    //Testing (只能印出數字)
     @GetMapping("/users/similarity")
     public ResponseEntity<Double> getUserSimilarity(@RequestParam Long userId1, @RequestParam Long userId2) {
         Double similarity = userService.calculateSimilarity(userId1, userId2);
         return ResponseEntity.ok(similarity);
     }
+
 
 }
 

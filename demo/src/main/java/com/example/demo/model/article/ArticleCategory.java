@@ -1,2 +1,4 @@
-package com.example.demo.model.article;public class ArticleCategory {
+package com.example.demo.model.article;
+
+public class ArticleCategory {
 }

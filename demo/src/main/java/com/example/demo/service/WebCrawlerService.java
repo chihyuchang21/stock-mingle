@@ -1,10 +1,15 @@
 package com.example.demo.service;
 import com.example.demo.model.article.Article;
+import com.example.demo.model.stock.StockInformation;
+import com.example.demo.repository.StockInformationRepository;
 import com.example.demo.repository.WebCrawlerRepository;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +20,7 @@ import org.codehaus.jettison.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,13 +32,16 @@ public class WebCrawlerService {
     private final WebCrawlerRepository webCrawlerRepository;
     public WebCrawlerService(WebCrawlerRepository webCrawlerRepository) {this.webCrawlerRepository = webCrawlerRepository; }
 
+    @Autowired
+    private StockInformationRepository stockInformationRepository;
+
 
     private static final Logger logger = LoggerFactory.getLogger(WebCrawlerService.class);
 
 
     public String getRedditArticles(String subreddit, int limit) throws IOException {
         // Reddit API
-        String url = "https://www.reddit.com/r/" + subreddit + "/new.json?limit=" + limit + "&after=t3_1buu8k6";
+        String url = "https://www.reddit.com/r/" + subreddit + "/new.json?limit=" + limit + "&after=t3_1bdzb87";
 
         // Create OkHttpClient instance
         OkHttpClient client = new OkHttpClient();
@@ -101,7 +110,7 @@ public class WebCrawlerService {
             for (int i = 0; i < Math.min(children.length(), 500); i++) {
                 JSONObject child = children.getJSONObject(i);
                 JSONObject childData = child.getJSONObject("data");
-                String titleValue = childData.getString("title");
+                String titleValue = childData.getString("link_flair_text"); //暫時改
                 titleValues.add(titleValue);
             }
         } catch (JSONException e) {
@@ -119,41 +128,55 @@ public class WebCrawlerService {
         }
     }
 
-    public String getStockGeneralIndex() throws IOException {
+    public void getStockGeneralIndex() throws IOException {
+        crawlAndSaveIndex("Dow Jones Industrial Average", "https://finance.yahoo.com/quote/%5EDJI");
+        crawlAndSaveIndex("S&P 500", "https://finance.yahoo.com/quote/%5EGSPC");
+        crawlAndSaveIndex("NASDAQ Composite", "https://finance.yahoo.com/quote/%5EIXIC");
+        crawlAndSaveIndex("Philadelphia Semiconductor Index", "https://finance.yahoo.com/quote/%5ESOX");
+    }
 
-        String url = "https://www.marketwatch.com/investing/index/spx";
-
-        // Create OkHttpClient instance
+    private void crawlAndSaveIndex(String indexName, String url) throws IOException {
         OkHttpClient client = new OkHttpClient();
 
-        // Create HTTP request object
         Request request = new Request.Builder()
                 .url(url)
-                .header("User-Agent", "Java Reddit Crawler")
                 .build();
 
-        // Send HTTP request and get response
-        Response response = client.newCall(request).execute();
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 
-        // Check if response is successful
-        if (!response.isSuccessful()) {
-            throw new IOException("Unexpected code " + response);
+            String responseBody = response.body().string();
+            String indexValue = parseIndexValue(responseBody, url);
+            saveToDatabase(indexName, indexValue);
         }
-
-        // Get response body content
-        String responseBody = response.body().string();
-        return "S&P 500 Index" + ": " + parseIndexValue(responseBody);
-
     }
 
-    private String parseIndexValue(String html) {
-        Document doc = Jsoup.parse(html);
-        Element indexElement = doc.selectFirst(".intraday__data");
-        if (indexElement != null) {
-            return indexElement.text();
+    private String parseIndexValue(String responseBody, String url) {
+        Document doc = Jsoup.parse(responseBody);
+        Element priceElement = null;
+        if (url.contains("%5EDJI")) {
+            priceElement = doc.selectFirst("fin-streamer[data-symbol=^DJI]");
+        } else if (url.contains("%5EGSPC")) {
+            priceElement = doc.selectFirst("fin-streamer[data-symbol=^GSPC]");
+        } else if (url.contains("%5EIXIC")) {
+            priceElement = doc.selectFirst("fin-streamer[data-symbol=^IXIC]");
+        } else if (url.contains("%5ESOX")) {
+            priceElement = doc.selectFirst("fin-streamer[data-symbol=^SOX]");
+        }
+        if (priceElement != null) {
+            return priceElement.text();
         } else {
-            return "Data not found";
+            return "Price not found";
         }
     }
 
+    private void saveToDatabase(String indexName, String indexValue) {
+        StockInformation stockInformation = new StockInformation();
+        stockInformation.setName(indexName);
+        stockInformation.setValue(indexValue);
+        stockInformation.setTimestamp(LocalDateTime.now());
+        stockInformationRepository.save(stockInformation);
+    }
 }
+
+

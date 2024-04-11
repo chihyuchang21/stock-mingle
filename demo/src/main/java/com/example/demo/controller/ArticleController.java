@@ -28,7 +28,7 @@ public class ArticleController {
     private static final Logger logger = LoggerFactory.getLogger(ArticleController.class);
 
 
-
+    //DB欄位要改名叫article
     @PostMapping("/postArticle")
     public ResponseEntity<?> postArticle(@RequestBody Article article){
         logger.info(article.toString());
@@ -42,5 +42,11 @@ public class ArticleController {
     public ResponseEntity<?> getAllArticle(){
         List<Article> articles = articleService.getAllArticle();
         return ResponseEntity.ok(articles);
+    }
+
+    @GetMapping("/calculateRecommendTopic")
+    public ResponseEntity<?> calculateRecommendTopic(){
+        articleService.calculateCosineSimilarity();
+        return ResponseEntity.ok("OK");
     }
 }

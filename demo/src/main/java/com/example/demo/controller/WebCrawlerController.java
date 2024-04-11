@@ -29,7 +29,7 @@ public class WebCrawlerController {
     public ResponseEntity<?> getRedditArticles() {
         try {
             String subreddit = "stocks"; // Reddit Stock
-            int limit = 500; // Amount of articles
+            int limit = 100; // Amount of articles
 
             // Call RedditService to get articles
             String responseBody = webCrawlerService.getRedditArticles(subreddit, limit);
@@ -37,7 +37,7 @@ public class WebCrawlerController {
             // can use responseBody Print the retrieved article information
 
 
-            return ResponseEntity.ok("Data saved to DB!"); //待刪
+            return ResponseEntity.ok("Article Data saved to DB!"); //待刪
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -49,7 +49,7 @@ public class WebCrawlerController {
     public ResponseEntity<?> getStockGeneralIndex() {
         try {
             webCrawlerService.getStockGeneralIndex();
-            return ResponseEntity.ok("Data saved to DB!");
+            return ResponseEntity.ok("Stock Index Data saved to DB!");
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to fetch stock general index: " + e.getMessage());
