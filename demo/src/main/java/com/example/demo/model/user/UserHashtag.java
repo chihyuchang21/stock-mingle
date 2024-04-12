@@ -11,7 +11,7 @@ public class UserHashtag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     private String hashtag1;
     private String hashtag2;

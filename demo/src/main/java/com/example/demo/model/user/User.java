@@ -12,7 +12,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     private String accountName;
     private String nickname;
@@ -25,7 +25,7 @@ public class User {
         // no-argument constructor
     }
 
-    public User(Long id, String accountName, String nickname, Integer genderId) {
+    public User(Integer id, String accountName, String nickname, Integer genderId) {
         this.id = id;
         this.accountName = accountName;
         this.nickname = nickname;
