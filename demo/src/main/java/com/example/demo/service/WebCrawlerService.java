@@ -1,6 +1,8 @@
 package com.example.demo.service;
 import com.example.demo.model.article.Article;
+import com.example.demo.model.article.Category;
 import com.example.demo.model.stock.StockInformation;
+import com.example.demo.repository.CategoryRepository;
 import com.example.demo.repository.StockInformationRepository;
 import com.example.demo.repository.WebCrawlerRepository;
 import okhttp3.OkHttpClient;
@@ -35,49 +37,37 @@ public class WebCrawlerService {
     @Autowired
     private StockInformationRepository stockInformationRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
 
     private static final Logger logger = LoggerFactory.getLogger(WebCrawlerService.class);
 
 
     public String getRedditArticles(String subreddit, int limit) throws IOException {
-        // Reddit API
-        String url = "https://www.reddit.com/r/" + subreddit + "/new.json?limit=" + limit + "&after=t3_1bdzb87";
+        String url = "https://www.reddit.com/r/" + subreddit + "/new.json?limit=" + limit;
 
-        // Create OkHttpClient instance
         OkHttpClient client = new OkHttpClient();
 
-        // Create HTTP request object
         Request request = new Request.Builder()
                 .url(url)
                 .header("User-Agent", "Java Reddit Crawler")
                 .build();
 
-        // Send HTTP request and get response
         Response response = client.newCall(request).execute();
 
-        // Check if response is successful
         if (!response.isSuccessful()) {
             throw new IOException("Unexpected code " + response);
         }
 
-        // Get response body content
         String responseBody = response.body().string();
-
-        // Parse the JSON response to extract the "kind" value
-//        String kind = extractKind(responseBody);
-//        String distValue = extractDist(responseBody);
-        // Parse the JSON response to extract self texts and titles
         List<String> selfTexts = extractSelfText(responseBody);
         List<String> titles = extractTitle(responseBody);
+        List<String> categories = extractCategory(responseBody);
 
-        // Save articles to database
-        saveArticle(selfTexts, titles);
+        // 文章存入DB
+        saveArticle(selfTexts, titles, categories);
 
-
-        logger.info("SelfText: " + selfTexts);
-        logger.info("Title: " + titles);
-
-        // Close the response
         response.close();
 
         return responseBody;
@@ -92,8 +82,12 @@ public class WebCrawlerService {
             for (int i = 0; i < Math.min(children.length(), 500); i++) {
                 JSONObject child = children.getJSONObject(i);
                 JSONObject childData = child.getJSONObject("data");
-                String selfTextValue = childData.getString("selftext");
-                selfTextValues.add(selfTextValue);
+                String linkFlairText = childData.getString("link_flair_text");
+                // 只提取特定类型的文章的 selftext
+                if (isValidLinkFlairText(linkFlairText)) {
+                    String selfTextValue = childData.getString("selftext");
+                    selfTextValues.add(selfTextValue);
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -110,8 +104,12 @@ public class WebCrawlerService {
             for (int i = 0; i < Math.min(children.length(), 500); i++) {
                 JSONObject child = children.getJSONObject(i);
                 JSONObject childData = child.getJSONObject("data");
-                String titleValue = childData.getString("link_flair_text"); //暫時改
-                titleValues.add(titleValue);
+                String linkFlairText = childData.getString("link_flair_text");
+                // 只提取特定类型的文章的 title
+                if (isValidLinkFlairText(linkFlairText)) {
+                    String titleValue = childData.getString("link_flair_text");
+                    titleValues.add(titleValue);
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -119,11 +117,45 @@ public class WebCrawlerService {
         return titleValues;
     }
 
-    public void saveArticle(List<String> selfTexts, List<String> titles) {
+
+    private static List<String> extractCategory(String responseBody) {
+        List<String> categoryValues = new ArrayList<>();
+        try {
+            JSONObject json = new JSONObject(responseBody);
+            JSONObject data = json.getJSONObject("data");
+            JSONArray children = data.getJSONArray("children");
+            for (int i = 0; i < Math.min(children.length(), 500); i++) {
+                JSONObject child = children.getJSONObject(i);
+                JSONObject childData = child.getJSONObject("data");
+                String linkFlairText = childData.getString("link_flair_text");
+                // 只存特定Categories的文章
+                if (isValidLinkFlairText(linkFlairText)) {
+                    String categoryValue = childData.getString("title");
+                    categoryValues.add(categoryValue);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return categoryValues;
+    }
+
+    // 添加方法用于检查 link_flair_text 是否为特定类型
+    private static boolean isValidLinkFlairText(String linkFlairText) {
+        return linkFlairText != null && (linkFlairText.equals("Company News") || linkFlairText.equals("Broad market news") ||
+                linkFlairText.equals("Company Discussion") || linkFlairText.equals("Advice Request") || linkFlairText.equals("Others"));
+    }
+
+    public void saveArticle(List<String> selfTexts, List<String> categories, List<String> titles) {
         for (int i = 0; i < Math.min(selfTexts.size(), titles.size()); i++) {
             Article article = new Article();
-            article.setContent(selfTexts.get(i));
             article.setTitle(titles.get(i));
+
+            Category category = categoryRepository.findByCategory(categories.get(i));
+            article.setCategory(category); // 設置 Category 物件到 Article 中
+
+            article.setContent(selfTexts.get(i));
+
             webCrawlerRepository.save(article);
         }
     }

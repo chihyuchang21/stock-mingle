@@ -1,9 +1,6 @@
 package com.example.demo.model.article;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -13,5 +10,19 @@ public class Article {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String title;
+
+    @ManyToOne
+    @JoinColumn(name = "categoryId") //FK
+    private Category categoryId;
+
     private String content;
+    private Integer userId;
+    private Integer likeCount;
+    private Integer commentCount;
+
+    // 定義setCategory 方法
+    public void setCategory(Category category) {
+        this.categoryId = category;
+    }
+
 }
