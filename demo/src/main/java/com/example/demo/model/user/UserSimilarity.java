@@ -15,9 +15,10 @@ public class UserSimilarity {
         this.similarity = similarity;
     }
 
-    public UserSimilarity(Integer userId1, Integer mostSimilarUserId) {
-        this.userId1 = userId1;
-        this.userId2 = mostSimilarUserId;
-    }
+//    public UserSimilarity(Integer userId1, Integer userId2) {
+//        this.userId1 = userId1;
+//        this.userId2 = userId2;
+//    }
+
 }
 

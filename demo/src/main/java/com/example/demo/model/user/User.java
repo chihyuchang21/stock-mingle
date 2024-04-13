@@ -18,7 +18,7 @@ public class User {
     private String nickname;
     private Integer genderId;
     private Integer genderMatch;
-    private String favoriteTopic;
+//    private String favoriteTopic;
     private String image;
 
     public User() {

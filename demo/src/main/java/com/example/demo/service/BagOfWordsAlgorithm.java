@@ -12,7 +12,7 @@ public class BagOfWordsAlgorithm {
     private static final Logger logger = LoggerFactory.getLogger(BagOfWordsAlgorithm.class);
 
 
-    public static double calculateSimilarity(Set<String> set1, Set<String> set2) {
+    public  static double calculateSimilarity(Set<String> set1, Set<String> set2) {
         // 兩個set的交集大小
         int intersectionSize = getIntersectionSize(set1, set2);
 

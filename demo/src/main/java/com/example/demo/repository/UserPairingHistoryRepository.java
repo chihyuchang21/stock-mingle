@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserPairingHistoryRepository extends JpaRepository<UserPairingHistory, Long> {
+    boolean existsByUser1IdAndUser2Id(Integer user1Id, Integer user2Id);
 }

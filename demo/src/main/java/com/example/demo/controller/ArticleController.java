@@ -43,6 +43,7 @@ public class ArticleController {
         return ResponseEntity.ok(articles);
     }
 
+    //Perhaps should be adjusted to PostMapping since we change stuffs in DB
     @GetMapping("/calculateRecommendTopic")
     public ResponseEntity<?> calculateRecommendTopic(){
         articleService.calculateCosineSimilarity();

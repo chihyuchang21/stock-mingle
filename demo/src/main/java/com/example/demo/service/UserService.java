@@ -36,9 +36,6 @@ public class UserService {
         return userRepository.findAll();
     }
 
-//    public List<User> getAllUsersWithoutFavoriteTopicAndImage() {
-//        return userRepository.getAllUsersWithoutFavoriteTopicAndImage();
-//    }
 
     public double calculateSimilarity(Integer userId1, Integer userId2) {
         Set<String> user1Hashtags = getUserHashtags(userId1);
@@ -46,18 +43,26 @@ public class UserService {
         return BagOfWordsAlgorithm.calculateSimilarity(user1Hashtags, user2Hashtags);
     }
 
-    private Set<String> getUserHashtags(Integer userId) {
+
+    public Set<String> getUserHashtags(Integer userId) {
         Set<String> hashtags = new HashSet<>();
-        UserHashtag userHashtag = userHashtagRepository.findByUserId(userId);
-        if (userHashtag != null) {
-            hashtags.add(userHashtag.getHashtag1());
-            hashtags.add(userHashtag.getHashtag2());
-            hashtags.add(userHashtag.getHashtag3());
+        List<UserHashtag> userHashtags = userHashtagRepository.findByUserId(userId);
+        logger.info("userHashtags from service" + userHashtags);
+        for (UserHashtag userHashtag : userHashtags) {
+            String hashtagName = userHashtag.getHashtag().getHashtagName();
+            hashtags.add(hashtagName);
         }
         return hashtags;
     }
 
+
+
     public void savePairToDatabase(Integer userId1, Integer userId2) {
+        // user1,2 跟 user2,1視為相同的配對
+        if (userPairingHistoryRepository.existsByUser1IdAndUser2Id(userId2, userId1)) {
+            logger.info("Pairing already exists for users: " + userId1 + " and " + userId2);
+            return; // 如若DB中有已經有相同配對則不儲存
+        }
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
@@ -70,6 +75,7 @@ public class UserService {
         // 要用UserPairingRepo
         userPairingHistoryRepository.save(userPairingHistory);
     }
+
 
     @Scheduled(cron = "0 6 13 * * *" )
     public void testScheduled(){

@@ -11,7 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class UserControllerFilterAndSaveToDB {
@@ -25,6 +27,10 @@ public class UserControllerFilterAndSaveToDB {
     public ResponseEntity<List<UserSimilarity>> calculateAllUsersSimilarityAndSave() {
         List<User> users = userService.getAllUsers();
         List<UserSimilarity> similarities = new ArrayList<>();
+
+        // Set to store the already paired user IDs
+        Set<Integer> pairedUserIds = new HashSet<>();
+
 
         // loop所有用戶
         for (User user : users) {
@@ -44,14 +50,19 @@ public class UserControllerFilterAndSaveToDB {
                 }
             }
 
-            // 存到DB中
-            if (mostSimilarUserId != null) {
-                similarities.add(new UserSimilarity(userId1, mostSimilarUserId));
+            // Store the pair if it's not null and not already paired
+            if (mostSimilarUserId != null && !pairedUserIds.contains(userId1) && !pairedUserIds.contains(mostSimilarUserId)) {
+                similarities.add(new UserSimilarity(userId1, mostSimilarUserId, maxSimilarity));
                 userService.savePairToDatabase(userId1, mostSimilarUserId);
+                // Mark both users as paired
+                pairedUserIds.add(userId1);
+                pairedUserIds.add(mostSimilarUserId);
             }
+
         }
 
         return ResponseEntity.ok(similarities);
     }
+
 }
 

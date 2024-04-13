@@ -1,22 +1,16 @@
 package com.example.demo.model.user;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
 @Data
-public class UserHashtag {
+public class Hashtag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "hashtag_id")
-    private Hashtag hashtag;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "hashtag_name")
+    private String hashtagName;
 }
-
-
