@@ -54,19 +54,23 @@ public class UserControllerFilterAndSaveToDB {
 
 
             // Store the pair if it's not null and not already paired
-//            if (mostSimilarUserId != null && !pairedUserIds.contains(userId1) && !pairedUserIds.contains(mostSimilarUserId)) {
-              if (mostSimilarUserId != null) {
+            if (mostSimilarUserId != null && !isPairAlreadyExists(similarities, userId1, mostSimilarUserId)) {
                 similarities.add(new UserSimilarity(userId1, mostSimilarUserId, maxSimilarity));
                 userService.savePairToDatabase(userId1, mostSimilarUserId);
-                // Mark both users as paired
-                pairedUserIds.add(userId1);
-                pairedUserIds.add(mostSimilarUserId);
             }
-
         }
 
         return ResponseEntity.ok(similarities);
     }
 
+    // Check if the pair already exists in the list
+    private boolean isPairAlreadyExists(List<UserSimilarity> similarities, Integer userId1, Integer userId2) {
+        for (UserSimilarity similarity : similarities) {
+            if ((similarity.getUserId1().equals(userId1) && similarity.getUserId2().equals(userId2)) ||
+                    (similarity.getUserId1().equals(userId2) && similarity.getUserId2().equals(userId1))) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
-
