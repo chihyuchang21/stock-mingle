@@ -28,7 +28,7 @@ public class WebCrawlerController {
             int limit = 100; // Amount of articles
 
             // Call RedditService to get articles
-            String responseBody = webCrawlerService.getRedditArticles(subreddit, limit);
+            webCrawlerService.getRedditArticles(subreddit, limit);
 
             // can use responseBody Print the retrieved article information
 

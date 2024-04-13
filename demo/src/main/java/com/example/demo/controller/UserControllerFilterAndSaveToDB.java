@@ -27,22 +27,24 @@ public class UserControllerFilterAndSaveToDB {
     public ResponseEntity<List<UserSimilarity>> calculateAllUsersSimilarityAndSave() {
         List<User> users = userService.getAllUsers();
         List<UserSimilarity> similarities = new ArrayList<>();
-
         // Set to store the already paired user IDs
         Set<Integer> pairedUserIds = new HashSet<>();
 
 
-        // loop所有用戶
-        for (User user : users) {
+        // For-each loop: looping over User objects in users
+        for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
             Integer userId1 = user.getId();
             Integer mostSimilarUserId = null;
+            // 不能設為 null
             Double maxSimilarity = Double.MIN_VALUE;
 
             // 找目前相似度最高的用戶
-            for (User otherUser : users) {
-                if (user.getId().equals(otherUser.getId())) {
+            for (int j = 0; j < users.size(); j++) {
+                if (i == j) {
                     continue; // 跳過自己
                 }
+                User otherUser = users.get(j);
                 Double similarity = userService.calculateSimilarity(userId1, otherUser.getId());
                 if (similarity > maxSimilarity) {
                     mostSimilarUserId = otherUser.getId();
@@ -50,8 +52,10 @@ public class UserControllerFilterAndSaveToDB {
                 }
             }
 
+
             // Store the pair if it's not null and not already paired
-            if (mostSimilarUserId != null && !pairedUserIds.contains(userId1) && !pairedUserIds.contains(mostSimilarUserId)) {
+//            if (mostSimilarUserId != null && !pairedUserIds.contains(userId1) && !pairedUserIds.contains(mostSimilarUserId)) {
+              if (mostSimilarUserId != null) {
                 similarities.add(new UserSimilarity(userId1, mostSimilarUserId, maxSimilarity));
                 userService.savePairToDatabase(userId1, mostSimilarUserId);
                 // Mark both users as paired
