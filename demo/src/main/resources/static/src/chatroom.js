@@ -61,7 +61,7 @@ function sendName() {
 }
 
 function showMessage(chats) {
-    console.log('Showing greeting:', chats); // 添加日志输出
+    console.log('Showing greeting:', chats);
     // $("#greetings").append("<tr><td>" + "ID: " + message.id + ", Name: " + message.userId + ", Content: " + message.content + "</td></tr>");
     $("#greetings").append("<tr><td>" + chats + "</td></tr>");
 

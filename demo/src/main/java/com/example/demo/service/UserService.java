@@ -26,6 +26,7 @@ public class UserService {
     @Autowired
     private UserHashtagRepository userHashtagRepository;
 
+
     @Autowired
     private UserRepository userRepository;
 
@@ -34,6 +35,10 @@ public class UserService {
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    public List<UserPairingHistory> getHistoryUserPairing() {
+        return userPairingHistoryRepository.findAll();
     }
 
 

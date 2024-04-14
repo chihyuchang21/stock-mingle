@@ -12,6 +12,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findAll();
 
+//    NativeQuery
     @Query("SELECT new User(u.id, u.accountName, u.nickname, u.genderId) FROM User u")
     List<User> getAllUsersWithoutFavoriteTopicAndImage();
 

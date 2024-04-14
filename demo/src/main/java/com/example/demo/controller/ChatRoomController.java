@@ -29,7 +29,7 @@ public class ChatRoomController {
 
     // 訂閱路徑動態生成
     @MessageMapping("/hello/{userPairingHistoryId}")
-    @SendTo(GREETINGS_TOPIC_PREFIX + "{userPairingHistoryId}") // 使用占位符动态生成订阅路径
+    @SendTo(GREETINGS_TOPIC_PREFIX + "{userPairingHistoryId}") // 動態生成路徑
     public Message sendMessageToSpecificRoom(@DestinationVariable String userPairingHistoryId, Message message) {
         Message savedMessage = chatRoomService.saveMessage(message);
         return savedMessage;

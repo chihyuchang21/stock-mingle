@@ -22,27 +22,11 @@ public class UserControllerPrintAndFilterController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserControllerPrintAndFilterController.class);
 
-    //Testing (只能印出數字)
-//    @GetMapping("/users/similarity")
-//    public ResponseEntity<Double> getUserSimilarity(@RequestParam Long userId1, @RequestParam Long userId2) {
-//        Double similarity = userService.calculateSimilarity(userId1, userId2);
-//        return ResponseEntity.ok(similarity);
-//    }
-
     @GetMapping("/similarity/printAndFilter")
     public ResponseEntity<List<UserSimilarity>> calculateAllUsersSimilarity() {
-//        List<User> users = userService.getAllUsersWithoutFavoriteTopicAndImage();
         List<User> users = userService.getAllUsers();
         List<UserSimilarity> similarities = new ArrayList<>();
 
-//        for (int i = 0; i < users.size(); i++) {
-//            for (int j = i + 1; j < users.size(); j++) {
-//                Long userId1 = users.get(i).getId();
-//                Long userId2 = users.get(j).getId();
-//                Double similarity = userService.calculateSimilarity(userId1, userId2);
-//                similarities.add(new UserSimilarity(userId1, userId2, similarity));
-//            }
-//        }
 
         for (int i = 0; i < users.size(); i++) {
             for (int j = i + 1; j < users.size(); j++) {
