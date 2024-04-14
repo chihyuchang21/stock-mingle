@@ -5,8 +5,13 @@ const stompClient = new StompJs.Client({
 stompClient.onConnect = (frame) => {
     setConnected(true);
     console.log('Connected: ' + frame);
-    stompClient.subscribe('/topic/greetings', (greeting) => {
-        showGreeting(JSON.parse(greeting.body).content);
+    const userPairingHistoryId = $("#userPairingHistoryId").val(); // 先填寫userPairingHistoryId(頻道
+    const subscriptionPath = '/topic/chats/' + userPairingHistoryId;
+    console.log('Subscribing to path:', subscriptionPath); // 訂閱的路徑
+    stompClient.subscribe(subscriptionPath, (chats) => {
+        console.log('Received greeting:', chats.body);
+        showMessage(JSON.parse(chats.body).content);
+        console.log('Parsed content:', JSON.parse(chats.body).content); // JSON Parse的結果
     });
 };
 
@@ -41,31 +46,26 @@ function disconnect() {
     console.log("Disconnected");
 }
 
-// function sendName() {
-//     stompClient.publish({
-//         destination: "/app/hello",
-//         body: JSON.stringify({'name': $("#name").val()})
-//     });
-// }
-
 function sendName() {
     const userId = $("#name").val();
     const content = $("#content").val(); // 假設你有一個表單元素用於輸入 content
+    const userPairingHistoryId = $("#userPairingHistoryId").val(); // 從界面獲取 userPairingHistoryId
+    const destination = "/app/hello/" + userPairingHistoryId; // 要進入的頻道
+
+    console.log('Sending message to:', destination);
+
     stompClient.publish({
-        destination: "/app/hello",
-        body: JSON.stringify({'userId': userId, 'content': content})
+        destination: destination,
+        body: JSON.stringify({'userId': userId, 'content': content, 'userPairingHistoryId': userPairingHistoryId})
     });
 }
 
+function showMessage(chats) {
+    console.log('Showing greeting:', chats); // 添加日志输出
+    // $("#greetings").append("<tr><td>" + "ID: " + message.id + ", Name: " + message.userId + ", Content: " + message.content + "</td></tr>");
+    $("#greetings").append("<tr><td>" + chats + "</td></tr>");
 
-// function showGreeting(message) {
-//     $("#greetings").append("<tr><td>" + message + "</td></tr>");
-// }
-
-function showGreeting(message) {
-    $("#greetings").append("<tr><td>" + message.userId + ": " + message.content + "</td></tr>");
 }
-
 
 $(function () {
     $("form").on('submit', (e) => e.preventDefault());
@@ -73,4 +73,3 @@ $(function () {
     $( "#disconnect" ).click(() => disconnect());
     $( "#send" ).click(() => sendName());
 });
-

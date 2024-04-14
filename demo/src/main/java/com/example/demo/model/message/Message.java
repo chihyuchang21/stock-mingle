@@ -13,11 +13,13 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private Integer user_pairing_history_id;
+    private Integer userPairingHistoryId;
 
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    private Integer userId;
+    private Integer senderUserId;
+    private Integer receiverUserId;
+
     private Timestamp sendTime;
 }

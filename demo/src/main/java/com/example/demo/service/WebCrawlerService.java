@@ -9,9 +9,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +43,7 @@ public class WebCrawlerService {
 
 
     public String getRedditArticles(String subreddit, int limit) throws IOException {
-        String url = "https://www.reddit.com/r/" + subreddit + "/new.json?limit=" + limit;
+        String url = "https://www.reddit.com/r/" + subreddit + "/new.json?limit=" +  limit;
 
         OkHttpClient client = new OkHttpClient();
 
@@ -62,8 +60,8 @@ public class WebCrawlerService {
 
         String responseBody = response.body().string();
         List<String> selfTexts = extractSelfText(responseBody);
-        List<String> titles = extractTitle(responseBody);
-        List<String> categories = extractCategory(responseBody);
+        List<String> titles = extractCategory(responseBody);
+        List<String> categories = extractTitle(responseBody);
 
         // 文章存入DB
         saveArticle(selfTexts, titles, categories);
@@ -83,7 +81,7 @@ public class WebCrawlerService {
                 JSONObject child = children.getJSONObject(i);
                 JSONObject childData = child.getJSONObject("data");
                 String linkFlairText = childData.getString("link_flair_text");
-                // 只提取特定类型的文章的 selftext
+                // 只提取特定文章的 selftext
                 if (isValidLinkFlairText(linkFlairText)) {
                     String selfTextValue = childData.getString("selftext");
                     selfTextValues.add(selfTextValue);
@@ -96,29 +94,6 @@ public class WebCrawlerService {
     }
 
     private static List<String> extractTitle(String responseBody) {
-        List<String> titleValues = new ArrayList<>();
-        try {
-            JSONObject json = new JSONObject(responseBody);
-            JSONObject data = json.getJSONObject("data");
-            JSONArray children = data.getJSONArray("children");
-            for (int i = 0; i < Math.min(children.length(), 500); i++) {
-                JSONObject child = children.getJSONObject(i);
-                JSONObject childData = child.getJSONObject("data");
-                String linkFlairText = childData.getString("link_flair_text");
-                // 只提取特定类型的文章的 title
-                if (isValidLinkFlairText(linkFlairText)) {
-                    String titleValue = childData.getString("link_flair_text");
-                    titleValues.add(titleValue);
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return titleValues;
-    }
-
-
-    private static List<String> extractCategory(String responseBody) {
         List<String> categoryValues = new ArrayList<>();
         try {
             JSONObject json = new JSONObject(responseBody);
@@ -140,7 +115,31 @@ public class WebCrawlerService {
         return categoryValues;
     }
 
-    // 添加方法用于检查 link_flair_text 是否为特定类型
+
+    private static List<String> extractCategory(String responseBody) {
+        List<String> titleValues = new ArrayList<>();
+        try {
+            JSONObject json = new JSONObject(responseBody);
+            JSONObject data = json.getJSONObject("data");
+            JSONArray children = data.getJSONArray("children");
+            for (int i = 0; i < Math.min(children.length(), 500); i++) {
+                JSONObject child = children.getJSONObject(i);
+                JSONObject childData = child.getJSONObject("data");
+                String linkFlairText = childData.getString("link_flair_text");
+                // 只提取特定文章的 title
+                if (isValidLinkFlairText(linkFlairText)) {
+                    String titleValue = childData.getString("link_flair_text");
+                    titleValues.add(titleValue);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return titleValues;
+    }
+
+
+    // 檢查link_flair_text 是否为特定类型
     private static boolean isValidLinkFlairText(String linkFlairText) {
         return linkFlairText != null && (linkFlairText.equals("Company News") || linkFlairText.equals("Broad market news") ||
                 linkFlairText.equals("Company Discussion") || linkFlairText.equals("Advice Request") || linkFlairText.equals("Others"));
