@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -68,6 +69,16 @@ public class ArticleController {
     public ResponseEntity<?> getAllArticle(){
         List<Article> articles = articleService.getAllArticle();
         return ResponseEntity.ok(articles);
+    }
+
+    @GetMapping("/getArticlesByPageAndFavoriteTopic")
+    public ResponseEntity<List<Article>> getArticlesByPageAndFavoriteTopic(@RequestParam(value = "paging", defaultValue = "0") int paging) {
+
+        int pageSize = 10;
+        List<Article> articleList = articleService.getArticlesByPageAndFavoriteTopic(paging, pageSize);
+//        boolean hasMore = articleService.hasNextPage();
+
+        return ResponseEntity.ok(articleList);
     }
 
     //Perhaps should be adjusted to PostMapping since we change stuffs in DB

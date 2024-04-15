@@ -9,6 +9,8 @@ import com.example.demo.repository.UserClickDetailRepository;
 import com.example.demo.repository.UserClickEventRepository;
 import com.example.demo.repository.UserClickRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -40,6 +42,12 @@ public class ArticleService {
     public List<Article> getAllArticle(){
         return articleRepository.findAll();
     }
+
+    public List<Article> getArticlesByPageAndFavoriteTopic(int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return articleRepository.findArticlesByPageAndFavoriteTopic(pageable);
+    }
+
 
     public void postClickEvent(UserClickEvent userClickEvent) { userClickEventRepository.save(userClickEvent);}
 
