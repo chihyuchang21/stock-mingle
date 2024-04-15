@@ -1,0 +1,81 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    /*text-align: center;*/
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar h1 {
+    font-family: Brush Script MT, cursive;
+    margin: 0;
+    padding: 0;
+    flex:1;   /*讓標題佔據剩餘空間*/
+
+}
+
+.container {
+    flex: 1;
+    display: flex;
+}
+
+.board-list {
+    font-family: 'Garamond', serif;
+    flex: 0 0 200px; /* 固定寬度 */
+    background-color: #f4f4f4;
+    padding: 10px;
+    padding-left: 300px; /* 添加右邊間隙 */
+}
+
+.article-list {
+    flex: 1;
+    background-color: aliceblue;
+    padding: 10px;
+    padding-right: 300px; /* 添加左邊間隙 */
+}
+
+.board-list h2, .article-list h2 {
+    margin: 0 0 10px 0;
+    padding: 0;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    padding: 5px 0;
+}
+
+a {
+    color: #333;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #000;
+    text-decoration: underline;
+}
+
+.publish-btn {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+}

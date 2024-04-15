@@ -1,14 +1,20 @@
 package com.example.demo.controller;
 import com.example.demo.model.article.Article;
+import com.example.demo.model.article.Category;
+import com.example.demo.model.user.UserClick;
+import com.example.demo.model.user.UserClickEvent;
 import com.example.demo.service.ArticleService;
+import com.example.demo.service.ChatRoomService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +41,18 @@ public class ArticleController {
         Map<String, Object> response = new HashMap<>();
         response.put("data", article);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/postClickEvent")
+    public ResponseEntity<?> postClickEvent(@RequestBody UserClickEvent userClickEvent){
+        //獲取外鍵的值
+        Integer categoryId = userClickEvent.getCategoryId().getId();
+        Timestamp timestamp = userClickEvent.getTimestamp();
+        logger.info("categoryId: " + categoryId);
+        logger.info("timestamp: " + timestamp);
+        articleService.postClickEvent(userClickEvent);
+
+        return ResponseEntity.ok("ok");
     }
 
     @GetMapping("/getAllArticle")

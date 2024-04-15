@@ -2,7 +2,9 @@ package com.example.demo.service;
 
 import com.example.demo.model.article.Article;
 import com.example.demo.model.user.UserClick;
+import com.example.demo.model.user.UserClickEvent;
 import com.example.demo.repository.ArticleRepository;
+import com.example.demo.repository.UserClickEventRepository;
 import com.example.demo.repository.UserClickRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,9 @@ public class ArticleService {
     @Autowired
     private UserClickRepository userClickRepository;
 
+    @Autowired
+    private UserClickEventRepository userClickEventRepository;
+
     public void postArticle(Article article){
         articleRepository.save(article);
     }
@@ -28,6 +33,8 @@ public class ArticleService {
     public List<Article> getAllArticle(){
         return articleRepository.findAll();
     }
+
+    public void postClickEvent(UserClickEvent userClickEvent) { userClickEventRepository.save(userClickEvent);}
 
 public void calculateCosineSimilarity() {
     List<UserClick> userClicks = userClickRepository.findAll();

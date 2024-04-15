@@ -164,6 +164,8 @@ public class WebCrawlerService {
         crawlAndSaveIndex("S&P 500", "https://finance.yahoo.com/quote/%5EGSPC");
         crawlAndSaveIndex("NASDAQ Composite", "https://finance.yahoo.com/quote/%5EIXIC");
         crawlAndSaveIndex("Philadelphia Semiconductor Index", "https://finance.yahoo.com/quote/%5ESOX");
+//        crawlAndSaveIndex("Nikkei 225", "https://finance.yahoo.com/quote/%5EN225");
+//        crawlAndSaveIndex("TSEC weighted index", "https://finance.yahoo.com/quote/%5ETWII");
     }
 
     private void crawlAndSaveIndex(String indexName, String url) throws IOException {
@@ -193,7 +195,12 @@ public class WebCrawlerService {
             priceElement = doc.selectFirst("fin-streamer[data-symbol=^IXIC]");
         } else if (url.contains("%5ESOX")) {
             priceElement = doc.selectFirst("fin-streamer[data-symbol=^SOX]");
+//        } else if (url.contains("%5EN225")) {
+//            priceElement = doc.selectFirst("fin-streamer[data-symbol=^N225]");
+//        } else if (url.contains("%5ETWII")) {
+//            priceElement = doc.selectFirst("fin-streamer[data-symbol=^TWII]");
         }
+
         if (priceElement != null) {
             return priceElement.text();
         } else {
