@@ -2,7 +2,10 @@ package com.example.demo.controller;
 import com.example.demo.model.article.Article;
 import com.example.demo.model.article.Category;
 import com.example.demo.model.user.UserClick;
+import com.example.demo.model.user.UserClickDetail;
 import com.example.demo.model.user.UserClickEvent;
+import com.example.demo.repository.UserClickDetailRepository;
+import com.example.demo.repository.UserClickEventRepository;
 import com.example.demo.service.ArticleService;
 import com.example.demo.service.ChatRoomService;
 import org.slf4j.Logger;
@@ -31,6 +34,12 @@ public class ArticleController {
     }
 
     private static final Logger logger = LoggerFactory.getLogger(ArticleController.class);
+
+    @Autowired
+    UserClickEventRepository userClickEventRepository;
+
+    @Autowired
+    UserClickDetailRepository userClickDetailRepository;
 
 
     //DB欄位要改名叫article
@@ -65,6 +74,12 @@ public class ArticleController {
     @GetMapping("/calculateRecommendTopic")
     public ResponseEntity<?> calculateRecommendTopic(){
         articleService.calculateCosineSimilarity();
+        return ResponseEntity.ok("OK");
+    }
+
+    @GetMapping("/sumToBigTable")
+    public ResponseEntity<?> sumToBigTable(){
+        articleService.updateUserClickDetail();
         return ResponseEntity.ok("OK");
     }
 }
