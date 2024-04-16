@@ -20,13 +20,6 @@ public class ChatRoomController {
     // 不同聊天室的訂閱路徑
     private static final String GREETINGS_TOPIC_PREFIX = "/topic/chats/";
 
-//    @MessageMapping("/hello")
-//    @SendTo("/topic/greetings") //
-//    public Message sendMessage(Message message) {
-//        Message savedMessage = chatRoomService.saveMessage(message);
-//        return savedMessage;
-//    }
-
     // 訂閱路徑動態生成
     @MessageMapping("/hello/{userPairingHistoryId}")
     @SendTo(GREETINGS_TOPIC_PREFIX + "{userPairingHistoryId}") // 動態生成路徑

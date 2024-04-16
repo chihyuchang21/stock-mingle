@@ -1,13 +1,11 @@
 package com.example.demo.service;
 
 import com.example.demo.model.article.Article;
+import com.example.demo.model.article.Category;
 import com.example.demo.model.user.UserClick;
 import com.example.demo.model.user.UserClickDetail;
 import com.example.demo.model.user.UserClickEvent;
-import com.example.demo.repository.ArticleRepository;
-import com.example.demo.repository.UserClickDetailRepository;
-import com.example.demo.repository.UserClickEventRepository;
-import com.example.demo.repository.UserClickRepository;
+import com.example.demo.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -35,6 +33,9 @@ public class ArticleService {
     @Autowired
     private UserClickDetailRepository userClickDetailRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     public void postArticle(Article article){
         articleRepository.save(article);
     }
@@ -44,6 +45,7 @@ public class ArticleService {
     }
 
     public List<Article> getArticlesByPageAndFavoriteTopic(int page, int pageSize) {
+        // 取得目前使用者的id，先寫死為1
         Pageable pageable = PageRequest.of(page, pageSize);
         return articleRepository.findArticlesByPageAndFavoriteTopic(pageable);
     }
@@ -122,16 +124,20 @@ public class ArticleService {
 
         // 更新recommend topics
         for (UserClickDetail userClickDetail : userClickDetails) {
-            String favoriteTopic = userClickDetail.getFavoriteTopic();
-            String recommendTopic1;
-            String recommendTopic2;
+
+            //使用外鍵的值
+            Category favoriteTopic = userClickDetail.getFavoriteTopic();
+            String favoriteTopicName = favoriteTopic.getCategory();
+
+            Category recommendTopic1;
+            Category recommendTopic2;
 
             // 根據favorite_topic決定要比對哪個餘弦相似度
-            switch (favoriteTopic) {
+            switch (favoriteTopicName) {
 
-                case "cn":
+                case "Company News":
                     double[] similaritiesCN = {cnBmSimilarity, cnCdSimilarity, cnArSimilarity, cnOtSimilarity};
-                    String[] topicsCN = {"bm", "cd", "ar", "ot"};
+                    String[] topicsCN = {"Broad market news", "Company Discussion", "Advice Request", "Others"};
 
                     int maxIndexCN = 0;
                     for (int i = 1; i < similaritiesCN.length; i++) {
@@ -140,7 +146,7 @@ public class ArticleService {
                         }
                     }
 
-                    recommendTopic1 = topicsCN[maxIndexCN];
+                    recommendTopic1 = categoryRepository.findByCategory(topicsCN[maxIndexCN]);
 
                     // 移除最大值(設成一個非常小的值)，找到次大值
                     similaritiesCN[maxIndexCN] = Double.MIN_VALUE;
@@ -154,13 +160,13 @@ public class ArticleService {
                     }
 
                     // 次高相似度是推薦主題2
-                    recommendTopic2 = topicsCN[maxIndexCN];
+                    recommendTopic2 = categoryRepository.findByCategory(topicsCN[maxIndexCN]);
 
                     break;
 
-                case "bm":
+                case "Broad market news":
                     double[] similaritiesBM = {cnBmSimilarity, bmCdSimilarity, bmArSimilarity, bmOtSimilarity};
-                    String[] topicsBM = {"cn", "cd", "ar", "ot"};
+                    String[] topicsBM = {"Company News", "Company Discussion", "Advice Request", "Others"};
 
                     int maxIndexBM = 0;
                     for (int i = 1; i < similaritiesBM.length; i++) {
@@ -169,7 +175,7 @@ public class ArticleService {
                         }
                     }
 
-                    recommendTopic1 = topicsBM[maxIndexBM];
+                    recommendTopic1 = categoryRepository.findByCategory(topicsBM[maxIndexBM]);
 
                     // 移除最大值(設成一個非常小的值)，找到次大值
                     similaritiesBM[maxIndexBM] = Double.MIN_VALUE;
@@ -183,12 +189,12 @@ public class ArticleService {
                     }
 
                     // 次高相似度是推薦主題2
-                    recommendTopic2 = topicsBM[maxIndexBM];
+                    recommendTopic2 = categoryRepository.findByCategory(topicsBM[maxIndexBM]);
                     break;
 
-                case "cd":
+                case "Company Discussion":
                     double[] similaritiesCD = {cnCdSimilarity, bmCdSimilarity, cdOtSimilarity, cdArSimilarity};
-                    String[] topicsCD = {"cn", "bm", "ot", "ar"};
+                    String[] topicsCD = {"Company News", "Broad market news", "Others", "Advice Request"};
 
                     int maxIndexCD = 0;
                     for (int i = 1; i < similaritiesCD.length; i++) {
@@ -197,7 +203,7 @@ public class ArticleService {
                         }
                     }
 
-                    recommendTopic1 = topicsCD[maxIndexCD];
+                    recommendTopic1 = categoryRepository.findByCategory(topicsCD[maxIndexCD]);
 
                     // 移除最大值(設成一個非常小的值)，找到次大值
                     similaritiesCD[maxIndexCD] = Double.MIN_VALUE;
@@ -211,12 +217,12 @@ public class ArticleService {
                     }
 
                     // 次高相似度是推薦主題2
-                    recommendTopic2 = topicsCD[maxIndexCD];
+                    recommendTopic2 = categoryRepository.findByCategory(topicsCD[maxIndexCD]);
                     break;
 
-                case "ar":
+                case "Advice Request":
                     double[] similaritiesAR = {cnArSimilarity, bmArSimilarity, cdArSimilarity, arOtSimilarity};
-                    String[] topicsAR = {"cn", "bm", "cd", "ot"};
+                    String[] topicsAR = {"Company News", "Broad market news", "Company Discussion", "Others"};
 
                     int maxIndexAR = 0;
                     for (int i = 1; i < similaritiesAR.length; i++) {
@@ -225,7 +231,7 @@ public class ArticleService {
                         }
                     }
 
-                    recommendTopic1 = topicsAR[maxIndexAR];
+                    recommendTopic1 = categoryRepository.findByCategory(topicsAR[maxIndexAR]);
 
                     // 移除最大值(設成一個非常小的值)，找到次大值
                     similaritiesAR[maxIndexAR] = Double.MIN_VALUE;
@@ -239,13 +245,13 @@ public class ArticleService {
                     }
 
                     // 次高相似度是推薦主題2
-                    recommendTopic2 = topicsAR[maxIndexAR];
+                    recommendTopic2 = categoryRepository.findByCategory(topicsAR[maxIndexAR]);
                     break;
 
 
-                case "ot":
+                case "Others":
                     double[] similaritiesOT = {cnOtSimilarity, bmOtSimilarity, cdOtSimilarity, arOtSimilarity};
-                    String[] topicsOT = {"cn", "bm", "cd", "ar"};
+                    String[] topicsOT = {"Company News", "Broad market news", "Company Discussion", "Advice Request"};
 
                     int maxIndexOT = 0;
                     for (int i = 1; i < similaritiesOT.length; i++) {
@@ -254,7 +260,7 @@ public class ArticleService {
                         }
                     }
 
-                    recommendTopic1 = topicsOT[maxIndexOT];
+                    recommendTopic1 = categoryRepository.findByCategory(topicsOT[maxIndexOT]);
 
                     // 移除最大值(設成一個非常小的值)，找到次大值
                     similaritiesOT[maxIndexOT] = Double.MIN_VALUE;
@@ -268,12 +274,12 @@ public class ArticleService {
                     }
 
                     // 次高相似度是推薦主題2
-                    recommendTopic2 = topicsOT[maxIndexOT];
+                    recommendTopic2 = categoryRepository.findByCategory(topicsOT[maxIndexOT]);
                     break;
 
                 default:
-                    recommendTopic1 = "";
-                    recommendTopic2 = "";
+                    recommendTopic1 = null;
+                    recommendTopic2 = null;
             }
 
             userClickDetail.setRecommendTopic1(recommendTopic1);
@@ -291,7 +297,7 @@ public class ArticleService {
                 Integer adviceRequestClick = ((BigDecimal) result[4]).intValue(); // Convert BigDecimal to Integer
                 Integer othersClick = ((BigDecimal) result[5]).intValue(); // Convert BigDecimal to Integer
 
-                String[] topics = {"cn", "bm", "cd", "ar", "ot"};
+                String[] topics = {"Company News", "Broad market news", "Company Discussion", "Advice Request", "Others"};
                 Integer[] clicks = {companyNewsClick, broadMarketNewsClick, companyDiscussionClick, adviceRequestClick, othersClick};
 
                 // 找到點擊次數最多的類別
@@ -303,7 +309,10 @@ public class ArticleService {
                 }
 
                 // 將最多點擊次數對應的類別作為favorite topic
-                String favoriteTopic = topics[maxIndex];
+//                String favoriteTopic = topics[maxIndex];
+
+                // 儲存外鍵的值
+                Category favoriteTopic = categoryRepository.findByCategory(topics[maxIndex]);
 
 //                String favoriteTopic = "";
                 String recommendTopic1 = ""; // define how to get recommend topic 1
@@ -318,8 +327,8 @@ public class ArticleService {
                 detail.setAdviceRequestClick(adviceRequestClick);
                 detail.setOthersClick(othersClick);
                 detail.setFavoriteTopic(favoriteTopic);
-                detail.setRecommendTopic1(recommendTopic1);
-                detail.setRecommendTopic2(recommendTopic2);
+//                detail.setRecommendTopic1(recommendTopic1);
+//                detail.setRecommendTopic2(recommendTopic2);
                 userClickDetailRepository.save(detail);
             }
         }

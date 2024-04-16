@@ -1,9 +1,7 @@
 package com.example.demo.model.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.demo.model.article.Category;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -20,8 +18,17 @@ public class UserClickDetail {
     private Integer companyDiscussionClick;
     private Integer adviceRequestClick;
     private Integer othersClick;
-    private String favoriteTopic;
-    private String recommendTopic1;
-    private String recommendTopic2;
 
+    @ManyToOne
+    @JoinColumn(name = "favorite_topic", referencedColumnName = "id")
+    private Category favoriteTopic;
+
+    //解決Hibernate提出的關於列映射重複問題
+    @ManyToOne
+    @JoinColumn(name = "recommend_topic1", referencedColumnName = "id")
+    private Category recommendTopic1;
+
+    @ManyToOne
+    @JoinColumn(name = "recommend_topic2", referencedColumnName = "id")
+    private Category recommendTopic2;
 }

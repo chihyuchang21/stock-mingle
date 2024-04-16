@@ -1,13 +1,9 @@
 package com.example.demo.controller;
 import com.example.demo.model.article.Article;
-import com.example.demo.model.article.Category;
-import com.example.demo.model.user.UserClick;
-import com.example.demo.model.user.UserClickDetail;
 import com.example.demo.model.user.UserClickEvent;
 import com.example.demo.repository.UserClickDetailRepository;
 import com.example.demo.repository.UserClickEventRepository;
 import com.example.demo.service.ArticleService;
-import com.example.demo.service.ChatRoomService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,8 +71,11 @@ public class ArticleController {
     public ResponseEntity<List<Article>> getArticlesByPageAndFavoriteTopic(@RequestParam(value = "paging", defaultValue = "0") int paging) {
 
         int pageSize = 10;
+        // 不分類的10筆文章資料
         List<Article> articleList = articleService.getArticlesByPageAndFavoriteTopic(paging, pageSize);
 //        boolean hasMore = articleService.hasNextPage();
+
+
 
         return ResponseEntity.ok(articleList);
     }
