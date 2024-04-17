@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stock Forum</title>
+    <link href="src/article.css" rel="stylesheet">
     <link href="src/index.css" rel="stylesheet">
     <script src="src/index.js"></script>
 </head>
 <div class="navbar">
-    <h1>Stock Friends</h1>
-    <button class="publish-btn" onclick="publishArticle()">Post</button>
+    <h1>Post Article</h1>
+    <button class="publish-btn" onclick="redirectToArticlePage()">Post</button>
     <button class="match-btn">Match</button>
     <button class="account-btn">Log-In / Account</button>
 </div>
@@ -27,10 +28,18 @@
         </ul>
     </div>
 
-    <div class="article-list" id="articleList">
-        <h2>文章列表</h2>
-        <!-- 文章在此動態渲染 -->
-    </div>
+    <form id="articleForm">
+        <label for="title">Article Title:</label><br>
+        <input type="text" id="title" name="title"><br>
+        <label for="content">Article Content:</label><br>
+        <textarea id="content" name="content"></textarea><br>
+        <label for="category">Article Category:</label><br>
+        <textarea id="category" name="category"></textarea><br>
+        <label for="username">Your Username:</label><br>
+        <input type="text" id="username" name="username"><br><br>
+        <button type="submit">Publish Article</button>
+    </form>
+
 </div>
 
 </body>

@@ -1,51 +1,17 @@
-function publishArticle() {
-    // pop up input space
-    var title = prompt("請輸入文章標題:");
-    var content = prompt("請輸入文章內容:");
-    var username = prompt("請輸入您的用戶名:");
-
-    // send to backend
-    var article = {
-        title: title,
-        content: content,
-        username: username
-    };
-
-    fetch('/postArticle', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(article)
-    })
-        .then(response => {
-            if (response.ok) {
-                alert("文章發佈成功！");
-                // 刷新文章列表
-                fetchArticles();
-            } else {
-                alert("文章發佈失敗！");
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert("文章發佈失敗！");
-        });
+function redirectToArticlePage() {
+    window.location.href = 'article.html';
 }
 
 function publishClickEvent(categoryId) {
-
     var timestamp = new Date().getTime();
 
-    // 發送categoryId
+    // send categoryId
     var userClickEvent = {
         categoryId: categoryId,
         timestamp: timestamp
     };
 
-
-
-    fetch('/postClickEvent', {
+    fetch('/api/1.0/articles/click-events', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -55,10 +21,9 @@ function publishClickEvent(categoryId) {
         .then(response => {
             if (response.ok) {
                 console.log(userClickEvent);
-                console.log("Click Event發送成功！");
-
+                console.log("Click Event sent successfully!");
             } else {
-                console.error("Click Event發送失敗！");
+                console.error("Click Event failed to send!");
             }
         })
         .catch(error => {
@@ -66,32 +31,28 @@ function publishClickEvent(categoryId) {
         });
 }
 
-
-
-
 function fetchArticles() {
-    // 渲染到頁面上
-    fetch('/getAllArticle')
+    // Render on the page
+    fetch('/api/1.0/articles/guest')
         .then(response => response.json())
         .then(articles => {
             var articleList = document.getElementById('articleList');
-            articleList.innerHTML = ''; // 清空之前的文章列表
+            // articleList.innerHTML = ''; // Clear previous article list
 
             articles.forEach(article => {
                 var articleDiv = document.createElement('div');
 
-                //聽取點擊事件
+                // Listen for click event
                 articleDiv.addEventListener('click', function() {
                     publishClickEvent(article.categoryId, article.timestamp);
                 });
 
-
                 articleDiv.innerHTML = `
-                    <h3>${article.title}</h3>
-                    <p>${article.content}</p>
-                    <p>作者：${article.username}</p>
-                    <hr>
-                `;
+                <h3>${article.title}</h3>
+                <p>${article.content}</p>
+                <p>Author: ${article.username}</p>
+                <hr>
+            `;
                 articleList.appendChild(articleDiv);
             });
         })
@@ -100,7 +61,7 @@ function fetchArticles() {
         });
 }
 
-// 頁面加載時獲取文章列表
+// Get article list when the page loads
 window.onload = function() {
     fetchArticles();
 };

@@ -5,6 +5,9 @@ import com.example.demo.model.user.UserClickEvent;
 import com.example.demo.repository.UserClickDetailRepository;
 import com.example.demo.repository.UserClickEventRepository;
 import com.example.demo.service.ArticleService;
+
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import yahoofinance.Stock;
+import yahoofinance.YahooFinance;
 
 @RestController
 @RequestMapping("/api/1.0/articles")
