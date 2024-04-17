@@ -43,6 +43,8 @@ function publishClickEvent(categoryId) {
         timestamp: timestamp
     };
 
+
+
     fetch('/postClickEvent', {
         method: 'POST',
         headers: {
@@ -52,7 +54,9 @@ function publishClickEvent(categoryId) {
     })
         .then(response => {
             if (response.ok) {
+                console.log(userClickEvent);
                 console.log("Click Event發送成功！");
+
             } else {
                 console.error("Click Event發送失敗！");
             }
