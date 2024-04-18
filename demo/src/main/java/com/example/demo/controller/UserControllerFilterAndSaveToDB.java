@@ -12,18 +12,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Controller
 public class UserControllerFilterAndSaveToDB {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserControllerFilterAndSaveToDB.class);
     @Autowired
     private UserService userService;
 
-    private static final Logger logger = LoggerFactory.getLogger(UserControllerFilterAndSaveToDB.class);
-
     @GetMapping("similarity/dayOtherThan1")
-    public ResponseEntity<List<UserSimilarity>> calculateAllUsersSimilarityAndSaveDay2(){
+    public ResponseEntity<List<UserSimilarity>> calculateAllUsersSimilarityAndSaveDay2() {
         List<User> users = userService.getAllUsers();
         List<UserPairingHistory> historyUserPairing = userService.getHistoryUserPairing();
         logger.info("historyUserPairing: " + historyUserPairing);
@@ -44,7 +46,7 @@ public class UserControllerFilterAndSaveToDB {
             Integer mostSimilarUserId = null;
             Double maxSimilarity = Double.MIN_VALUE;
 
-            for (User otherUser : users){
+            for (User otherUser : users) {
                 if (user.getId().equals(otherUser.getId()) || alreadyPairedUsersToday.contains(userId1)) { //Perhaps having bugs
                     continue; // 跳過自己或已參與配對的用戶
                 }
@@ -74,7 +76,6 @@ public class UserControllerFilterAndSaveToDB {
 
         return ResponseEntity.ok(similarities);
     }
-
 
 
     @GetMapping("/similarity/day1")

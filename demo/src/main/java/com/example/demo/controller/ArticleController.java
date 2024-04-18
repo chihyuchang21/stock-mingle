@@ -2,33 +2,26 @@ package com.example.demo.controller;
 
 import com.example.demo.model.article.Article;
 import com.example.demo.model.user.UserClickEvent;
-import com.example.demo.repository.UserClickDetailRepository;
-import com.example.demo.repository.UserClickEventRepository;
 import com.example.demo.service.ArticleService;
-
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import yahoofinance.Stock;
-import yahoofinance.YahooFinance;
+
+import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/1.0/articles")
 public class ArticleController {
+    private static final Logger logger = LoggerFactory.getLogger(ArticleController.class);
     private final ArticleService articleService;
 
     public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
     }
-
-    private static final Logger logger = LoggerFactory.getLogger(ArticleController.class);
 
     @GetMapping
     @ResponseBody
@@ -80,7 +73,6 @@ public class ArticleController {
 
         return ResponseEntity.ok("ok");
     }
-
 
 
 //    @GetMapping("/getArticlesByPageAndFavoriteTopic")

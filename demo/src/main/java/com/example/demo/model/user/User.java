@@ -1,4 +1,5 @@
 package com.example.demo.model.user;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,9 +17,9 @@ public class User {
 
     private String accountName;
     private String nickname;
+    private String password;
     private Integer genderId;
     private Integer genderMatch;
-//    private String favoriteTopic;
     private String image;
 
     public User() {
