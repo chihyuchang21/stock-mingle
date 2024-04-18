@@ -113,6 +113,12 @@ public class UserService {
         userPairingHistoryRepository.save(userPairingHistory);
     }
 
+    public List<UserPairingHistory> getTodayMatch(Integer userId) {
+        Timestamp timestamp = Timestamp.valueOf("2024-04-17 10:34:32");
+        userRepository.logQueryParameters(userId, timestamp);
+        return userRepository.findByUserIdAndTimestamp(userId, timestamp);
+    }
+
 
     @Scheduled(cron = "0 6 13 * * *")
     public void testScheduled() {

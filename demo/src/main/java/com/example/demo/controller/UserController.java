@@ -39,7 +39,6 @@ public class UserController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@RequestBody User user) {
-        // Regular expression for validating email
 
         // Check for null or empty fields
         if (user.getAccountName() == null || user.getNickname().isEmpty() || user.getPassword() == null || user.getGenderId() == null || user.getGenderMatch() == null) {
@@ -129,7 +128,6 @@ public class UserController {
         }
     }
 
-
     private ResponseEntity<?> generateLogInResponse(User user, String accessToken) {
         long accessExpired = 3600;
 
@@ -146,6 +144,43 @@ public class UserController {
         dataMap.put("user", userMap);
 
         return ResponseEntity.ok().body(Map.of("data", dataMap));
+    }
+
+    @GetMapping("/match-today")
+    public ResponseEntity<?> getTodayMatch(@RequestHeader(name = "Authorization") String authorizationHeader) {
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            // error (401): no token
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Can't find token"));
+        }
+        try {
+            // Extract JWT token from the Authorization header
+            String token = authorizationHeader.substring(7); // Remove "Bearer " prefix
+
+            // Parse the JWT token to extract user information
+            Claims claims = Jwts.parser()
+                    .setSigningKey(jwtSecret)
+                    .parseClaimsJws(token)
+                    .getBody();
+
+            // Get user ID from JWT token
+            Integer userId = Integer.parseInt(claims.getSubject()); // Assuming subject is user ID
+            logger.info("userid: " + userId);
+
+            // Use userService to get user's friends
+            List<UserPairingHistory> todayMatchPerson = userService.getTodayMatch(userId);
+            logger.info("todayMatchPerson: " + todayMatchPerson);
+
+            Map<String, Object> responseMap = new HashMap<>();
+            responseMap.put("data", todayMatchPerson);
+
+            return ResponseEntity.ok().body(responseMap);
+        } catch (SignatureException e) {
+            // error (403): wrong token
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Invalid Token"));
+        } catch (Exception e) {
+            // error (500): server error
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Internal Server Error"));
+        }
     }
 
 
