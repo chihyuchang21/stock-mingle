@@ -3,8 +3,12 @@ package com.example.demo.controller;
 import com.example.demo.model.article.Article;
 import com.example.demo.model.user.UserClickEvent;
 import com.example.demo.service.ArticleService;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.SignatureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,8 +20,11 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/1.0/articles")
 public class ArticleController {
+
     private static final Logger logger = LoggerFactory.getLogger(ArticleController.class);
     private final ArticleService articleService;
+    @Value("${jwt.secret}")
+    private String jwtSecret;
 
     public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
@@ -37,11 +44,42 @@ public class ArticleController {
 
     @PostMapping
     @ResponseBody
-    public ResponseEntity<?> postArticle(@RequestBody Article article) {
-        articleService.postArticle(article);
-        Map<String, Object> response = new HashMap<>();
-        response.put("data", article);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<?> postArticle(@RequestBody Article article, @RequestHeader(value = "Authorization") String jwtToken) {
+        try {
+            // Remove Bearer prefix and check if the token is present
+            if (jwtToken == null || !jwtToken.startsWith("Bearer ")) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Bearer token is missing"));
+            }
+
+//            String token = jwtToken.substring(7); // Remove "Bearer " prefix
+//
+//            // Parse the JWT token to extract user information
+//            Claims claims = Jwts.parser()
+//                    .setSigningKey(jwtSecret)
+//                    .parseClaimsJws(token)
+//                    .getBody();
+//
+//            Map<String, Object> userClaims = claims.get("user", Map.class);
+//            userClaims.remove("id");
+//
+//            Map<String, Object> responseMap = new HashMap<>();
+//            responseMap.put("data", userClaims);
+
+            articleService.postArticle(article);
+            Map<String, Object> response = new HashMap<>();
+            response.put("data", article);
+            return ResponseEntity.ok(response);
+
+        } catch (SignatureException ex) {
+            // JWT invalid
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Invalid JWT token"));
+        } catch (JwtException ex) {
+            // Other JWT error
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "JWT token error"));
+        } catch (Exception ex) {
+            // other error
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "An error occurred processing your request"));
+        }
     }
 
     /**

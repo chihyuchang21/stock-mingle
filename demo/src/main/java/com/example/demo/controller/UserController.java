@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.MatchFriendInfo;
 import com.example.demo.middleware.JwtTokenService;
 import com.example.demo.model.user.LoginRequest;
 import com.example.demo.model.user.User;
@@ -19,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api/1.0/user")
@@ -147,14 +149,14 @@ public class UserController {
     }
 
     @GetMapping("/match-today")
-    public ResponseEntity<?> getTodayMatch(@RequestHeader(name = "Authorization") String authorizationHeader) {
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+    public ResponseEntity<?> getTodayMatch(@RequestHeader(name = "Authorization") String jwtToken) {
+        if (jwtToken == null || !jwtToken.startsWith("Bearer ")) {
             // error (401): no token
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Can't find token"));
         }
         try {
             // Extract JWT token from the Authorization header
-            String token = authorizationHeader.substring(7); // Remove "Bearer " prefix
+            String token = jwtToken.substring(7); // Remove "Bearer " prefix
 
             // Parse the JWT token to extract user information
             Claims claims = Jwts.parser()
@@ -167,7 +169,7 @@ public class UserController {
             logger.info("userid: " + userId);
 
             // Use userService to get user's friends
-            List<UserPairingHistory> todayMatchPerson = userService.getTodayMatch(userId);
+            Stream<MatchFriendInfo> todayMatchPerson = userService.getTodayMatch(userId);
             logger.info("todayMatchPerson: " + todayMatchPerson);
 
             Map<String, Object> responseMap = new HashMap<>();

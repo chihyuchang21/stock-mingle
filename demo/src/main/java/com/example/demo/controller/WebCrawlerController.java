@@ -5,23 +5,27 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
-@Controller
+
+@RestController
+@RequestMapping("/api/1.0")
 public class WebCrawlerController {
 
+    private static final Logger logger = LoggerFactory.getLogger(WebCrawlerController.class);
     private final WebCrawlerService webCrawlerService;
 
     public WebCrawlerController(WebCrawlerService webCrawlerService) {
         this.webCrawlerService = webCrawlerService;
     }
 
-    private static final Logger logger = LoggerFactory.getLogger(WebCrawlerController.class);
-
-    @GetMapping("/GetRedditArticles")
+    @GetMapping("/reddit-article")
+    @ResponseBody
     public ResponseEntity<?> getRedditArticles() {
         try {
             String subreddit = "stocks"; // Reddit Stock
@@ -41,7 +45,8 @@ public class WebCrawlerController {
         }
     }
 
-    @GetMapping("/GetStockGeneralIndex")
+    @GetMapping("/stock-info")
+    @ResponseBody
     public ResponseEntity<?> getStockGeneralIndex() {
         try {
             webCrawlerService.getStockGeneralIndex();

@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.MatchFriendInfo;
 import com.example.demo.model.user.User;
 import com.example.demo.model.user.UserHashtag;
 import com.example.demo.model.user.UserPairingHistory;
@@ -18,6 +19,7 @@ import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 @Service
 public class UserService {
@@ -113,10 +115,18 @@ public class UserService {
         userPairingHistoryRepository.save(userPairingHistory);
     }
 
-    public List<UserPairingHistory> getTodayMatch(Integer userId) {
-        Timestamp timestamp = Timestamp.valueOf("2024-04-17 10:34:32");
-        userRepository.logQueryParameters(userId, timestamp);
-        return userRepository.findByUserIdAndTimestamp(userId, timestamp);
+    public Stream<MatchFriendInfo> getTodayMatch(Integer userId) {
+        Timestamp timestamp = Timestamp.valueOf("2024-04-16 10:34:32");
+        List<UserPairingHistory> pairingHistories = userPairingHistoryRepository.findByUserIdAndTimestamp(userId, timestamp);
+        return pairingHistories.stream()
+                .map(pairingHistory -> {
+                    Integer otherUserId = (userId.equals(pairingHistory.getUser1Id())) ? pairingHistory.getUser2Id() : pairingHistory.getUser1Id();
+                    User otherUser = userRepository.findById(otherUserId).orElse(null);
+                    if (otherUser != null) {
+                        return new MatchFriendInfo(otherUser.getNickname(), otherUser.getImage());
+                    }
+                    return null;
+                });
     }
 
 
