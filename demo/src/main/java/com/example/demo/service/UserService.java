@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.model.user.User;
 import com.example.demo.model.user.UserHashtag;
 import com.example.demo.model.user.UserPairingHistory;
+import com.example.demo.repository.GenderRepository;
 import com.example.demo.repository.UserHashtagRepository;
 import com.example.demo.repository.UserPairingHistoryRepository;
 import com.example.demo.repository.UserRepository;
@@ -10,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -20,18 +22,18 @@ import java.util.Set;
 @Service
 public class UserService {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     @Autowired
     private UserPairingHistoryRepository userPairingHistoryRepository;
-
     @Autowired
     private UserHashtagRepository userHashtagRepository;
-
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Autowired
     private UserRepository userRepository;
 
-    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
-
+    @Autowired
+    private GenderRepository genderRepository;
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -39,6 +41,28 @@ public class UserService {
 
     public List<UserPairingHistory> getHistoryUserPairing() {
         return userPairingHistoryRepository.findAll();
+    }
+
+    // For Sign-up
+    public boolean registerUser(User user) {
+        //Check if account name already exists
+        if (userRepository.existsByAccountName(user.getAccountName())) {
+            return false;   // Account name already exists
+        }
+
+        // Hashed Password
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);  //Before entering DB, pwd should be hashed
+        user.setImage("default");
+
+        // Save User Information to DB
+        userRepository.save(user);
+        return true;
+    }
+
+    //To return autoID to Controller
+    public Integer getUserIdByAccountName(String accountName) {
+        return userRepository.getUserIdByAccountName(accountName);
     }
 
 
@@ -61,7 +85,6 @@ public class UserService {
     }
 
 
-
     public void savePairToDatabase(Integer userId1, Integer userId2) {
         // user1,2 跟 user2,1視為相同的配對
         if (userPairingHistoryRepository.existsByUser1IdAndUser2Id(userId2, userId1)) {
@@ -82,8 +105,8 @@ public class UserService {
     }
 
 
-    @Scheduled(cron = "0 6 13 * * *" )
-    public void testScheduled(){
+    @Scheduled(cron = "0 6 13 * * *")
+    public void testScheduled() {
         logger.info("Scheduled Function Tested");
     }
 }

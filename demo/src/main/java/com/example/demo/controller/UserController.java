@@ -1,29 +1,77 @@
 package com.example.demo.controller;
 
+import com.example.demo.middleware.JwtTokenService;
 import com.example.demo.model.user.User;
 import com.example.demo.model.user.UserPairingHistory;
 import com.example.demo.model.user.UserSimilarity;
 import com.example.demo.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-@Controller
-public class UserControllerFilterAndSaveToDB {
+@RestController
+@RequestMapping("/api/1.0/user")
+public class UserController {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserControllerFilterAndSaveToDB.class);
-    @Autowired
-    private UserService userService;
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final UserService userService;
+    private final JwtTokenService jwtTokenService;
 
+    // 使用Constructor注入
+    public UserController(UserService userService,
+                          JwtTokenService jwtTokenService) {
+        this.userService = userService;
+        this.jwtTokenService = jwtTokenService;
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<?> signUp(@RequestBody User user) {
+        // Regular expression for validating email
+
+        // Check for null or empty fields
+        if (user.getAccountName() == null || user.getNickname().isEmpty() || user.getPassword() == null || user.getGenderId() == null || user.getGenderMatch() == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Please fill all information"));
+        }
+
+        // Convert genderId and genderMatch to Gender objects
+
+        // True: Email not exists
+        boolean registrationSuccess = userService.registerUser(user);
+        if (!registrationSuccess) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Account name already exists"));
+        }
+
+        String accessToken = jwtTokenService.generateAccessToken(user);
+        long accessExpired = 3600;
+
+        // Construct User Information
+        Map<String, Object> userMap = new HashMap<>();
+
+        // Return Auto-increment ID
+        Integer autoID = userService.getUserIdByAccountName(user.getAccountName());
+        userMap.put("id", autoID);
+        userMap.put("account_name", user.getAccountName());
+        userMap.put("nickname", user.getNickname());
+        userMap.put("image", "https://example.com/images/user.png"); // assumed url
+
+        // Construct Full Response
+        Map<String, Object> responseMap = new HashMap<>();
+        Map<String, Object> dataMap = new HashMap<>();
+        dataMap.put("access_token", accessToken);
+        dataMap.put("access_expired", accessExpired);
+        dataMap.put("user", userMap);
+        responseMap.put("data", dataMap);
+
+        return ResponseEntity.ok(responseMap);
+    }
+
+
+    // 待refactor階段再改
     @GetMapping("similarity/dayOtherThan1")
     public ResponseEntity<List<UserSimilarity>> calculateAllUsersSimilarityAndSaveDay2() {
         List<User> users = userService.getAllUsers();
