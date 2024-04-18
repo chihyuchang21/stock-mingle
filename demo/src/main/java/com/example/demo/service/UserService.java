@@ -60,6 +60,15 @@ public class UserService {
         return true;
     }
 
+    public User authenticateUser(String accountName, String rawPassword) {
+        User user = userRepository.getUserByAccountName(accountName);
+        if (user != null && passwordEncoder.matches(rawPassword, user.getPassword())) {
+            return user;
+        }
+        return null;
+    }
+
+
     //To return autoID to Controller
     public Integer getUserIdByAccountName(String accountName) {
         return userRepository.getUserIdByAccountName(accountName);

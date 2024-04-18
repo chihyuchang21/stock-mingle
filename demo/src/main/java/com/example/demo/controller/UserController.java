@@ -1,12 +1,18 @@
 package com.example.demo.controller;
 
 import com.example.demo.middleware.JwtTokenService;
+import com.example.demo.model.user.LoginRequest;
 import com.example.demo.model.user.User;
 import com.example.demo.model.user.UserPairingHistory;
 import com.example.demo.model.user.UserSimilarity;
 import com.example.demo.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +27,8 @@ public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
     private final JwtTokenService jwtTokenService;
+    @Value("${jwt.secret}")
+    private String jwtSecret;
 
     // 使用Constructor注入
     public UserController(UserService userService,
@@ -57,7 +65,7 @@ public class UserController {
         userMap.put("id", autoID);
         userMap.put("account_name", user.getAccountName());
         userMap.put("nickname", user.getNickname());
-        userMap.put("image", "https://example.com/images/user.png"); // assumed url
+        userMap.put("image", user.getImage()); // assumed url
 
         // Construct Full Response
         Map<String, Object> responseMap = new HashMap<>();
@@ -68,6 +76,76 @@ public class UserController {
         responseMap.put("data", dataMap);
 
         return ResponseEntity.ok(responseMap);
+    }
+
+    @PostMapping("/signin")
+    public ResponseEntity<?> signIn(@RequestBody Map<String, Object> payload) {
+        LoginRequest loginRequest = new ObjectMapper().convertValue(payload, LoginRequest.class);
+
+        if (loginRequest.getAccountName().isEmpty() || loginRequest.getPassword().isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Email, password and provider are required"));
+        }
+
+        User user = userService.authenticateUser(loginRequest.getAccountName(), loginRequest.getPassword());
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid email or password"));
+        }
+
+        String accessToken = jwtTokenService.generateAccessToken(user);
+
+        return generateLogInResponse(user, accessToken);
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<Object> getUserProfile(@RequestHeader(name = "Authorization") String authorizationHeader) {
+        // Postman: choose type and add "Header " before the token
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            // error (401): no token
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Can't find token"));
+        }
+        try {
+            // Extract JWT token from the Authorization header
+            String token = authorizationHeader.substring(7); // Remove "Bearer " prefix
+
+            // Parse the JWT token to extract user information
+            Claims claims = Jwts.parser()
+                    .setSigningKey(jwtSecret)
+                    .parseClaimsJws(token)
+                    .getBody();
+
+            Map<String, Object> userClaims = claims.get("user", Map.class);
+            userClaims.remove("id");
+
+            Map<String, Object> responseMap = new HashMap<>();
+            responseMap.put("data", userClaims);
+
+            return ResponseEntity.ok().body(responseMap);
+        } catch (SignatureException e) {
+            // error (403): wrong token
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Invalid Token"));
+        } catch (Exception e) {
+            // error (500): server error
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Can't find token"));
+        }
+    }
+
+
+    private ResponseEntity<?> generateLogInResponse(User user, String accessToken) {
+        long accessExpired = 3600;
+
+        Map<String, Object> userMap = new HashMap<>();
+        Integer autoID = userService.getUserIdByAccountName(user.getAccountName());
+        userMap.put("id", autoID);
+        userMap.put("account_name", user.getAccountName());
+        userMap.put("nickname", user.getNickname());
+        userMap.put("image", user.getImage());
+
+        Map<String, Object> dataMap = new HashMap<>();
+        dataMap.put("access_token", accessToken);
+        dataMap.put("access_expired", accessExpired);
+        dataMap.put("user", userMap);
+
+        return ResponseEntity.ok().body(Map.of("data", dataMap));
     }
 
 

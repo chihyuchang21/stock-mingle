@@ -14,6 +14,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     boolean existsByAccountName(String accountName);
 
+    User getUserByAccountName(String accountName);
+
 //    // NativeQuery
 //    @Query("SELECT new User(u.id, u.accountName, u.nickname, u.genderId) FROM User u")
 //    List<User> getAllUsersWithoutFavoriteTopicAndImage();
