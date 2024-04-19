@@ -11,4 +11,6 @@ public interface UserClickDetailRepository extends JpaRepository<UserClickDetail
     //用Optional儲存可能為空的值
     Optional<UserClickDetail> findByUserId(Integer userId);
 
+//    UserClickDetail findForAlgoByUserId(Integer userId);
+
 }

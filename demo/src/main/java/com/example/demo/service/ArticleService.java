@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import com.example.demo.model.article.Article;
 import com.example.demo.model.article.Category;
-import com.example.demo.model.user.UserClick;
 import com.example.demo.model.user.UserClickDetail;
 import com.example.demo.model.user.UserClickEvent;
 import com.example.demo.repository.*;
@@ -12,46 +11,59 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.List;
 
 @Service
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
-
-    public ArticleService(ArticleRepository articleRepository){
-        this.articleRepository = articleRepository;
-    }
-
     @Autowired
     private UserClickRepository userClickRepository;
-
     @Autowired
     private UserClickEventRepository userClickEventRepository;
-
     @Autowired
     private UserClickDetailRepository userClickDetailRepository;
-
     @Autowired
     private CategoryRepository categoryRepository;
 
-    public void postArticle(Article article){
+    public ArticleService(ArticleRepository articleRepository) {
+        this.articleRepository = articleRepository;
+    }
+
+    public void postArticle(Article article) {
         articleRepository.save(article);
     }
 
-    public List<Article> getAllArticle(){
+    public List<Article> getAllArticle() {
         return articleRepository.findAll();
     }
 
-    public List<Article> getArticlesByPageAndFavoriteTopic(int page, int pageSize) {
-        // 取得目前使用者的id，先寫死為1
+    public List<Article> getAllArticles(int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        return articleRepository.findArticlesByPageAndFavoriteTopic(pageable);
+        return articleRepository.findAllArticlesByPage(pageable);
+    }
+
+    public List<Article> findArticlesByTopics(int page, Category favoriteTopic, Category recommendTopic1, Category recommendTopic2, int pageSize) {
+        // 計算每一類文章的數量
+        int favoriteTopicCount = (int) Math.ceil(7.0 / (7 + 2 + 1) * pageSize);
+        int recommendTopic1Count = (int) Math.ceil(2.0 / (7 + 2 + 1) * pageSize);
+        int recommendTopic2Count = (int) Math.ceil(1.0 / (7 + 2 + 1) * pageSize);
+
+        // 確保每一類文章的數量不超過pageSize
+        favoriteTopicCount = Math.min(favoriteTopicCount, pageSize);
+        recommendTopic1Count = Math.min(recommendTopic1Count, pageSize - favoriteTopicCount);
+        recommendTopic2Count = Math.min(recommendTopic2Count, pageSize - favoriteTopicCount - recommendTopic1Count);
+
+        // 根據每一類文章的數量查找相應的文章
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        return articleRepository.findAllArticlesByPageAndTopics(favoriteTopic, recommendTopic1, recommendTopic2, pageable);
     }
 
 
-    public void postClickEvent(UserClickEvent userClickEvent) { userClickEventRepository.save(userClickEvent);}
+    public void postClickEvent(UserClickEvent userClickEvent) {
+        userClickEventRepository.save(userClickEvent);
+    }
 
     public void calculateCosineSimilarity() {
         List<UserClickDetail> userClickDetails = userClickDetailRepository.findAll();
@@ -287,52 +299,53 @@ public class ArticleService {
             userClickDetailRepository.save(userClickDetail);
         }
     }
-        public void updateUserClickDetail() {
-            List<Object[]> results = userClickEventRepository.countClicksByUserId();
-            for (Object[] result : results) {
-                Integer userId = (Integer) result[0]; // Convert Object to Integer directly
-                Integer companyNewsClick = ((BigDecimal) result[1]).intValue(); // Convert BigDecimal to Integer
-                Integer broadMarketNewsClick = ((BigDecimal) result[2]).intValue(); // Convert BigDecimal to Integer
-                Integer companyDiscussionClick = ((BigDecimal) result[3]).intValue(); // Convert BigDecimal to Integer
-                Integer adviceRequestClick = ((BigDecimal) result[4]).intValue(); // Convert BigDecimal to Integer
-                Integer othersClick = ((BigDecimal) result[5]).intValue(); // Convert BigDecimal to Integer
 
-                String[] topics = {"Company News", "Broad market news", "Company Discussion", "Advice Request", "Others"};
-                Integer[] clicks = {companyNewsClick, broadMarketNewsClick, companyDiscussionClick, adviceRequestClick, othersClick};
+    public void updateUserClickDetail() {
+        List<Object[]> results = userClickEventRepository.countClicksByUserId();
+        for (Object[] result : results) {
+            Integer userId = (Integer) result[0]; // Convert Object to Integer directly
+            Integer companyNewsClick = ((BigDecimal) result[1]).intValue(); // Convert BigDecimal to Integer
+            Integer broadMarketNewsClick = ((BigDecimal) result[2]).intValue(); // Convert BigDecimal to Integer
+            Integer companyDiscussionClick = ((BigDecimal) result[3]).intValue(); // Convert BigDecimal to Integer
+            Integer adviceRequestClick = ((BigDecimal) result[4]).intValue(); // Convert BigDecimal to Integer
+            Integer othersClick = ((BigDecimal) result[5]).intValue(); // Convert BigDecimal to Integer
 
-                // 找到點擊次數最多的類別
-                int maxIndex = 0;
-                for (int i = 1; i < clicks.length; i++) {
-                    if (clicks[i] > clicks[maxIndex]) {
-                        maxIndex = i;
-                    }
+            String[] topics = {"Company News", "Broad market news", "Company Discussion", "Advice Request", "Others"};
+            Integer[] clicks = {companyNewsClick, broadMarketNewsClick, companyDiscussionClick, adviceRequestClick, othersClick};
+
+            // 找到點擊次數最多的類別
+            int maxIndex = 0;
+            for (int i = 1; i < clicks.length; i++) {
+                if (clicks[i] > clicks[maxIndex]) {
+                    maxIndex = i;
                 }
+            }
 
-                // 將最多點擊次數對應的類別作為favorite topic
+            // 將最多點擊次數對應的類別作為favorite topic
 //                String favoriteTopic = topics[maxIndex];
 
-                // 儲存外鍵的值
-                Category favoriteTopic = categoryRepository.findByCategory(topics[maxIndex]);
+            // 儲存外鍵的值
+            Category favoriteTopic = categoryRepository.findByCategory(topics[maxIndex]);
 
 //                String favoriteTopic = "";
-                String recommendTopic1 = ""; // define how to get recommend topic 1
-                String recommendTopic2 = ""; // define how to get recommend topic 2
+            String recommendTopic1 = ""; // define how to get recommend topic 1
+            String recommendTopic2 = ""; // define how to get recommend topic 2
 
-                UserClickDetail detail = userClickDetailRepository.findByUserId(userId)
-                        .orElse(new UserClickDetail());
-                detail.setUserId(userId);
-                detail.setCompanyNewsClick(companyNewsClick);
-                detail.setBroadMarketNewsClick(broadMarketNewsClick);
-                detail.setCompanyDiscussionClick(companyDiscussionClick);
-                detail.setAdviceRequestClick(adviceRequestClick);
-                detail.setOthersClick(othersClick);
-                detail.setFavoriteTopic(favoriteTopic);
+            UserClickDetail detail = userClickDetailRepository.findByUserId(userId)
+                    .orElse(new UserClickDetail());
+            detail.setUserId(userId);
+            detail.setCompanyNewsClick(companyNewsClick);
+            detail.setBroadMarketNewsClick(broadMarketNewsClick);
+            detail.setCompanyDiscussionClick(companyDiscussionClick);
+            detail.setAdviceRequestClick(adviceRequestClick);
+            detail.setOthersClick(othersClick);
+            detail.setFavoriteTopic(favoriteTopic);
 //                detail.setRecommendTopic1(recommendTopic1);
 //                detail.setRecommendTopic2(recommendTopic2);
-                userClickDetailRepository.save(detail);
-            }
+            userClickDetailRepository.save(detail);
         }
-
-
     }
+
+
+}
 
