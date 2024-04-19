@@ -191,61 +191,52 @@ public class UserController {
     public ResponseEntity<List<UserSimilarity>> calculateAllUsersSimilarityAndSaveDay2() {
         List<User> users = userService.getAllUsers();
         List<UserPairingHistory> historyUserPairing = userService.getHistoryUserPairing();
-//        logger.info("historyUserPairing: " + historyUserPairing);
 
-        // Save Pairs Today Matched
         Set<Integer> alreadyPairedUsersToday = new HashSet<>();
-
         List<Pair<Integer, Integer>> historyPairedUsers = new ArrayList<>();
         for (UserPairingHistory pairing : historyUserPairing) {
             Pair<Integer, Integer> pair = Pair.of(pairing.getUser1Id(), pairing.getUser2Id());
             historyPairedUsers.add(pair);
         }
-        logger.info("historyPairedUsers: " + historyPairedUsers);
-        logger.info("historyPairedUsers: {}", historyPairedUsers.size());
 
         List<UserSimilarity> similarities = new ArrayList<>();
         Set<Integer> historypairedUserIds = new HashSet<>();
+
         for (User user : users) {
             Integer userId1 = user.getId();
             Integer mostSimilarUserId = null;
             Double maxSimilarity = Double.MIN_VALUE;
 
             for (User otherUser : users) {
-                if (user.getId().equals(otherUser.getId()) || alreadyPairedUsersToday.contains(userId1)) { //Perhaps having bugs
+                if (user.getId().equals(otherUser.getId()) || alreadyPairedUsersToday.contains(userId1)) {
                     continue; // 跳過自己或已參與配對的用戶
                 }
                 Double similarity = userService.calculateSimilarity(userId1, otherUser.getId());
                 if ((user.getGenderMatch() == otherUser.getGenderId() || otherUser.getGenderMatch() == user.getGenderId())
-                        && similarity > maxSimilarity && !isUserPaired(otherUser.getId(), historypairedUserIds)) {
+                        && similarity > maxSimilarity && !isUserPaired(otherUser.getId(), historypairedUserIds)
+                        && !isAlreadyPaired(userId1, otherUser.getId(), historyPairedUsers)) {
                     mostSimilarUserId = otherUser.getId();
                     maxSimilarity = similarity;
                 }
             }
 
-
-            // 如果找到了相似度高的user，且非歷史配對，則保存到DB
             if (mostSimilarUserId != null) {
                 Pair<Integer, Integer> currentPair = Pair.of(Math.min(userId1, mostSimilarUserId), Math.max(userId1, mostSimilarUserId));
-
-                logger.info("currentPair: " + currentPair);
-                boolean pairExists = historyPairedUsers.contains(currentPair);
-                logger.info("Pair exists in historyPairedUsers: " + pairExists);
-
-                if (pairExists) {
-                    continue; // 如果已存在這個配對，則跳過
-                }
                 similarities.add(new UserSimilarity(userId1, mostSimilarUserId, maxSimilarity));
                 userService.savePairToDatabase(userId1, mostSimilarUserId);
                 historypairedUserIds.add(userId1);
                 historypairedUserIds.add(mostSimilarUserId);
                 alreadyPairedUsersToday.add(userId1);
                 alreadyPairedUsersToday.add(mostSimilarUserId);
-
             }
         }
 
         return ResponseEntity.ok(similarities);
+    }
+
+    private boolean isAlreadyPaired(Integer userId1, Integer userId2, List<Pair<Integer, Integer>> historyPairedUsers) {
+        Pair<Integer, Integer> pair = Pair.of(Math.min(userId1, userId2), Math.max(userId1, userId2));
+        return historyPairedUsers.contains(pair);
     }
 
 
