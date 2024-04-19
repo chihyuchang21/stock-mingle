@@ -87,7 +87,7 @@ public class UserService {
     public Set<String> getUserHashtags(Integer userId) {
         Set<String> hashtags = new HashSet<>();
         List<UserHashtag> userHashtags = userHashtagRepository.findByUserId(userId);
-        logger.info("userHashtags from service" + userHashtags);
+//        logger.info("userHashtags from service" + userHashtags);
         for (UserHashtag userHashtag : userHashtags) {
             String hashtagName = userHashtag.getHashtag().getHashtagName();
             hashtags.add(hashtagName);
@@ -99,7 +99,6 @@ public class UserService {
     public void savePairToDatabase(Integer userId1, Integer userId2) {
         // user1,2 跟 user2,1視為相同的配對
         if (userPairingHistoryRepository.existsByUser1IdAndUser2Id(userId2, userId1)) {
-            logger.info("Pairing already exists for users: " + userId1 + " and " + userId2);
             return; // 如若DB中有已經有相同配對則不儲存
         }
 

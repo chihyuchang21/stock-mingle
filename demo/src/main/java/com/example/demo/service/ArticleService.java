@@ -81,7 +81,7 @@ public class ArticleService {
 
         // 將文章列表打亂
         Collections.shuffle(articles);
-        
+
         return articles;
 //        return articleRepository.findAllArticlesByPageAndTopics(favoriteTopic, recommendTopic1, recommendTopic2, pageable);
     }

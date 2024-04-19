@@ -191,9 +191,10 @@ public class UserController {
     public ResponseEntity<List<UserSimilarity>> calculateAllUsersSimilarityAndSaveDay2() {
         List<User> users = userService.getAllUsers();
         List<UserPairingHistory> historyUserPairing = userService.getHistoryUserPairing();
-        logger.info("historyUserPairing: " + historyUserPairing);
+//        logger.info("historyUserPairing: " + historyUserPairing);
 
-        Set<Integer> alreadyPairedUsersToday = new HashSet<>(); //To-do: rename //Perhaps having bugs
+        // Save Pairs Today Matched
+        Set<Integer> alreadyPairedUsersToday = new HashSet<>();
 
         List<Pair<Integer, Integer>> historyPairedUsers = new ArrayList<>();
         for (UserPairingHistory pairing : historyUserPairing) {
@@ -201,6 +202,7 @@ public class UserController {
             historyPairedUsers.add(pair);
         }
         logger.info("historyPairedUsers: " + historyPairedUsers);
+        logger.info("historyPairedUsers: {}", historyPairedUsers.size());
 
         List<UserSimilarity> similarities = new ArrayList<>();
         Set<Integer> historypairedUserIds = new HashSet<>();
@@ -221,10 +223,16 @@ public class UserController {
                 }
             }
 
-            // 如果找到了相似的用户，且非歷史配對，則保存到DB
+
+            // 如果找到了相似度高的user，且非歷史配對，則保存到DB
             if (mostSimilarUserId != null) {
                 Pair<Integer, Integer> currentPair = Pair.of(Math.min(userId1, mostSimilarUserId), Math.max(userId1, mostSimilarUserId));
-                if (historyPairedUsers.contains(currentPair)) {
+
+                logger.info("currentPair: " + currentPair);
+                boolean pairExists = historyPairedUsers.contains(currentPair);
+                logger.info("Pair exists in historyPairedUsers: " + pairExists);
+
+                if (pairExists) {
                     continue; // 如果已存在這個配對，則跳過
                 }
                 similarities.add(new UserSimilarity(userId1, mostSimilarUserId, maxSimilarity));
@@ -252,8 +260,8 @@ public class UserController {
 
         // For-each loop: looping over User objects in users
         for (int i = 0; i < users.size(); i++) {
-            logger.info("pairedUserIds: " + pairedUserIds);
-            logger.info("alreadyPairedUsers: " + alreadyPairedUsers);
+//            logger.info("pairedUserIds: " + pairedUserIds);
+//            logger.info("alreadyPairedUsers: " + alreadyPairedUsers);
             User user = users.get(i);
             Integer userId1 = user.getId();
             Integer mostSimilarUserId = null;
