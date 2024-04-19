@@ -5,17 +5,22 @@ import com.example.demo.model.article.Category;
 import com.example.demo.model.user.UserClickDetail;
 import com.example.demo.model.user.UserClickEvent;
 import com.example.demo.repository.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
 public class ArticleService {
 
+    private static final Logger logger = LoggerFactory.getLogger(ArticleService.class);
     private final ArticleRepository articleRepository;
     @Autowired
     private UserClickRepository userClickRepository;
@@ -44,6 +49,9 @@ public class ArticleService {
     }
 
     public List<Article> findArticlesByTopics(int page, Category favoriteTopic, Category recommendTopic1, Category recommendTopic2, int pageSize) {
+
+        List<Article> articles = new ArrayList<>();
+
         // 計算每一類文章的數量
         int favoriteTopicCount = (int) Math.ceil(7.0 / (7 + 2 + 1) * pageSize);
         int recommendTopic1Count = (int) Math.ceil(2.0 / (7 + 2 + 1) * pageSize);
@@ -57,7 +65,25 @@ public class ArticleService {
         // 根據每一類文章的數量查找相應的文章
         Pageable pageable = PageRequest.of(page, pageSize);
 
-        return articleRepository.findAllArticlesByPageAndTopics(favoriteTopic, recommendTopic1, recommendTopic2, pageable);
+        List<Article> favoriteTopicArticles = articleRepository.findFavoriteTopicArticles(pageable, favoriteTopic);
+        List<Article> recommendTopic1Articles = articleRepository.findRecommendTopic1Articles(pageable, recommendTopic1);
+        List<Article> recommendTopic2Articles = articleRepository.findRecommendTopic2Articles(pageable, recommendTopic2);
+
+
+        logger.info("Page: " + pageable);
+
+        logger.info("favoriteTopic:" + favoriteTopic);
+        logger.info("recommendTopic1:" + recommendTopic1);
+
+        articles.addAll(favoriteTopicArticles.subList(0, Math.min(favoriteTopicArticles.size(), favoriteTopicCount)));
+        articles.addAll(recommendTopic1Articles.subList(0, Math.min(recommendTopic1Articles.size(), recommendTopic1Count)));
+        articles.addAll(recommendTopic2Articles.subList(0, Math.min(recommendTopic2Articles.size(), recommendTopic2Count)));
+
+        // 將文章列表打亂
+        Collections.shuffle(articles);
+        
+        return articles;
+//        return articleRepository.findAllArticlesByPageAndTopics(favoriteTopic, recommendTopic1, recommendTopic2, pageable);
     }
 
 
