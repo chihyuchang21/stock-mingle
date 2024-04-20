@@ -4,6 +4,7 @@ import com.example.demo.dto.MatchFriendInfo;
 import com.example.demo.model.user.User;
 import com.example.demo.model.user.UserHashtag;
 import com.example.demo.model.user.UserPairingHistory;
+import com.example.demo.model.user.UserSimilarity;
 import com.example.demo.repository.GenderRepository;
 import com.example.demo.repository.UserHashtagRepository;
 import com.example.demo.repository.UserPairingHistoryRepository;
@@ -11,11 +12,14 @@ import com.example.demo.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -114,6 +118,12 @@ public class UserService {
         userPairingHistoryRepository.save(userPairingHistory);
     }
 
+    /**
+     * Retrieves the list of matched friends for the specified user on the current day.
+     *
+     * @param userId The ID of the user to retrieve matched friends for.
+     * @return A stream of MatchFriendInfo objects representing the matched friends.
+     */
     public Stream<MatchFriendInfo> getTodayMatch(Integer userId) {
         Timestamp timestamp = Timestamp.valueOf("2024-04-16 10:34:32");
         List<UserPairingHistory> pairingHistories = userPairingHistoryRepository.findByUserIdAndTimestamp(userId, timestamp);
@@ -126,6 +136,107 @@ public class UserService {
                     }
                     return null;
                 });
+    }
+
+    // Using AWS Lambda to execute the function once again at every midnight (start from day 2)
+    public ResponseEntity<List<UserSimilarity>> calculateAllUsersSimilarityAndSaveAfterDay2() {
+        List<User> users = getAllUsers();
+        List<UserPairingHistory> historyUserPairing = getHistoryUserPairing();
+
+        Set<Integer> alreadyPairedUsersToday = new HashSet<>();
+        List<Pair<Integer, Integer>> historyPairedUsers = new ArrayList<>();
+        for (UserPairingHistory pairing : historyUserPairing) {
+            Pair<Integer, Integer> pair = Pair.of(pairing.getUser1Id(), pairing.getUser2Id());
+            historyPairedUsers.add(pair);
+        }
+
+        List<UserSimilarity> similarities = new ArrayList<>();
+        Set<Integer> historypairedUserIds = new HashSet<>();
+
+        for (User user : users) {
+            Integer userId1 = user.getId();
+            Integer mostSimilarUserId = null;
+            Double maxSimilarity = Double.MIN_VALUE;
+
+            for (User otherUser : users) {
+                if (user.getId().equals(otherUser.getId()) || alreadyPairedUsersToday.contains(userId1)) {
+                    continue; // 跳過自己或已參與配對的用戶
+                }
+                Double similarity = calculateSimilarity(userId1, otherUser.getId());
+                if ((user.getGenderMatch() == otherUser.getGenderId() || otherUser.getGenderMatch() == user.getGenderId())
+                        && similarity > maxSimilarity && !isUserPaired(otherUser.getId(), historypairedUserIds)
+                        && !isAlreadyPaired(userId1, otherUser.getId(), historyPairedUsers)) {
+                    mostSimilarUserId = otherUser.getId();
+                    maxSimilarity = similarity;
+                }
+            }
+
+            if (mostSimilarUserId != null) {
+                Pair<Integer, Integer> currentPair = Pair.of(Math.min(userId1, mostSimilarUserId), Math.max(userId1, mostSimilarUserId));
+                similarities.add(new UserSimilarity(userId1, mostSimilarUserId, maxSimilarity));
+                savePairToDatabase(userId1, mostSimilarUserId);
+                historypairedUserIds.add(userId1);
+                historypairedUserIds.add(mostSimilarUserId);
+                alreadyPairedUsersToday.add(userId1);
+                alreadyPairedUsersToday.add(mostSimilarUserId);
+            }
+        }
+
+        return ResponseEntity.ok(similarities);
+    }
+
+    // Check if a user is already paired
+    private boolean isUserPaired(Integer userId, Set<Integer> pairedUserIds) {
+        for (Integer pairedUserId : pairedUserIds) {
+            if (pairedUserId.equals(userId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isAlreadyPaired(Integer userId1, Integer userId2, List<Pair<Integer, Integer>> historyPairedUsers) {
+        Pair<Integer, Integer> pair = Pair.of(Math.min(userId1, userId2), Math.max(userId1, userId2));
+        return historyPairedUsers.contains(pair);
+    }
+
+    // Using AWS Lambda to execute the function once again at every midnight (day 1)
+    public List<UserSimilarity> calculateAllUsersSimilarityAndSaveDay1() {
+        List<User> users = getAllUsers();
+        List<UserSimilarity> similarities = new ArrayList<>();
+        Set<Integer> pairedUserIds = new HashSet<>();
+        Set<Integer> alreadyPairedUsers = new HashSet<>();
+
+        for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
+            Integer userId1 = user.getId();
+            Integer mostSimilarUserId = null;
+            Double maxSimilarity = Double.MIN_VALUE;
+
+            for (int j = 0; j < users.size(); j++) {
+                if (i == j || alreadyPairedUsers.contains(userId1)) {
+                    continue;
+                }
+                User otherUser = users.get(j);
+                Double similarity = calculateSimilarity(userId1, otherUser.getId());
+                if ((user.getGenderMatch() == otherUser.getGenderId() || otherUser.getGenderMatch() == user.getGenderId())
+                        && similarity > maxSimilarity && !isUserPaired(otherUser.getId(), pairedUserIds)) {
+                    mostSimilarUserId = otherUser.getId();
+                    maxSimilarity = similarity;
+                }
+            }
+
+            if (mostSimilarUserId != null) {
+                similarities.add(new UserSimilarity(userId1, mostSimilarUserId, maxSimilarity));
+                savePairToDatabase(userId1, mostSimilarUserId);
+                pairedUserIds.add(userId1);
+                pairedUserIds.add(mostSimilarUserId);
+                alreadyPairedUsers.add(userId1);
+                alreadyPairedUsers.add(mostSimilarUserId);
+            }
+        }
+
+        return similarities;
     }
 
 
