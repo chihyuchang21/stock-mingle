@@ -125,7 +125,7 @@ public class UserService {
      * @return A stream of MatchFriendInfo objects representing the matched friends.
      */
     public Stream<MatchFriendInfo> getTodayMatch(Integer userId) {
-        Timestamp timestamp = Timestamp.valueOf("2024-04-16 10:34:32");
+        Timestamp timestamp = Timestamp.valueOf("2024-04-19 18:09:30");
         List<UserPairingHistory> pairingHistories = userPairingHistoryRepository.findByUserIdAndTimestamp(userId, timestamp);
         return pairingHistories.stream()
                 .map(pairingHistory -> {

@@ -42,15 +42,20 @@ function publishClickEvent(categoryId) {
         });
 }
 
-function fetchArticles() {
-    // Render on the page
-    fetch('/api/1.0/articles/guest')
-        .then(response => response.json())
-        .then(articles => {
-            var articleList = document.getElementById('articleList');
-            // articleList.innerHTML = ''; // Clear previous article list
+function fetchArticles(pageNumber = 0) {
+    // 清空文章列表和分頁按鈕
+    var articleList = document.getElementById('articleList');
+    articleList.innerHTML = '';
 
-            articles.forEach(article => {
+    var pagination = document.getElementById('pagination');
+    pagination.innerHTML = '';
+
+    // 發送分頁請求
+    fetch(`/api/1.0/articles?paging=${pageNumber}`)
+        .then(response => response.json())
+        .then(data => {
+            // 渲染文章列表
+            data.forEach(article => {
                 var articleDiv = document.createElement('div');
 
                 // Listen for click event
@@ -68,11 +73,23 @@ function fetchArticles() {
             `;
                 articleList.appendChild(articleDiv);
             });
+
+            // 渲染分頁按鈕
+            for (let i = 0; i <= 20; i++) {
+                var pageButton = document.createElement('button');
+                pageButton.textContent = i;
+                pageButton.addEventListener('click', function () {
+                    fetchArticles(i);
+                });
+                pagination.appendChild(pageButton);
+            }
         })
+
         .catch(error => {
             console.error('Error:', error);
         });
 }
+
 
 // Get article list when the page loads
 window.onload = function () {
