@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Forum</title>
+    <link href="src/index.css" rel="stylesheet">
+</head>
+<div class="navbar">
+    <h1>Stock Mingle</h1>
+    <button class="publish-btn" onclick="redirectToArticlePostPage()">Post</button>
+    <button class="match-btn" onclick="redirectToMatchPage()">Match</button>
+    <button class="account-btn" onclick="redirectToLoginPage()">Log-In / Sign-Up</button>
+</div>
+
+<div class="container">
+    <div class="board-list">
+        <h2>Other Topics</h2>
+        <ul>
+            <li><a href="#">Gaming</a></li>
+            <li><a href="#">Sports</a></li>
+            <li><a href="#">Business</a></li>
+            <li><a href="#">Crypto</a></li>
+            <li><a href="#">Television</a></li>
+            <li><a href="#">Celebrity</a></li>
+        </ul>
+    </div>
+
+    <div class="today-match" id="today-match">
+        <!-- 文章在此動態渲染 -->
+    </div>
+
+
+</div>
+<script src="src/match.js"></script>
+</body>
+</html>
