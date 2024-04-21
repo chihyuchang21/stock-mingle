@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ArticleService {
@@ -47,6 +48,12 @@ public class ArticleService {
         Pageable pageable = PageRequest.of(page, pageSize);
         return articleRepository.findAllArticlesByPage(pageable);
     }
+
+    public Article getArticleById(String id) {
+        Optional<Article> optionalArticle = articleRepository.findById(Integer.parseInt(id.trim()));
+        return optionalArticle.orElse(null);
+    }
+
 
     public List<Article> findArticlesByTopics(int page, Category favoriteTopic, Category recommendTopic1, Category recommendTopic2, int pageSize) {
 

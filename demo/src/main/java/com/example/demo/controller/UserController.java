@@ -5,7 +5,6 @@ import com.example.demo.middleware.JwtTokenService;
 import com.example.demo.model.user.LoginRequest;
 import com.example.demo.model.user.User;
 import com.example.demo.service.UserService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureException;
@@ -78,8 +77,8 @@ public class UserController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<?> signIn(@RequestBody Map<String, Object> payload) {
-        LoginRequest loginRequest = new ObjectMapper().convertValue(payload, LoginRequest.class);
+    public ResponseEntity<?> signIn(@RequestBody LoginRequest loginRequest) {
+//        LoginRequest loginRequest = new ObjectMapper().convertValue(payload, LoginRequest.class);
 
         if (loginRequest.getAccountName().isEmpty() || loginRequest.getPassword().isEmpty()) {
             return ResponseEntity.badRequest().body(Map.of("error", "Email, password and provider are required"));

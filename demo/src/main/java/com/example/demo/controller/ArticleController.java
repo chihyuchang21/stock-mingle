@@ -100,6 +100,16 @@ public class ArticleController {
 //        }
     }
 
+    @GetMapping("/details")
+    @ResponseBody
+    public ResponseEntity<?> getArticleDetails(@RequestParam("id") String id) {
+        Article article = articleService.getArticleById(id);
+        if (article == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Article not found"));
+        }
+        return ResponseEntity.ok(article);
+    }
+
 
     @PostMapping
     @ResponseBody
@@ -154,12 +164,29 @@ public class ArticleController {
 
     @PostMapping("/click-events")
     @ResponseBody
-    public ResponseEntity<?> postClickEvent(@RequestBody UserClickEvent userClickEvent) {
+    public ResponseEntity<?> postClickEvent(@RequestBody UserClickEvent userClickEvent, @RequestHeader(value = "Authorization") String jwtToken) {
+
+        // Remove Bearer prefix and check if the token is present
+        if (jwtToken == null || !jwtToken.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Bearer token is missing"));
+        }
+
+        String token = jwtToken.substring(7); // Remove "Bearer " prefix
+
+        Claims claims = Jwts.parser()
+                .setSigningKey(jwtSecret)
+                .parseClaimsJws(token)
+                .getBody();
+
+        Integer userId = Integer.parseInt(claims.getSubject()); // Assuming subject is user ID
+        userClickEvent.setUserId(userId);
+
         // Extracting foreign key values
         Integer categoryId = userClickEvent.getCategoryId().getId();
         Timestamp timestamp = userClickEvent.getTimestamp();
 
         Map<String, Object> clickEventLogData = new HashMap<>();
+        clickEventLogData.put("userId", userId);
         clickEventLogData.put("categoryId", categoryId);
         clickEventLogData.put("timestamp", timestamp);
 

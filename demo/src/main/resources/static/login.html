@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Forum</title>
+    <link href="src/index.css" rel="stylesheet">
+</head>
+<div class="navbar">
+    <h1>Stock Mingle</h1>
+    <button class="publish-btn" onclick="redirectToArticlePostPage()">Post</button>
+    <button class="match-btn">Match</button>
+    <button class="account-btn">Log-In / Account</button>
+</div>
+
+<div class="container">
+    <div class="board-list">
+        <h2>Other Topics</h2>
+        <ul>
+            <li><a href="#">Gaming</a></li>
+            <li><a href="#">Sports</a></li>
+            <li><a href="#">Business</a></li>
+            <li><a href="#">Crypto</a></li>
+            <li><a href="#">Television</a></li>
+            <li><a href="#">Celebrity</a></li>
+        </ul>
+    </div>
+
+    <!--log in and sign up-->
+    <div id="profile-container" style="display: none;">
+        <h2>User Profile</h2>
+        <p id="user-name"></p>
+        <p id="user-account"></p>
+    </div>
+
+    <div id="auth-container">
+        <h2>Sign In</h2>
+        <form id="sign-in-form">
+            <input type="text" id="signin-account" placeholder="Account">
+            <input type="password" id="signin-password" placeholder="Password">
+            <button type="submit">Sign In</button>
+        </form>
+
+        <h2>Sign Up</h2>
+        <form id="sign-up-form">
+            <input type="text" id="signup-account" placeholder="Account">
+            <input type="password" id="signup-password" placeholder="Password">
+            <input type="text" id="signup-nickname" placeholder="Nickname"> <!-- Add input field for nickname -->
+            <input type="text" id="signup-genderId" placeholder="Gender ID"> <!-- Add input field for genderId -->
+            <input type="text" id="signup-genderMatch" placeholder="Gender Match"> <!-- Add input field for genderMatch -->
+            <button type="submit">Sign Up</button>
+        </form>
+    </div>
+    <!--log in and sign up-->
+
+</div>
+<script src="src/login.js"></script>
+
+</body>
+</html>

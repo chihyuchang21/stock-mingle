@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Forum</title>
+    <link href="src/article-post.css" rel="stylesheet">
+    <link href="src/index.css" rel="stylesheet">
+</head>
+<div class="navbar">
+    <h1>Post Article</h1>
+    <button class="publish-btn" onclick="redirectToArticlePostPage()">Post</button>
+    <button class="match-btn">Match</button>
+    <button class="account-btn">Log-In / Account</button>
+</div>
+
+<div class="container">
+    <div class="board-list">
+        <h2>Other Topics</h2>
+        <ul>
+            <li><a href="#">Gaming</a></li>
+            <li><a href="#">Sports</a></li>
+            <li><a href="#">Business</a></li>
+            <li><a href="#">Crypto</a></li>
+            <li><a href="#">Television</a></li>
+            <li><a href="#">Celebrity</a></li>
+        </ul>
+    </div>
+
+    <form id="articleForm">
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title"><br>
+        <label for="content">Content:</label><br>
+        <textarea id="content" name="content"></textarea><br>
+        <label for="category">Category:</label><br>
+        <select id="category" name="category">
+            <option value="1">Company News</option>
+            <option value="2">Broad market news</option>
+            <option value="3">Company Discussion</option>
+            <option value="4">Advice Request</option>
+            <option value="5">Others</option>
+        </select><br>
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username"><br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+</div>
+<script src="src/article-post.js"></script>
+</body>
+</html>

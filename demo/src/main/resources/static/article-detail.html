@@ -4,13 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stock Forum</title>
-    <link href="src/article.css" rel="stylesheet">
+    <link href="src/article-detail.css" rel="stylesheet">
     <link href="src/index.css" rel="stylesheet">
-    <script src="src/index.js"></script>
 </head>
 <div class="navbar">
     <h1>Post Article</h1>
-    <button class="publish-btn" onclick="redirectToArticlePage()">Post</button>
+    <button class="publish-btn" onclick="redirectToArticlePostPage()">Post</button>
     <button class="match-btn">Match</button>
     <button class="account-btn">Log-In / Account</button>
 </div>
@@ -28,19 +27,11 @@
         </ul>
     </div>
 
-    <form id="articleForm">
-        <label for="title">Article Title:</label><br>
-        <input type="text" id="title" name="title"><br>
-        <label for="content">Article Content:</label><br>
-        <textarea id="content" name="content"></textarea><br>
-        <label for="category">Article Category:</label><br>
-        <textarea id="category" name="category"></textarea><br>
-        <label for="username">Your Username:</label><br>
-        <input type="text" id="username" name="username"><br><br>
-        <button type="submit">Publish Article</button>
-    </form>
+    <div id="articleDetail">
+        <!-- Article details will be dynamically populated here -->
+    </div>
 
 </div>
-
+<script src="src/article-detail.js"></script>
 </body>
 </html>

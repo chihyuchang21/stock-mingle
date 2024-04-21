@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ArticleRepository extends JpaRepository<Article, Integer> {
@@ -28,5 +29,6 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
     @Query("SELECT a FROM Article a WHERE a.categoryId = :recommendTopic2 ORDER BY a.id ASC")
     List<Article> findRecommendTopic2Articles(Pageable pageable, @Param("recommendTopic2") Category recommendTopic2);
 
+    Optional<Article> findById(int id);
 
 }
