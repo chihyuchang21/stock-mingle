@@ -124,19 +124,35 @@ public class UserService {
      * @param userId The ID of the user to retrieve matched friends for.
      * @return A stream of MatchFriendInfo objects representing the matched friends.
      */
+//    public Stream<MatchFriendInfo> getTodayMatch(Integer userId) {
+//        Timestamp timestamp = Timestamp.valueOf("2024-04-19 18:09:30");
+//        List<UserPairingHistory> pairingHistories = userPairingHistoryRepository.findByUserIdAndTimestamp(userId, timestamp);
+//        return pairingHistories.stream()
+//                .map(pairingHistory -> {
+//                    Integer otherUserId = (userId.equals(pairingHistory.getUser1Id())) ? pairingHistory.getUser2Id() : pairingHistory.getUser1Id();
+//                    User otherUser = userRepository.findById(otherUserId).orElse(null);
+//                    if (otherUser != null) {
+//                        return new MatchFriendInfo(otherUser.getNickname(), otherUser.getImage());
+//                    }
+//                    return null;
+//                });
+//    }
     public Stream<MatchFriendInfo> getTodayMatch(Integer userId) {
-        Timestamp timestamp = Timestamp.valueOf("2024-04-19 18:09:30");
-        List<UserPairingHistory> pairingHistories = userPairingHistoryRepository.findByUserIdAndTimestamp(userId, timestamp);
-        return pairingHistories.stream()
-                .map(pairingHistory -> {
-                    Integer otherUserId = (userId.equals(pairingHistory.getUser1Id())) ? pairingHistory.getUser2Id() : pairingHistory.getUser1Id();
-                    User otherUser = userRepository.findById(otherUserId).orElse(null);
-                    if (otherUser != null) {
-                        return new MatchFriendInfo(otherUser.getNickname(), otherUser.getImage());
+        List<UserPairingHistory> allPairingHistories = userPairingHistoryRepository.findAll();
+
+        return allPairingHistories.stream()
+                .flatMap(pairingHistory -> {
+                    if (pairingHistory.getUser1Id().equals(userId) || pairingHistory.getUser2Id().equals(userId)) {
+                        Integer otherUserId = (pairingHistory.getUser1Id().equals(userId)) ? pairingHistory.getUser2Id() : pairingHistory.getUser1Id();
+                        User otherUser = userRepository.findById(otherUserId).orElse(null);
+                        if (otherUser != null) {
+                            return Stream.of(new MatchFriendInfo(otherUser.getNickname(), otherUser.getImage()));
+                        }
                     }
-                    return null;
+                    return Stream.empty();
                 });
     }
+
 
     // Using AWS Lambda to execute the function once again at every midnight (start from day 2)
     public ResponseEntity<List<UserSimilarity>> calculateAllUsersSimilarityAndSaveAfterDay2() {

@@ -11,6 +11,8 @@ if (accessToken) {
     console.log("No Access Token")
 }
 
+let currentIndex = localStorage.getItem('currentIndex') ? parseInt(localStorage.getItem('currentIndex')) : 0; //从 localStorage 中获取 currentIndex，如果不存在则设置为 0
+
 async function fetchTodayMatch(token) {
     try {
         const response = await fetch(`/api/1.0/user/match-today`, {
@@ -25,11 +27,18 @@ async function fetchTodayMatch(token) {
 
         const {data} = await response.json();
 
-        console.log(data[0].nickname); // 將第一個元素的暱稱印出
-
-        document.getElementById('today-match').innerText = "Today's Match: " + data[0].nickname; // 將第一個元素的暱稱顯示在 id 為 today-match 的元素中
+        if (currentIndex < data.length) {
+            const nickname = data[currentIndex].nickname;
+            currentIndex++; // 更新 index
+            localStorage.setItem('currentIndex', currentIndex); // 把currentIndex存在localstorage中
+            console.log(nickname);
+            document.getElementById('today-match').innerText = nickname; // 渲染後端傳回來的index
+        } else {
+            console.log("No more nicknames available");
+        }
 
     } catch (error) {
         console.error('Error:', error);
     }
 }
+

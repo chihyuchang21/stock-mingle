@@ -178,7 +178,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Invalid Token"));
         } catch (Exception e) {
             // error (500): server error
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Internal Server Error"));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", e.getMessage()));
         }
     }
 
