@@ -72,7 +72,6 @@ public class ArticleController {
         logger.info("userid: " + userId);
 
         UserClickDetail userClickDetail = userClickDetailRepository.findByUserId(userId).orElse(new UserClickDetail());
-        ;
 
         Category favoriteTopic = userClickDetail.getFavoriteTopic();
         logger.info("favoriteTopic: " + favoriteTopic);
@@ -81,19 +80,11 @@ public class ArticleController {
         Category recommendTopic2 = userClickDetail.getRecommendTopic2();
         logger.info("RecommendTopic2: " + recommendTopic2);
 
-        // 從類別對象中獲取類別的ID
-//        int favoriteTopicId = favoriteTopic.getId();
-//        logger.info("favoriteTopicId: " + favoriteTopicId);
-//        int recommendTopic1Id = recommendTopic1.getId();
-//        int recommendTopic2Id = recommendTopic2.getId();
 
         int pageSize = 10;
         // 根據用戶的興趣和推薦主題查找相關的文章
         List<Article> articles = articleService.findArticlesByTopics(paging, favoriteTopic, recommendTopic1, recommendTopic2, pageSize);
 
-
-        // Get articles
-//        List<Article> articleList = articleService.getAllArticles(paging, pageSize);
         return ResponseEntity.ok(articles);
 //        } catch (Exception e) {
 //            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", e.getMessage()));
@@ -211,6 +202,10 @@ public class ArticleController {
 //        return ResponseEntity.ok(articleList);
 //    }
 //
+
+
+// To Testing End Point
+
 //    @GetMapping("/calculateRecommendTopic")
 //    public ResponseEntity<?> calculateRecommendTopic() {
 //        articleService.updateUserClickDetail();

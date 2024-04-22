@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const articleDetailDiv = document.getElementById('articleDetail');
                 articleDetailDiv.innerHTML = `
                     <h2>${article.title}</h2>
-                    <p>Category: ${article.category}</p>
+                    <p>Category: ${article.categoryId.category}</p>
                     <p>Content: ${article.content}</p>
                     <p>Author: ${article.userId}</p>
                     <p>Likes: ${article.likeCount}</p>

@@ -58,7 +58,7 @@ public class ArticleService {
     public List<Article> findArticlesByTopics(int page, Category favoriteTopic, Category recommendTopic1, Category recommendTopic2, int pageSize) {
 
         List<Article> articles = new ArrayList<>();
-
+        logger.info("pageSize" + pageSize);
         // 計算每一類文章的數量
         int favoriteTopicCount = (int) Math.ceil(7.0 / (7 + 2 + 1) * pageSize);
         int recommendTopic1Count = (int) Math.ceil(2.0 / (7 + 2 + 1) * pageSize);

@@ -38,7 +38,6 @@ function publishClickEvent(categoryId) {
                 console.log(userClickEvent);
                 console.log("Click Event sent successfully!");
                 // 跳轉到文章詳細內容
-                window.location.href = "article-detail.html";
             } else {
                 console.error("Click Event failed to send!");
             }
@@ -47,6 +46,29 @@ function publishClickEvent(categoryId) {
             console.error('Error:', error);
         });
 }
+
+function fetchArticleDetails(articleId) {
+    // Check for access token
+    const token = localStorage.getItem('accessToken');
+
+    fetch(`/api/1.0/articles/details?id=${articleId}`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+        .then(response => response.json())
+        .then(article => {
+            // 跳轉到文章詳細頁面並帶著文章ID
+            window.location.href = `article-detail.html?id=${article.id}`;
+
+            // Debugging: log the fetched article details
+            console.log(article);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
 
 function fetchArticles(pageNumber = 0) {
     // 清空文章列表和分頁按鈕
@@ -69,19 +91,26 @@ function fetchArticles(pageNumber = 0) {
                     publishClickEvent(article.categoryId, article.timestamp);
                 });
 
+                // Listen for click event --> 傳送article ID查詢文章詳細內容
+                articleDiv.addEventListener('click', function () {
+                    fetchArticleDetails(article.id); // 發到後端
+                });
+                console.log("article.id: " + article.id);
+
                 articleDiv.innerHTML = `
                 <h3>${article.title}</h3>
                 <p>${article.content}</p>
                 <p>Author: ${article.userId}</p>
                 <p>Likes: ${article.likeCount}</p>
                 <p>Comments: ${article.commentCount}</p>
+                <p>Category: ${article.categoryId.category}</p>
                 <hr>
             `;
                 articleList.appendChild(articleDiv);
             });
 
             // 渲染分頁按鈕
-            for (let i = 0; i <= 20; i++) {
+            for (let i = 0; i <= 5; i++) {
                 var pageButton = document.createElement('button');
                 pageButton.textContent = i;
                 pageButton.addEventListener('click', function () {
@@ -118,10 +147,16 @@ function fetchArticlesByAlgo(pageNumber = 0) {
             data.forEach(article => {
                 var articleDiv = document.createElement('div');
 
-                // Listen for click event
+                // Listen for click event --> 統計點擊次數
                 articleDiv.addEventListener('click', function () {
                     publishClickEvent(article.categoryId, article.timestamp);
                 });
+
+                // Listen for click event --> 傳送article ID查詢文章詳細內容
+                articleDiv.addEventListener('click', function () {
+                    fetchArticleDetails(article.id); // 發到後端
+                });
+                console.log("article.id: " + article.id);
 
                 articleDiv.innerHTML = `
                 <h3>${article.title}</h3>
@@ -129,13 +164,14 @@ function fetchArticlesByAlgo(pageNumber = 0) {
                 <p>Author: ${article.userId}</p>
                 <p>Likes: ${article.likeCount}</p>
                 <p>Comments: ${article.commentCount}</p>
+                <p>Category: ${article.categoryId.category}</p>
                 <hr>
             `;
                 articleList.appendChild(articleDiv);
             });
 
             // 渲染分頁按鈕
-            for (let i = 0; i <= 20; i++) {
+            for (let i = 0; i <= 5; i++) {
                 var pageButton = document.createElement('button');
                 pageButton.textContent = i;
                 pageButton.addEventListener('click', function () {

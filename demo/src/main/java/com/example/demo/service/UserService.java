@@ -140,6 +140,7 @@ public class UserService {
     public Stream<MatchFriendInfo> getTodayMatch(Integer userId) {
         List<UserPairingHistory> allPairingHistories = userPairingHistoryRepository.findAll();
 
+        // flat map將每個元素都映射為element
         return allPairingHistories.stream()
                 .flatMap(pairingHistory -> {
                     if (pairingHistory.getUser1Id().equals(userId) || pairingHistory.getUser2Id().equals(userId)) {
