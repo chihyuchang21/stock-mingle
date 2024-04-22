@@ -51,6 +51,9 @@ signInForm.addEventListener('submit', async function (e) {
             body: JSON.stringify({accountName, password})
         });
 
+        console.log("accountName" + accountName);
+        console.log("password" + password);
+
         if (!response.ok) {
             alert('Sign in failed');
             throw new Error('Sign in failed');
@@ -62,7 +65,7 @@ signInForm.addEventListener('submit', async function (e) {
         console.log('Sign in successful. Access token:', data.access_token);
         fetchUserProfile(data.access_token);
 
-        window.history.back();
+        // window.history.back();
     } catch (error) {
         console.error('Error during sign in:', error);
     }

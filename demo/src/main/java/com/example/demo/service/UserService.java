@@ -147,7 +147,7 @@ public class UserService {
                         Integer otherUserId = (pairingHistory.getUser1Id().equals(userId)) ? pairingHistory.getUser2Id() : pairingHistory.getUser1Id();
                         User otherUser = userRepository.findById(otherUserId).orElse(null);
                         if (otherUser != null) {
-                            return Stream.of(new MatchFriendInfo(otherUser.getNickname(), otherUser.getImage()));
+                            return Stream.of(new MatchFriendInfo(otherUser.getNickname(), otherUser.getImage(), pairingHistory.getId())); // 添加了 pairingHistoryId
                         }
                     }
                     return Stream.empty();

@@ -29,10 +29,22 @@ async function fetchTodayMatch(token) {
 
         if (currentIndex < data.length) {
             const nickname = data[currentIndex].nickname;
+            const image = data[currentIndex].image;
+            const pairingHistoryId = data[currentIndex].pairingHistoryId;
+
             currentIndex++; // 更新 index
             localStorage.setItem('currentIndex', currentIndex); // 把currentIndex存在localstorage中
-            console.log(nickname);
-            document.getElementById('today-match').innerText = nickname; // 渲染後端傳回來的index
+            // 創建新的 HTML 元素，顯示 nickname 和 image
+            const matchDiv = document.getElementById('today-match');
+            matchDiv.innerHTML = `
+                <div class="match-info">
+                    <img src="${image}" alt="${nickname}" class="match-avatar">
+                    <p class="match-nickname">${nickname}</p>
+                 
+                    <button class="enter-chat-btn" onclick="redirectToChatRoom('${pairingHistoryId}')">Go to Chatroom</button>
+
+                </div>
+            `;
         } else {
             console.log("No more nicknames available");
         }
@@ -40,5 +52,10 @@ async function fetchTodayMatch(token) {
     } catch (error) {
         console.error('Error:', error);
     }
+}
+
+
+function redirectToChatRoom(pairingHistoryId) {
+    window.location.href = `chatroom.html?pairingHistoryId=${pairingHistoryId}`;
 }
 
