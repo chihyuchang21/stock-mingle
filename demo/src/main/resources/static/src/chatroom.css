@@ -4,11 +4,30 @@ body {
 
 #main-content {
     max-width: 940px;
-    padding: 2em 3em;
+    padding: 1em 2em;
     margin: 0 auto 20px;
     background-color: #fff;
     border: 1px solid #e5e5e5;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
+}
+
+
+.navbar {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    /*text-align: center;*/
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar h1 {
+    font-family: Brush Script MT, cursive;
+    margin: 0;
+    padding: 0;
+    flex: 1; /*讓標題佔據剩餘空間*/
+
 }

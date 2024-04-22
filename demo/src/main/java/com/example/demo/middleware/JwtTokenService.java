@@ -24,6 +24,7 @@ public class JwtTokenService {
                 .setHeaderParam("typ", "JWT")
                 .setSubject(String.valueOf(user.getId()))
                 .claim("user", Map.of(
+                        "id", user.getId(),
                         "accountName", user.getAccountName(),
                         "nickname", user.getNickname(),
                         "image", user.getImage()

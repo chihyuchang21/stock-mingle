@@ -22,4 +22,7 @@ public class Message {
     private Integer receiverUserId;
 
     private Timestamp sendTime;
+
+    @Transient //DB沒有這一欄
+    private String formattedSendTime;
 }

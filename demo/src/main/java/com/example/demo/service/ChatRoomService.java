@@ -5,6 +5,9 @@ import com.example.demo.repository.ChatRoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -18,6 +21,17 @@ public class ChatRoomService {
     }
 
     public List<Message> retrieveMessage(Integer userPairingHistoryId) {
+        List<Message> messages = chatRoomRepository.findByUserPairingHistoryId(userPairingHistoryId);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd HH:mm");
+        messages.forEach(message -> {
+            Timestamp timestamp = message.getSendTime();
+            LocalDateTime localDateTime = timestamp.toLocalDateTime();
+            String formattedTimestamp = localDateTime.format(formatter);
+            message.setFormattedSendTime(formattedTimestamp);
+        });
+
+
         return chatRoomRepository.findByUserPairingHistoryId(userPairingHistoryId);
     }
 }
