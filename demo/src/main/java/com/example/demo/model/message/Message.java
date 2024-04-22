@@ -19,7 +19,7 @@ public class Message {
     private String content;
 
     private Integer senderUserId;
-    private Integer receiverUserId;
+//    private Integer receiverUserId;
 
     private Timestamp sendTime;
 

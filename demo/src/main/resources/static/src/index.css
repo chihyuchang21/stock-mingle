@@ -11,9 +11,8 @@ body {
     background-color: #333;
     color: #fff;
     padding: 10px;
-    /*text-align: center;*/
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end; /* 將內容靠右對齊 */
     align-items: center;
 }
 
@@ -21,29 +20,44 @@ body {
     font-family: Brush Script MT, cursive;
     margin: 0;
     padding: 0;
-    flex: 1; /*讓標題佔據剩餘空間*/
+    flex: 1; /* 讓標題佔據剩餘空間 */
+}
 
+.navbar button {
+    margin-left: 10px; /* 設置按鈕之間的間距 */
 }
 
 .container {
     flex: 1;
     display: flex;
+    position: relative;
 }
+
 
 .board-list {
     font-family: 'Garamond', serif;
     flex: 0 0 200px; /* 固定寬度 */
     background-color: #f4f4f4;
     padding: 10px;
-    padding-left: 300px; /* 添加右邊間隙 */
+    /*margin-right: 20px; !* 添加右邊間隙 *!*/
 }
 
 .article-list {
+    font-family: Arial, sans-serif; /* 使用與 Reddit 相似的字體 */
+    font-size: 16px; /* 設置字體大小 */
+    line-height: 1.6; /* 設置行高 */
     flex: 1;
-    background-color: aliceblue;
+    background-color: white;
     padding: 10px;
-    padding-right: 300px; /* 添加左邊間隙 */
 }
+
+#pagination {
+    position: absolute; /* 將分頁按鈕設為絕對定位 */
+    bottom: 10px; /* 與底部的距離 */
+    left: 50%; /* 使按鈕水平居中 */
+    transform: translateX(-50%); /* 調整位置使按鈕水平居中 */
+}
+
 
 .board-list h2, .article-list h2 {
     margin: 0 0 10px 0;
@@ -69,13 +83,3 @@ a:hover {
     color: #000;
     text-decoration: underline;
 }
-
-/*.publish-btn {*/
-/*    background-color: #4CAF50;*/
-/*    border: none;*/
-/*    color: white;*/
-/*    text-align: center;*/
-/*    text-decoration: none;*/
-/*    font-size: 16px;*/
-/*    cursor: pointer;*/
-/*}*/
