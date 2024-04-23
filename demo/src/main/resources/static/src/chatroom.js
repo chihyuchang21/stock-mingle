@@ -1,3 +1,29 @@
+/*
+Redirect: window.location.href
+*/
+
+function redirectToArticlePostPage() {
+    window.location.href = 'article-post.html';
+}
+
+function redirectToLoginPage() {
+    window.location.href = 'login.html';
+}
+
+function redirectToMatchPage() {
+    window.location.href = 'match.html';
+}
+
+// Get the navbar h1 element
+const navbarTitle = document.querySelector('.navbar h1');
+
+// Add click event listener to the navbar h1 element
+navbarTitle.addEventListener('click', function () {
+    // Redirect to index.html
+    window.location.href = 'index.html';
+});
+
+
 function renderChatrooms(chatrooms) {
     const chatroomList = document.getElementById('chatroom-list');
     const ul = chatroomList.querySelector('ul');

@@ -1,3 +1,6 @@
+/*
+Redirect: window.location.href
+*/
 // Check for access token
 const accessToken = localStorage.getItem('accessToken');
 
@@ -13,6 +16,19 @@ function redirectToMatchPage() {
     window.location.href = 'match.html';
 }
 
+// Get the navbar h1 element
+const navbarTitle = document.querySelector('.navbar h1');
+
+// Add click event listener to the navbar h1 element
+navbarTitle.addEventListener('click', function () {
+    // Redirect to index.html
+    window.location.href = 'index.html';
+});
+
+
+/*
+ClickEvent
+*/
 function publishClickEvent(categoryId) {
     var timestamp = new Date().getTime();
 
@@ -47,6 +63,9 @@ function publishClickEvent(categoryId) {
         });
 }
 
+/*
+ArticleDetails
+*/
 function fetchArticleDetails(articleId) {
     // Check for access token
     const token = localStorage.getItem('accessToken');
@@ -69,7 +88,9 @@ function fetchArticleDetails(articleId) {
         });
 }
 
-
+/*
+fetchArticle (for guest)
+*/
 function fetchArticles(pageNumber = 0) {
     // 清空文章列表和分頁按鈕
     var articleList = document.getElementById('articleList');
@@ -100,7 +121,11 @@ function fetchArticles(pageNumber = 0) {
                 articleDiv.innerHTML = `
                 <h3>${article.title}</h3>
                 <p>${article.content}</p>
-                <div class="article-details">
+<!--                暫時把image寫死-->
+                    <div class="image-wrapper">
+                        <img src="https://img.money.com/2022/05/News-Plunging-Stocks-401k.jpg" alt="Stock Market!!" width="400" height="250">
+                    </div>               
+                     <div class="article-details">
                     <p>Author: ${article.userId}</p>
                     <p>Likes: ${article.likeCount}</p>
                     <p>Comments: ${article.commentCount}</p>
@@ -127,6 +152,9 @@ function fetchArticles(pageNumber = 0) {
         });
 }
 
+/*
+fetchArticle (for member, with Algo)
+*/
 function fetchArticlesByAlgo(pageNumber = 0) {
     // 清空文章列表和分頁按鈕
     var articleList = document.getElementById('articleList');
@@ -163,6 +191,10 @@ function fetchArticlesByAlgo(pageNumber = 0) {
                 articleDiv.innerHTML = `
                 <h3>${article.title}</h3>
                 <p>${article.content}</p>
+<!--                暫時把image寫死-->
+                    <div class="image-wrapper">
+                        <img src="https://img.money.com/2022/05/News-Plunging-Stocks-401k.jpg" alt="Stock Market!!" width="400" height="250">
+                    </div>
                 <div class="article-details">
                     <p>Author: ${article.userId}</p>
                     <p>Likes: ${article.likeCount}</p>

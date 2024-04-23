@@ -8,22 +8,34 @@
     <link href="src/index.css" rel="stylesheet">
 </head>
 <div class="navbar">
-    <h1>Stock Mingle</h1>
-    <button class="publish-btn" onclick="redirectToArticlePostPage()">Post</button>
-    <button class="match-btn" onclick="redirectToMatchPage()">Match</button>
-    <button class="account-btn" onclick="redirectToLoginPage()">Log-In / Sign-Up</button>
+    <h1>Stock Mingle <br>
+        <div class="slogan">Where Algorithms Meet Investors</div></h1>
+    <img class="publish-btn" src="/image/pencil.png" alt="Post" onclick="redirectToArticlePostPage()">
+    <img class="match-btn" src="/image/friends.png" alt="Match" onclick="redirectToMatchPage()">
+    <img class="account-btn" src="/image/user.png" alt="Log-In / Sign-Up" onclick="redirectToLoginPage()">
 </div>
 
 <div class="container">
     <div class="board-list">
         <h2>Other Topics</h2>
         <ul>
-            <li><a href="#">Gaming</a></li>
-            <li><a href="#">Sports</a></li>
-            <li><a href="#">Business</a></li>
-            <li><a href="#">Crypto</a></li>
-            <li><a href="#">Television</a></li>
-            <li><a href="#">Celebrity</a></li>
+            <li class="list-item gaming-item">Gaming</li>
+            <li class="list-item sports-item">Sports</li>
+            <li class="list-item business-item">Business</li>
+            <li class="list-item crypto-item">Crypto</li>
+            <li class="list-item television-item">Television</li>
+            <li class="list-item celebrity-item">Celebrity</li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+
+        <h2>Stock Index Today</h2>
+        <ul>
+            <li class="list-item dow-jones">Dow Jones: 37,983.24</li>
+            <li class="list-item sp-500">S&P 500: 5,123.41</li>
+            <li class="list-item nasdaq">NASDAQ: 16,175.09</li>
+            <li class="list-item philadelphia">Philadelphia: 4,745.05</li>
         </ul>
     </div>
 

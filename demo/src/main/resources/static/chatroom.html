@@ -5,9 +5,9 @@
     <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet">
     <link href="src/chatroom.css" rel="stylesheet">
+    <!--    <link href="src/index.css" rel="stylesheet">-->
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
-    <script src="src/chatroom.js"></script>
 </head>
 <body>
 <noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
@@ -15,11 +15,14 @@
     Javascript and reload this page!</h2></noscript>
 
 <div class="navbar">
-    <h1>Stock Mingle</h1>
-    <button class="publish-btn" onclick="redirectToArticlePostPage()">Post</button>
-    <button class="match-btn" onclick="redirectToMatchPage()">Match</button>
-    <button class="account-btn" onclick="redirectToLoginPage()">Log-In / Sign-Up</button>
+    <h1>Stock Mingle <br>
+        <div class="slogan">Where Algorithms Meet Investors</div>
+    </h1>
+    <img alt="Post" class="publish-btn" onclick="redirectToArticlePostPage()" src="/image/pencil.png">
+    <img alt="Match" class="match-btn" onclick="redirectToMatchPage()" src="/image/friends.png">
+    <img alt="Log-In / Sign-Up" class="account-btn" onclick="redirectToLoginPage()" src="/image/user.png">
 </div>
+
 
 <div class="col-md-3" id="chatroom-list">
     <h2>Other Chatrooms</h2>
@@ -57,4 +60,6 @@
     </div>
 </div>
 </body>
+<script src="src/chatroom.js"></script>
+
 </html>

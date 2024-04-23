@@ -1,6 +1,27 @@
+/*
+Redirect: window.location.href
+*/
+
+function redirectToArticlePostPage() {
+    window.location.href = 'article-post.html';
+}
+
+function redirectToLoginPage() {
+    window.location.href = 'login.html';
+}
+
 function redirectToMatchPage() {
     window.location.href = 'match.html';
 }
+
+// Get the navbar h1 element
+const navbarTitle = document.querySelector('.navbar h1');
+
+// Add click event listener to the navbar h1 element
+navbarTitle.addEventListener('click', function () {
+    // Redirect to index.html
+    window.location.href = 'index.html';
+});
 
 
 const accessToken = localStorage.getItem('accessToken');
@@ -38,6 +59,7 @@ async function fetchTodayMatch(token) {
             const matchDiv = document.getElementById('today-match');
             matchDiv.innerHTML = `
                 <div class="match-info">
+                    <h1>Today's Perfect Match </h1>
                     <img src="${image}" alt="${nickname}" class="match-avatar">
                     <p class="match-nickname">${nickname}</p>
                  

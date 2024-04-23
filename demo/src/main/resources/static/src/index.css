@@ -157,3 +157,19 @@ a:hover {
     background-image: url('/image/liberty-bell.png');
 }
 
+.article-content {
+    display: flex;
+    align-items: flex-start;
+}
+
+.image-wrapper {
+    margin-right: 10px;
+}
+
+.article-content img {
+    max-width: 200px;
+}
+
+.content-details {
+    flex: 1;
+}

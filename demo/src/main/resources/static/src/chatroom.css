@@ -15,7 +15,7 @@ body {
 
 
 .navbar {
-    background-color: #333;
+    background-color: #ff6f61; /* 活潑的橙紅色 */
     color: #fff;
     padding: 10px;
     display: flex;
@@ -24,13 +24,79 @@ body {
 }
 
 .navbar h1 {
-    font-family: Brush Script MT, cursive;
+    font-family: 'Segoe Script', cursive;
     margin: 0;
     padding: 0;
-    flex: 1; /*讓標題佔據剩餘空間*/
+    flex: 1; /* 讓標題佔據剩餘空間 */
 }
 
 .navbar button {
-    margin-left: 3px; /* 設置按鈕之間的間距 */
-    color: black;
+    margin-left: 10px; /* 設置按鈕之間的間距 */
+}
+
+.image-wrapper {
+    margin-right: 10px;
+}
+
+.publish-btn, .match-btn, .account-btn {
+    width: 35px; /* 設置按鈕寬度 */
+    height: 35px; /* 設置按鈕高度 */
+    margin-left: 30px;
+}
+
+.gaming-item {
+    background-image: url('/image/console.png');
+}
+
+.sports-item {
+    background-image: url('/image/sports.png');
+}
+
+.business-item {
+    background-image: url('/image/briefcase.png');
+}
+
+.crypto-item {
+    background-image: url('/image/bitcoin.png');
+}
+
+.television-item {
+    background-image: url('/image/television.png');
+}
+
+.celebrity-item {
+    background-image: url('/image/magazine.png');
+}
+
+.dow-jones {
+    background-image: url('/image/letter-d.png');
+}
+
+.sp-500 {
+    background-image: url('/image/spark.png');
+}
+
+.nasdaq {
+    background-image: url('/image/nasdaq.png');
+}
+
+.philadelphia {
+    background-image: url('/image/liberty-bell.png');
+}
+
+.article-content {
+    display: flex;
+    align-items: flex-start;
+}
+
+.image-wrapper {
+    margin-right: 10px;
+}
+
+.article-content img {
+    max-width: 200px;
+}
+
+.content-details {
+    flex: 1;
 }
