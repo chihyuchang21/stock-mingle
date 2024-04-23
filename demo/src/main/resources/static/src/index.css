@@ -64,6 +64,19 @@ body {
     padding: 0;
 }
 
+.board-list h2:last-of-type {
+    margin-bottom: 10px; /* 添加底部間距 */
+}
+
+.article-details {
+    display: flex;
+}
+
+.article-details p {
+    margin-right: 20px; /* 調整每個 <p> 元素之間的間距 */
+}
+
+
 ul {
     list-style-type: none;
     padding: 0;

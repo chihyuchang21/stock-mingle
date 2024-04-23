@@ -100,17 +100,19 @@ function fetchArticles(pageNumber = 0) {
                 articleDiv.innerHTML = `
                 <h3>${article.title}</h3>
                 <p>${article.content}</p>
-                <p>Author: ${article.userId}</p>
-                <p>Likes: ${article.likeCount}</p>
-                <p>Comments: ${article.commentCount}</p>
-                <p>Category: ${article.categoryId.category}</p>
+                <div class="article-details">
+                    <p>Author: ${article.userId}</p>
+                    <p>Likes: ${article.likeCount}</p>
+                    <p>Comments: ${article.commentCount}</p>
+                    <p>Category: ${article.categoryId.category}</p>
+                </div>
                 <hr>
             `;
                 articleList.appendChild(articleDiv);
             });
 
             // 渲染分頁按鈕
-            for (let i = 0; i <= 5; i++) {
+            for (let i = 0; i <= 50; i++) {
                 var pageButton = document.createElement('button');
                 pageButton.textContent = i;
                 pageButton.addEventListener('click', function () {
@@ -161,10 +163,12 @@ function fetchArticlesByAlgo(pageNumber = 0) {
                 articleDiv.innerHTML = `
                 <h3>${article.title}</h3>
                 <p>${article.content}</p>
-                <p>Author: ${article.userId}</p>
-                <p>Likes: ${article.likeCount}</p>
-                <p>Comments: ${article.commentCount}</p>
-                <p>Category: ${article.categoryId.category}</p>
+                <div class="article-details">
+                    <p>Author: ${article.userId}</p>
+                    <p>Likes: ${article.likeCount}</p>
+                    <p>Comments: ${article.commentCount}</p>
+                    <p>Category: ${article.categoryId.category}</p>
+                </div>
                 <hr>
             `;
                 articleList.appendChild(articleDiv);

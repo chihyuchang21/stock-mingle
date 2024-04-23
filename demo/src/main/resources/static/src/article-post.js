@@ -4,7 +4,8 @@ document.addEventListener('DOMContentLoaded', function () {
         event.preventDefault();
 
         var title = document.getElementById('title').value;
-        var content = document.getElementById('content').value;
+        // var content = document.getElementById('content').value;
+        var content = tinymce.activeEditor.getContent(); // 使用TinyMCE提供的方法获取内容
         var categoryId = {
             id: document.getElementById('category').value,
             category: document.getElementById('category').options[document.getElementById('category').selectedIndex].text

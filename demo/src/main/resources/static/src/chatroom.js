@@ -134,7 +134,8 @@ function showMessage(pairingHistoryId) {
 
 $(function () {
     $("form").on('submit', (e) => e.preventDefault());
-    $("#connect").click(() => connect());
-    $("#disconnect").click(() => disconnect());
+    // $("#connect").click(() => connect());
+    connect();
+    // $("#disconnect").click(() => disconnect());
     $("#send").click(() => sendName());
 });

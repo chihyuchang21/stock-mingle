@@ -1,4 +1,5 @@
 package com.example.demo.service;
+
 import com.example.demo.model.article.Article;
 import com.example.demo.model.article.Category;
 import com.example.demo.model.stock.StockInformation;
@@ -8,30 +9,28 @@ import com.example.demo.repository.WebCrawlerRepository;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
-
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
 public class WebCrawlerService {
 
+    private static final Logger logger = LoggerFactory.getLogger(WebCrawlerService.class);
     private final WebCrawlerRepository webCrawlerRepository;
-    public WebCrawlerService(WebCrawlerRepository webCrawlerRepository) {this.webCrawlerRepository = webCrawlerRepository; }
-
     @Autowired
     private StockInformationRepository stockInformationRepository;
 
@@ -39,36 +38,8 @@ public class WebCrawlerService {
     private CategoryRepository categoryRepository;
 
 
-    private static final Logger logger = LoggerFactory.getLogger(WebCrawlerService.class);
-
-
-    public String getRedditArticles(String subreddit, int limit) throws IOException {
-        String url = "https://www.reddit.com/r/" + subreddit + "/new.json?limit=" +  limit;
-
-        OkHttpClient client = new OkHttpClient();
-
-        Request request = new Request.Builder()
-                .url(url)
-                .header("User-Agent", "Java Reddit Crawler")
-                .build();
-
-        Response response = client.newCall(request).execute();
-
-        if (!response.isSuccessful()) {
-            throw new IOException("Unexpected code " + response);
-        }
-
-        String responseBody = response.body().string();
-        List<String> selfTexts = extractSelfText(responseBody);
-        List<String> titles = extractCategory(responseBody);
-        List<String> categories = extractTitle(responseBody);
-
-        // 文章存入DB
-        saveArticle(selfTexts, titles, categories);
-
-        response.close();
-
-        return responseBody;
+    public WebCrawlerService(WebCrawlerRepository webCrawlerRepository) {
+        this.webCrawlerRepository = webCrawlerRepository;
     }
 
     private static List<String> extractSelfText(String responseBody) {
@@ -115,7 +86,6 @@ public class WebCrawlerService {
         return categoryValues;
     }
 
-
     private static List<String> extractCategory(String responseBody) {
         List<String> titleValues = new ArrayList<>();
         try {
@@ -138,11 +108,39 @@ public class WebCrawlerService {
         return titleValues;
     }
 
-
-    // 檢查link_flair_text 是否为特定类型
+    // 檢查link_flair_text 是否為特定類型
     private static boolean isValidLinkFlairText(String linkFlairText) {
         return linkFlairText != null && (linkFlairText.equals("Company News") || linkFlairText.equals("Broad market news") ||
                 linkFlairText.equals("Company Discussion") || linkFlairText.equals("Advice Request") || linkFlairText.equals("Others"));
+    }
+
+    public String getRedditArticles(String subreddit, int limit) throws IOException {
+        String url = "https://www.reddit.com/r/" + subreddit + "/new.json?limit=" + limit;
+
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .header("User-Agent", "Java Reddit Crawler")
+                .build();
+
+        Response response = client.newCall(request).execute();
+
+        if (!response.isSuccessful()) {
+            throw new IOException("Unexpected code " + response);
+        }
+
+        String responseBody = response.body().string();
+        List<String> selfTexts = extractSelfText(responseBody);
+        List<String> titles = extractCategory(responseBody);
+        List<String> categories = extractTitle(responseBody);
+
+        // 文章存入DB
+        saveArticle(selfTexts, titles, categories);
+
+        response.close();
+
+        return responseBody;
     }
 
     public void saveArticle(List<String> selfTexts, List<String> categories, List<String> titles) {
@@ -217,6 +215,8 @@ public class WebCrawlerService {
         stockInformation.setTimestamp(LocalDateTime.now());
         stockInformationRepository.save(stockInformation);
     }
+
+//    private void retrieveFromDatabase
 }
 
 

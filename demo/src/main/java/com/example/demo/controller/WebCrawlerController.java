@@ -56,5 +56,17 @@ public class WebCrawlerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to fetch stock general index: " + e.getMessage());
         }
     }
+
+//    @GetMapping("/stock-info")
+//    @ResponseBody
+//    public ResponseEntity<?> retrieveStockGeneralIndex() {
+//        try {
+//            webCrawlerService.retrieveStockGeneralIndex();
+//            return ResponseEntity.ok("Stock Index Data retrieved from DB!");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to retrieve stock general index: " + e.getMessage());
+//        }
+//    }
 }
 
