@@ -4,12 +4,9 @@
     <title>Today's Match</title>
     <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet">
-    <!--    <link href="src/index.css" rel="stylesheet">-->
-
     <link href="src/chatroom.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
-    <!--    <script src="src/index.js"></script>-->
     <script src="src/chatroom.js"></script>
 </head>
 <body>
@@ -17,7 +14,6 @@
     enabled. Please enable
     Javascript and reload this page!</h2></noscript>
 
-<!--index.html模板-->
 <div class="navbar">
     <h1>Stock Mingle</h1>
     <button class="publish-btn" onclick="redirectToArticlePostPage()">Post</button>
@@ -25,52 +21,17 @@
     <button class="account-btn" onclick="redirectToLoginPage()">Log-In / Sign-Up</button>
 </div>
 
-<!--<div class="container">-->
-<!--    <div class="board-list">-->
-<!--        <h2>Other Chats</h2>-->
-<!--        <ul>-->
-<!--            <li><a href="#">User A</a></li>-->
-<!--            <li><a href="#">User B</a></li>-->
-<!--            <li><a href="#">User C</a></li>-->
-<!--            <li><a href="#">User D</a></li>-->
-<!--            <li><a href="#">User E</a></li>-->
-<!--            <li><a href="#">User F</a></li>-->
-<!--        </ul>-->
-<!--    </div>-->
-<!--</div>-->
-
+<div class="col-md-3" id="chatroom-list">
+    <h2>Other Chatrooms</h2>
+    <ul>
+        <li><a href="#">Chatroom 1</a></li>
+        <li><a href="#">Chatroom 2</a></li>
+        <li><a href="#">Chatroom 3</a></li>
+        <!-- 添加其他聊天室的連結 -->
+    </ul>
+</div>
 
 <div class="container-chatroom" id="main-content">
-    <div class="row">
-        <div class="col-md-6">
-            <form class="form-inline">
-                <!--                <div class="form-group">-->
-                <!--                    &lt;!&ndash;                    <label for="name">Type PairingID Here: </label>&ndash;&gt;-->
-                <!--                    &lt;!&ndash;                    <input class="form-control" id="userPairingHistoryId" placeholder="Pairing ID" type="text">&ndash;&gt;-->
-
-                <!--                    <label for="connect">WebSocket connection:</label>-->
-                <!--                    <button class="btn btn-default" id="connect" type="submit">Connect</button>-->
-                <!--                    <button class="btn btn-default" disabled="disabled" id="disconnect" type="submit">Disconnect-->
-                <!--                    </button>-->
-                <!--                </div>-->
-            </form>
-        </div>
-        <div class="col-md-6">
-            <form class="form-inline">
-                <!--                <div class="form-group">-->
-                <!--                    <label for="name">What is your name?</label>-->
-                <!--                    <input class="form-control" id="name" placeholder="Your name here..." type="text">-->
-                <!--                </div>-->
-
-                <div class="form-group">
-                    <label for="name">Type Message Here: </label>
-                    <input class="form-control" id="content" placeholder="Your content here..." type="text">
-                </div>
-
-                <button class="btn btn-default" id="send" type="submit">Send</button>
-            </form>
-        </div>
-    </div>
     <div class="row">
         <div class="col-md-12">
             <table class="table table-striped" id="conversation">
@@ -82,6 +43,16 @@
                 <tbody id="greetings">
                 </tbody>
             </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <form class="form-inline">
+                <div class="form-group">
+                    <input class="form-control" id="content" placeholder="Type Message Here..." type="text">
+                    <button class="btn btn-default" id="send" type="submit">Send</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

@@ -112,7 +112,6 @@ public class UserController {
                     .getBody();
 
             Map<String, Object> userClaims = claims.get("user", Map.class);
-            System.out.println("userClaims:" + userClaims);
 //            userClaims.remove("id");
 
             Map<String, Object> responseMap = new HashMap<>();

@@ -18,9 +18,8 @@ body {
     background-color: #333;
     color: #fff;
     padding: 10px;
-    /*text-align: center;*/
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end; /* 將內容靠右對齊 */
     align-items: center;
 }
 
@@ -29,5 +28,9 @@ body {
     margin: 0;
     padding: 0;
     flex: 1; /*讓標題佔據剩餘空間*/
+}
 
+.navbar button {
+    margin-left: 3px; /* 設置按鈕之間的間距 */
+    color: black;
 }

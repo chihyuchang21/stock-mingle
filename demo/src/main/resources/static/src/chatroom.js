@@ -1,3 +1,45 @@
+function renderChatrooms(chatrooms) {
+    const chatroomList = document.getElementById('chatroom-list');
+    const ul = chatroomList.querySelector('ul');
+
+    // 清空原有的列表
+    ul.innerHTML = '';
+
+    // 生成新的聊天室連結
+    chatrooms.forEach(chatroom => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = `chatroom.html?pairingHistoryId=${chatroom}`;
+        a.textContent = `Chatroom ${chatroom}`;
+        li.appendChild(a);
+        ul.appendChild(li);
+    });
+}
+
+
+// 在頁面加載時呼叫API獲取聊天室列表並渲染到頁面上
+document.addEventListener('DOMContentLoaded', () => {
+    const token = localStorage.getItem('accessToken');
+    const headers = {
+        'Authorization': 'Bearer ' + token
+    }
+
+
+    // 發送 API 請求，並添加 headers
+    fetch('/api/1.0/messages/chatroom', {
+        headers: headers
+    })
+        .then(response => response.json())
+        .then(data => {
+            renderChatrooms(data);
+            console.log(data);
+        })
+        .catch(error => {
+            console.error('Error fetching chatrooms:', error);
+        });
+});
+
+
 const stompClient = new StompJs.Client({
     brokerURL: 'ws://localhost:8080/gs-guide-websocket'
 });
@@ -62,6 +104,7 @@ function disconnect() {
 
 function sendName() {
     const content = $("#content").val(); // 假設你有一個表單元素用於輸入 content
+    // var content = tinymce.activeEditor.getContent(); // TinyMCE
     const params = new URLSearchParams(window.location.search);
     const pairingHistoryId = params.get('pairingHistoryId');
     const token = localStorage.getItem('accessToken');
@@ -139,3 +182,5 @@ $(function () {
     // $("#disconnect").click(() => disconnect());
     $("#send").click(() => sendName());
 });
+
+

@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Repository
 public interface ArticleRepository extends JpaRepository<Article, Integer> {
-    @Query("SELECT a FROM Article a ORDER BY a.id DESC")
+    @Query("SELECT a FROM Article a ORDER BY a.id ASC")
     List<Article> findAllArticlesByPage(Pageable pageable);
     //之後可以加orderby
 
