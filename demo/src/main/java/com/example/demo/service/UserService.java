@@ -144,6 +144,7 @@ public class UserService {
         return allPairingHistories.stream()
                 .flatMap(pairingHistory -> {
                     if (pairingHistory.getUser1Id().equals(userId) || pairingHistory.getUser2Id().equals(userId)) {
+
                         Integer otherUserId = (pairingHistory.getUser1Id().equals(userId)) ? pairingHistory.getUser2Id() : pairingHistory.getUser1Id();
                         User otherUser = userRepository.findById(otherUserId).orElse(null);
                         if (otherUser != null) {
@@ -191,7 +192,7 @@ public class UserService {
             if (mostSimilarUserId != null) {
                 Pair<Integer, Integer> currentPair = Pair.of(Math.min(userId1, mostSimilarUserId), Math.max(userId1, mostSimilarUserId));
                 similarities.add(new UserSimilarity(userId1, mostSimilarUserId, maxSimilarity));
-                savePairToDatabase(userId1, mostSimilarUserId);
+                savePairToDatabase(userId1, mostSimilarUserId); //把配對存入DB
                 historypairedUserIds.add(userId1);
                 historypairedUserIds.add(mostSimilarUserId);
                 alreadyPairedUsersToday.add(userId1);

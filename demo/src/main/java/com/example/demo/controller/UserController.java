@@ -1,8 +1,8 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.MatchFriendInfo;
 import com.example.demo.middleware.JwtTokenService;
-import com.example.demo.model.user.LoginRequest;
 import com.example.demo.model.user.User;
 import com.example.demo.service.UserService;
 import io.jsonwebtoken.Claims;

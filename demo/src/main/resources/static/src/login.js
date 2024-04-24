@@ -97,34 +97,75 @@ signInForm.addEventListener('submit', async function (e) {
     }
 });
 
-signUpForm.addEventListener('submit', async function (e) {
-    e.preventDefault();
-    const accountName = document.getElementById('signup-account').value;
-    const password = document.getElementById('signup-password').value;
-    const nickname = document.getElementById('signup-nickname').value; // You may add input fields for nickname, genderId, and genderMatch if needed
-    const genderId = document.getElementById('signup-genderId').value;
-    const genderMatch = document.getElementById('signup-genderMatch').value;
+/*
+選興趣
+*/
+document.addEventListener('DOMContentLoaded', function () {
+    const hashtagButtons = document.querySelectorAll('.hashtag-btn');
+    const selectedHashtags = [];
 
-    try {
-        const response = await fetch('/api/1.0/user/signup', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({accountName, password, nickname, genderId, genderMatch})
+    hashtagButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const hashtag = button.value;
+
+            // 判斷是否已經選擇了該興趣
+            if (selectedHashtags.includes(hashtag)) {
+                // 如果已經選擇了，則取消選擇
+                const index = selectedHashtags.indexOf(hashtag);
+                selectedHashtags.splice(index, 1);
+                button.classList.remove('selected');
+            } else {
+                // 如果未選擇，則判斷是否已經選擇了3個興趣
+                if (selectedHashtags.length < 3) {
+                    // 如果未達到3個興趣的上限，則添加到已選擇的興趣列表中
+                    selectedHashtags.push(hashtag);
+                    button.classList.add('selected');
+                } else {
+                    // 如果已選擇了3個興趣，則提示用戶
+                    alert('You can only select up to 3 hashtags.');
+                }
+            }
+
+            console.log('Selected hashtags:', selectedHashtags);
         });
+    });
 
-        if (!response.ok) {
-            alert('Sign up failed');
-            throw new Error('Sign up failed');
+    signUpForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const accountName = document.getElementById('signup-account').value;
+        const password = document.getElementById('signup-password').value;
+        const nickname = document.getElementById('signup-nickname').value;
+        const genderId = document.getElementById('signup-genderId').value;
+        const genderMatch = document.getElementById('signup-genderMatch').value;
+        const selectedHashtags = Array.from(document.querySelectorAll('.hashtag-btn.selected')).map(button => button.value); // Collect selected hashtags
+
+        try {
+            const response = await fetch('/api/1.0/user/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    accountName,
+                    password,
+                    nickname,
+                    genderId,
+                    genderMatch,
+                    userHashtags: selectedHashtags
+                }) // Include selected hashtags in the body
+            });
+
+            if (!response.ok) {
+                alert('Sign up failed');
+                throw new Error('Sign up failed');
+            }
+
+            const {data} = await response.json();
+            localStorage.setItem('accessToken', data.access_token);
+            console.log('Sign up successful. Access token:', data.access_token);
+            fetchUserProfile(data.access_token);
+        } catch (error) {
+            console.error('Error during sign up:', error);
         }
-
-
-        const {data} = await response.json();
-        localStorage.setItem('accessToken', data.access_token);
-        console.log('Sign up successful. Access token:', data.access_token);
-        fetchUserProfile(data.access_token);
-    } catch (error) {
-        console.error('Error during sign up:', error);
-    }
+    });
 });

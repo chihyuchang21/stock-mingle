@@ -50,11 +50,19 @@
             <artifactId>jsoup</artifactId>
             <version>1.14.3</version>
         </dependency>
+        <!--                <dependency>-->
+        <!--                    <groupId>org.neo4j</groupId>-->
+        <!--                    <artifactId>neo4j</artifactId>-->
+        <!--                    <version>5.8.0</version>-->
+        <!--                </dependency>-->
+
         <dependency>
-            <groupId>org.neo4j</groupId>
-            <artifactId>neo4j</artifactId>
-            <version>5.8.0</version>
+            <groupId>org.codehaus.jettison</groupId>
+            <artifactId>jettison</artifactId>
+            <version>1.5.4</version>
         </dependency>
+
+
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -84,6 +92,22 @@
             <artifactId>aws-lambda-java-core</artifactId>
             <version>1.1.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-lambda-java-events</artifactId>
+            <version>3.11.0</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>commons-logging</artifactId>
+                    <groupId>commons-logging</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-core</artifactId>
+            <version>1.12.331</version>
+        </dependency>
 
     </dependencies>
 
@@ -92,6 +116,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <classifier>exec</classifier>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
