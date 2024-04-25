@@ -137,8 +137,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const accountName = accountNameInput.value;
         const password = document.getElementById('signup-password').value;
         const nickname = document.getElementById('signup-nickname').value;
-        const genderId = document.getElementById('signup-genderId').value;
-        const genderMatch = document.getElementById('signup-genderMatch').value;
+        const genderId = mapGenderToId(document.getElementById('signup-genderId').value);
+        const genderMatch = mapGenderToId(document.getElementById('signup-genderMatch').value);
+
 
         try {
             const response = await fetch('/api/1.0/user/signup', {
@@ -190,4 +191,19 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('Error during sign up:', error);
         }
     });
+
+    // 將性別值映射為後端需要的格式
+    function mapGenderToId(gender) {
+        switch (gender) {
+            case 'female':
+                return 1;
+            case 'male':
+                return 2;
+            case 'non-binary':
+                return 3;
+            default:
+                return null;
+        }
+    }
+
 });
