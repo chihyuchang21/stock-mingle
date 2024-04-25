@@ -102,7 +102,7 @@ a:hover {
     font-size: 14px; /* 調整標語的字體大小 */
 }
 
-.publish-btn, .match-btn, .account-btn {
+.publish-btn, .match-btn, .account-btn, .logout-btn {
     width: 35px; /* 設置按鈕寬度 */
     height: 35px; /* 設置按鈕高度 */
     margin-left: 30px;

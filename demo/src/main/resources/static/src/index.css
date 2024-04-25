@@ -31,6 +31,8 @@ body {
     flex: 1;
     display: flex;
     position: relative;
+    overflow: hidden; /* 禁止內容超出容器範圍 */
+
 }
 
 
@@ -39,7 +41,7 @@ body {
     flex: 0 0 200px; /* 固定寬度 */
     background-color: #e0e0e0; /* 淡灰色 */
     padding: 10px;
-    /*margin-right: 20px; !* 添加右邊間隙 *!*/
+    margin-right: 20px; /* 添加右邊間隙 */
 }
 
 .article-list {
@@ -49,6 +51,8 @@ body {
     flex: 1;
     background-color: white;
     padding: 5px;
+    overflow-y: auto; /* 僅當內容超出容器時啟用垂直捲動 */
+    max-height: calc(90vh - 50px); /* 視口高度減去頂部導航欄高度 */
 }
 
 #pagination {
@@ -102,7 +106,7 @@ a:hover {
     font-size: 14px; /* 調整標語的字體大小 */
 }
 
-.publish-btn, .match-btn, .account-btn {
+.publish-btn, .match-btn, .account-btn, .logout-btn {
     width: 35px; /* 設置按鈕寬度 */
     height: 35px; /* 設置按鈕高度 */
     margin-left: 30px;
@@ -173,3 +177,35 @@ a:hover {
 .content-details {
     flex: 1;
 }
+
+
+/* 分頁按鈕容器的樣式 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* 分頁按鈕的樣式 */
+.pagination button {
+    background-color: #f53a28;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    margin: 0 5px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+/* 分頁按鈕的懸停效果 */
+.pagination button:hover {
+    background-color: #db7e75;
+}
+
+/* 分頁按鈕的當前頁樣式 */
+.pagination button.active {
+    background-color: #0056b3;
+}
+
+

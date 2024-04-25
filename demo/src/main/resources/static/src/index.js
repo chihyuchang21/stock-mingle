@@ -16,6 +16,14 @@ function redirectToMatchPage() {
     window.location.href = 'match.html';
 }
 
+function logoutClearLocalStorage() {
+    localStorage.removeItem('accessToken');
+    window.alert("You have logged out.");
+    setTimeout(function () {
+        window.location.href = 'index.html';
+    }, 1000); // 在跳轉前等待 1 秒 (1000 毫秒)
+}
+
 // Get the navbar h1 element
 const navbarTitle = document.querySelector('.navbar h1');
 
@@ -207,9 +215,10 @@ function fetchArticlesByAlgo(pageNumber = 0) {
             });
 
             // 渲染分頁按鈕
-            for (let i = 0; i <= 5; i++) {
+            for (let i = 0; i <= 3; i++) {
                 var pageButton = document.createElement('button');
                 pageButton.textContent = i;
+                pageButton.classList.add('pagination-button'); // 添加類名
                 pageButton.addEventListener('click', function () {
                     fetchArticlesByAlgo(i);
                 });

@@ -14,6 +14,14 @@ function redirectToMatchPage() {
     window.location.href = 'match.html';
 }
 
+function logoutClearLocalStorage() {
+    localStorage.removeItem('accessToken');
+    window.alert("You have logged out.");
+    setTimeout(function () {
+        window.location.href = 'index.html';
+    }, 1000); // 在跳轉前等待 1 秒 (1000 毫秒)
+}
+
 // Get the navbar h1 element
 const navbarTitle = document.querySelector('.navbar h1');
 
