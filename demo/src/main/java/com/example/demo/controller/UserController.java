@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.MatchFriendInfo;
+import com.example.demo.dto.SignupRequest;
 import com.example.demo.middleware.JwtTokenService;
 import com.example.demo.model.user.User;
 import com.example.demo.service.UserService;
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -75,6 +77,29 @@ public class UserController {
 
         return ResponseEntity.ok(responseMap);
     }
+
+    @PostMapping("/signup/hashtag")
+    public ResponseEntity<?> signUp(@RequestBody SignupRequest signupRequest) {
+        System.out.println("signupRequest:" + signupRequest);
+        String accountName = signupRequest.getAccountName();
+        List<String> hashtags = signupRequest.getHashtags();
+
+        // 根據帳戶名查找用戶ID
+        Integer userId = userService.getUserIdByAccountName(accountName);
+        if (userId == null) {
+            // 如果用戶不存在，返回錯誤信息
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+
+        // 保存興趣標籤到數據庫
+        for (String hashtag : hashtags) {
+            userService.saveUserHashtag(userId, hashtag);
+        }
+
+        // 返回成功信息
+        return ResponseEntity.ok("Hashtags saved successfully");
+    }
+
 
     @PostMapping("/signin")
     public ResponseEntity<?> signIn(@RequestBody LoginRequest loginRequest) {

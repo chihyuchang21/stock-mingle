@@ -1,14 +1,8 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.MatchFriendInfo;
-import com.example.demo.model.user.User;
-import com.example.demo.model.user.UserHashtag;
-import com.example.demo.model.user.UserPairingHistory;
-import com.example.demo.model.user.UserSimilarity;
-import com.example.demo.repository.GenderRepository;
-import com.example.demo.repository.UserHashtagRepository;
-import com.example.demo.repository.UserPairingHistoryRepository;
-import com.example.demo.repository.UserRepository;
+import com.example.demo.model.user.*;
+import com.example.demo.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +31,9 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private HashtagRepository hashtagRepository;
+
 
     @Autowired
     private GenderRepository genderRepository;
@@ -78,6 +75,27 @@ public class UserService {
     //To return autoID to Controller
     public Integer getUserIdByAccountName(String accountName) {
         return userRepository.getUserIdByAccountName(accountName);
+    }
+
+    // 保存用戶興趣標籤到數據庫的方法
+    public void saveUserHashtag(Integer userId, String hashtagName) {
+        // 創建UserHashtag對象並保存到數據庫
+        UserHashtag userHashtag = new UserHashtag();
+
+        // 先根據userId查詢對應的User對象
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // 再根據hashtag查詢對應的Hashtag對象
+        Hashtag hashtag = hashtagRepository.findByHashtagName(hashtagName)
+                .orElseThrow(() -> new RuntimeException("Hashtag not found"));
+
+
+        // 根據用戶ID和興趣標籤設置UserHashtag對象的屬性
+        userHashtag.setUser(user);
+        userHashtag.setHashtag(hashtag);
+        // 調用Repository保存到數據庫
+        userHashtagRepository.save(userHashtag);
     }
 
 
