@@ -6,6 +6,8 @@
     <title>Stock Mingle</title>
 <!--    <link href="src/index.css" rel="stylesheet">-->
     <link href="src/login.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+
 </head>
 <div class="navbar">
     <h1>Stock Mingle <br>
@@ -48,23 +50,25 @@
     </div>
 
     <div id="auth-container">
-        <h2>Sign In</h2>
+        <h2>Sign In Here!</h2>
         <form id="sign-in-form">
             <input type="text" id="signin-account" placeholder="Account">
             <input type="password" id="signin-password" placeholder="Password">
             <button type="submit">Sign In</button>
         </form>
 
-        <h2>Sign Up</h2>
+        <h2>Sign Up To Join Us!</h2>
         <form id="sign-up-form">
             <input type="text" id="signup-account" placeholder="Account">
             <input type="password" id="signup-password" placeholder="Password">
             <input type="text" id="signup-nickname" placeholder="Nickname"> <!-- Add input field for nickname -->
+            <h3>Your Gender:</h3>
             <select id="signup-genderId">
                 <option value="female">Female</option>
                 <option value="male">Male</option>
                 <option value="non-binary">Non-binary</option>
             </select>
+            <h3>Gender You Would Like To Match:</h3>
             <select id="signup-genderMatch">
                 <option value="female">Female</option>
                 <option value="male">Male</option>
@@ -74,17 +78,21 @@
             <!-- 興趣Hashtag，可以選三個 -->
             <div id="hashtag-buttons">
                 <h3>Please Select 3 Hobbies:</h3>
+                <div id="hashtag-buttons-row1">
                 <button type="button" class="hashtag-btn" value="swimming">Swimming</button>
                 <button type="button" class="hashtag-btn" value="jogging">Jogging</button>
                 <button type="button" class="hashtag-btn" value="reading">Reading</button>
                 <button type="button" class="hashtag-btn" value="sleeping">Sleeping</button>
+                </div>
+                <div id="hashtag-buttons-row2">
                 <button type="button" class="hashtag-btn" value="music">Music</button>
                 <button type="button" class="hashtag-btn" value="dancing">Dancing</button>
                 <button type="button" class="hashtag-btn" value="do nothing">Do Nothing</button>
                 <button type="button" class="hashtag-btn" value="drawing">Drawing</button>
-            </div>
+                </div>
+                </div>
 
-            <button type="submit">Sign Up</button>
+            <button type="submit" class="auth-btn">Sign Up</button>
         </form>
     </div>
     <!--log in and sign up-->

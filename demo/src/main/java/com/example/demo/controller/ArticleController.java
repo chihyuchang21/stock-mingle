@@ -204,19 +204,17 @@ public class ArticleController {
 //
 
 
-// To Testing End Point
+    // To Testing End Point
+    @PostMapping("/calculateRecommendTopic")
+    public ResponseEntity<?> calculateRecommendTopic() {
+        articleService.updateUserClickDetail();
+        articleService.calculateCosineSimilarity();
+        return ResponseEntity.ok("Recommendation calculation completed successfully.");
+    }
 
-//    @GetMapping("/calculateRecommendTopic")
-//    public ResponseEntity<?> calculateRecommendTopic() {
-//        articleService.updateUserClickDetail();
-//        articleService.calculateCosineSimilarity();
-//        return ResponseEntity.ok("OK");
-//    }
-//
-//
-//    @GetMapping("/sumToBigTable")
-//    public ResponseEntity<?> sumToBigTable() {
-//        articleService.updateUserClickDetail();
-//        return ResponseEntity.ok("OK");
-//    }
+    @PostMapping("/sumToBigTable")
+    public ResponseEntity<?> sumToBigTable() {
+        articleService.updateUserClickDetail();
+        return ResponseEntity.ok("Data summed to big table successfully.");
+    }
 }

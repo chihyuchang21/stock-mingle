@@ -77,8 +77,6 @@ signInForm.addEventListener('submit', async function (e) {
             body: JSON.stringify({accountName, password})
         });
 
-        console.log("accountName" + accountName);
-        console.log("password" + password);
 
         if (!response.ok) {
             alert('Sign in failed');
@@ -205,5 +203,4 @@ document.addEventListener('DOMContentLoaded', function () {
                 return null;
         }
     }
-
 });

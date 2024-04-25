@@ -175,7 +175,103 @@ a:hover {
 }
 
 
+/* Auth Container */
+#auth-container {
+    margin: 0 auto; /* 左右margin */
+    max-width: 1000px;
+}
+
+/* Sign In Form */
+#sign-in-form {
+    margin-top: 20px; /* 上邊距 */
+}
+
+#sign-in-form input[type="text"],
+#sign-in-form input[type="password"],
+#sign-in-form button {
+    font-family: 'Open Sans', sans-serif;
+    width: 60%; /* 寬度填滿容器 */
+    padding: 10px; /* 內邊距 */
+    margin-bottom: 10px; /* 下邊距 */
+    border: 1px solid #ccc; /* 邊框 */
+    border-radius: 5px; /* 圓角 */
+    box-sizing: border-box; /* 設置 box-sizing 屬性 */
+
+}
+
+#sign-in-form button {
+    background-color: #ffa07a;
+    color: #fff; /* 文本顏色 */
+    cursor: pointer; /* 鼠標指針 */
+}
+
+#sign-in-form button:hover {
+    background-color: #ff7f50; /* 滑鼠懸停時的背景顏色 */
+}
+
+
+/* Sign Up Form */
+#sign-up-form input[type="text"],
+#sign-up-form input[type="password"],
+#sign-up-form input[type="text"]#signup-nickname,
+#sign-up-form select {
+    font-family: 'Open Sans', sans-serif;
+    width: 60%; /* 寬度填滿container */
+    padding: 10px; /* 內邊距 */
+    margin-bottom: 10px; /* 下邊距 */
+    border: 1px solid #ccc;
+    border-radius: 5px; /* 圓角 */
+    box-sizing: border-box;
+}
+
+.auth-btn {
+    background-color: #ffa07a;
+    color: #fff;
+    cursor: pointer;
+    font-family: 'Open Sans', sans-serif;
+    width: 60%; /* 寬度填滿container */
+    padding: 10px; /* 內邊距 */
+    margin-bottom: 10px; /* 下邊距 */
+    border: 1px solid #ccc;
+    border-radius: 5px; /* 圓角 */
+    box-sizing: border-box;
+}
+
+#sign-up-form h3 {
+    font-size: 12px; /* 调整字体大小 */
+}
+
+#sign-up-form button:hover {
+    background-color: #ff7f50;
+}
+
+
+/* Hashtag Buttons */
+#hashtag-buttons {
+    margin-top: 12px;
+    margin-bottom: 10px;
+}
+
+.hashtag-btn {
+    margin-right: 10px;
+    margin-bottom: 10px;
+    padding: 5px 10px;
+    background-color: #ffa07a;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.hashtag-btn:hover {
+    background-color: #ff7f50;;
+}
+
+.hashtag-btn:focus {
+    outline: none;
+}
+
 .selected {
-    background-color: #007bff; /* 選擇時的背景顏色 */
+    background-color: darkred; /* 選擇時的背景顏色 */
     color: #fff; /* 選擇時的文本顏色 */
 }
+
