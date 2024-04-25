@@ -134,7 +134,7 @@ function fetchArticles(pageNumber = 0) {
                         <img src="https://img.money.com/2022/05/News-Plunging-Stocks-401k.jpg" alt="Stock Market!!" width="400" height="250">
                     </div>               
                      <div class="article-details">
-                    <p>Author: ${article.userId}</p>
+                    <p>Author: ${article.userId.nickname}</p>
                     <p>Likes: ${article.likeCount}</p>
                     <p>Comments: ${article.commentCount}</p>
                     <p>Category: ${article.categoryId.category}</p>
@@ -204,13 +204,14 @@ function fetchArticlesByAlgo(pageNumber = 0) {
                         <img src="https://img.money.com/2022/05/News-Plunging-Stocks-401k.jpg" alt="Stock Market!!" width="400" height="250">
                     </div>
                 <div class="article-details">
-                    <p>Author: ${article.userId}</p>
+                    <p>Author: ${article.userId.nickname}</p>
                     <p>Likes: ${article.likeCount}</p>
                     <p>Comments: ${article.commentCount}</p>
                     <p>Category: ${article.categoryId.category}</p>
                 </div>
                 <hr>
             `;
+
                 articleList.appendChild(articleDiv);
             });
 

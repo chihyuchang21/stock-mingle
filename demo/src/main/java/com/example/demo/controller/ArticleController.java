@@ -2,10 +2,12 @@ package com.example.demo.controller;
 
 import com.example.demo.model.article.Article;
 import com.example.demo.model.article.Category;
+import com.example.demo.model.user.User;
 import com.example.demo.model.user.UserClickDetail;
 import com.example.demo.model.user.UserClickEvent;
 import com.example.demo.repository.UserClickDetailRepository;
 import com.example.demo.service.ArticleService;
+import com.example.demo.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -30,6 +32,8 @@ public class ArticleController {
     private static final Logger logger = LoggerFactory.getLogger(ArticleController.class);
     private final ArticleService articleService;
     @Autowired
+    private UserService userService;
+    @Autowired
     private UserClickDetailRepository userClickDetailRepository;
     @Value("${jwt.secret}")
     private String jwtSecret;
@@ -45,7 +49,12 @@ public class ArticleController {
         int pageSize = 10;
         // 10 uncategorized article data
         List<Article> articleList = articleService.getAllArticles(paging, pageSize);
-        // boolean hasMore = articleService.hasNextPage();
+
+        for (Article article : articleList) {
+            String nickname = article.getUserNickname();
+            article.setNickname(nickname);
+        }
+
         return ResponseEntity.ok(articleList);
     }
 
@@ -121,8 +130,9 @@ public class ArticleController {
 
             // Get user ID from JWT token
             Integer userId = Integer.parseInt(claims.getSubject()); // Assuming subject is user ID
-            article.setUserId(userId);
-            logger.info("userid: " + userId);
+            User user = userService.getUserById(userId);
+            article.setUserId(user);
+//            logger.info("userid: " + userId);
 
             articleService.postArticle(article);
             Map<String, Object> response = new HashMap<>();
