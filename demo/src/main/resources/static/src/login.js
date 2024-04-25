@@ -97,46 +97,6 @@ signInForm.addEventListener('submit', async function (e) {
     }
 });
 
-
-signUpForm.addEventListener('submit', async function (e) {
-    e.preventDefault();
-    const accountName = document.getElementById('signup-account').value;
-    const password = document.getElementById('signup-password').value;
-    const nickname = document.getElementById('signup-nickname').value;
-    const genderId = document.getElementById('signup-genderId').value;
-    const genderMatch = document.getElementById('signup-genderMatch').value;
-    // const selectedHashtags = Array.from(document.querySelectorAll('.hashtag-btn.selected')).map(button => button.value); // Collect selected hashtags
-
-    try {
-        const response = await fetch('/api/1.0/user/signup', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                accountName,
-                password,
-                nickname,
-                genderId,
-                genderMatch,
-                // userHashtags: selectedHashtags
-            }) // Include selected hashtags in the body
-        });
-
-        if (!response.ok) {
-            alert('Sign up failed');
-            throw new Error('Sign up failed');
-        }
-
-        const {data} = await response.json();
-        localStorage.setItem('accessToken', data.access_token);
-        console.log('Sign up successful. Access token:', data.access_token);
-        fetchUserProfile(data.access_token);
-    } catch (error) {
-        console.error('Error during sign up:', error);
-    }
-});
-
 /*
 選興趣
 */
@@ -175,35 +135,59 @@ document.addEventListener('DOMContentLoaded', function () {
     signUpForm.addEventListener('submit', async function (e) {
         e.preventDefault();
         const accountName = accountNameInput.value;
+        const password = document.getElementById('signup-password').value;
+        const nickname = document.getElementById('signup-nickname').value;
+        const genderId = document.getElementById('signup-genderId').value;
+        const genderMatch = document.getElementById('signup-genderMatch').value;
 
-        // 構建要發送的數據
-        const data = {
-            accountName: accountName, // 將accountName改為accountName
-            hashtags: selectedHashtags // 將selectedHashtags改為hashtags
-        };
-
-        // 使用Fetch API向後端發送數據
-        fetch('/api/1.0/user/signup/hashtag', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-            .then(response => {
-                if (response.ok) {
-                    // 如果請求成功，進行相應的處理
-                    console.log('Data sent successfully');
-                    // 在這裡可以進行頁面跳轉或其他操作
-                } else {
-                    // 如果請求失敗，顯示錯誤信息
-                    console.error('Failed to send data');
-                }
-            })
-            .catch(error => {
-                // 捕獲到任何網絡錯誤或其他錯誤
-                console.error('Error:', error);
+        try {
+            const response = await fetch('/api/1.0/user/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    accountName,
+                    password,
+                    nickname,
+                    genderId,
+                    genderMatch,
+                })
             });
-    });
 
+            if (!response.ok) {
+                alert('Sign up failed');
+                throw new Error('Sign up failed');
+            }
+
+            const {data} = await response.json();
+            localStorage.setItem('accessToken', data.access_token);
+            console.log('Sign up successful. Access token:', data.access_token);
+            fetchUserProfile(data.access_token);
+
+            // 發送hashtags到'/api/1.0/user/signup/hashtag'
+            const hashtagsData = {
+                accountName: accountName,
+                hashtags: selectedHashtags
+            };
+
+            const hashtagsResponse = await fetch('/api/1.0/user/signup/hashtag', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(hashtagsData)
+            });
+
+            if (!hashtagsResponse.ok) {
+                console.error('Failed to send hashtags data');
+                // 在這裡處理失敗的情況，例如顯示錯誤消息給用戶
+            } else {
+                console.log('Hashtags data sent successfully');
+                // 在這裡可以進行頁面跳轉或其他操作
+            }
+        } catch (error) {
+            console.error('Error during sign up:', error);
+        }
+    });
 });
