@@ -50,7 +50,7 @@ body {
     line-height: 1.3; /* 設置行高 */
     flex: 1;
     background-color: white;
-    padding: 5px;
+    /*padding: 5px;*/
     overflow-y: auto; /* 僅當內容超出容器時啟用垂直捲動 */
     max-height: calc(90vh - 50px); /* 視口高度減去頂部導航欄高度 */
 }
@@ -167,14 +167,14 @@ a:hover {
 }
 
 .image-wrapper {
-    margin-right: 10px;
+    margin-left: 20px;
 }
 
 .article-content img {
     max-width: 200px;
 }
 
-.content-details {
+.content {
     flex: 1;
 }
 
@@ -207,5 +207,49 @@ a:hover {
 .pagination button.active {
     background-color: #0056b3;
 }
+
+/* 根據文章類別變色 */
+.company-news {
+    background-color: #FF6B6B; /* 粉紅色 */
+    color: white;
+}
+
+.broad-market-news {
+    background-color: #FFD166; /* 橙黃色 */
+    color: white;
+}
+
+.company-discussion {
+    background-color: #06D6A0; /* 青色 */
+    color: white;
+}
+
+.advice-request {
+    background-color: #118AB2; /* 深藍色 */
+    color: white;
+}
+
+.other {
+    background-color: #073B4C; /* 深綠色 */
+    color: white;
+}
+
+/* 圓角邊框 */
+.article-details p {
+    border-radius: 5px;
+    padding: 2.5px;
+}
+
+/* 游標滑過效果 */
+.article-div:hover {
+    background-color: #d0d0d0; /* 淺灰色 */
+    cursor: pointer; /* 將mouse設為點擊指示 */
+}
+
+.article-div h3 {
+    margin-top: 0px;
+}
+
+
 
 

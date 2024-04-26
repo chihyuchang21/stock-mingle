@@ -114,6 +114,8 @@ function fetchArticles(pageNumber = 0) {
             // 渲染文章列表
             data.forEach(article => {
                 var articleDiv = document.createElement('div');
+                articleDiv.classList.add('article-div'); // 添加 class 為 article-div
+
 
                 // Listen for click event
                 articleDiv.addEventListener('click', function () {
@@ -126,9 +128,23 @@ function fetchArticles(pageNumber = 0) {
                 });
                 console.log("article.id: " + article.id);
 
+                var content = article.content;
+                var maxContentLength = 300; // 文章最長內容
+
+                // 若大於最長內容則只顯示 300 字
+                var truncatedContent = content.length > maxContentLength ? content.substring(0, maxContentLength) + "..." : content;
+
+                // 根據文章類別設定class
+                var categoryClass = getCategoryClass(article.categoryId.category);
+
+                // Convert Markdown to HTML
+                // var markdownContent = article.content;
+                // var htmlContent = marked(markdownContent);
+
                 articleDiv.innerHTML = `
                 <h3>${article.title}</h3>
-                <p>${article.content}</p>
+                <div class="content">${truncatedContent}</div>
+                
 <!--                暫時把image寫死-->
                     <div class="image-wrapper">
                         <img src="https://img.money.com/2022/05/News-Plunging-Stocks-401k.jpg" alt="Stock Market!!" width="400" height="250">
@@ -137,7 +153,7 @@ function fetchArticles(pageNumber = 0) {
                     <p>Author: ${article.userId.nickname}</p>
                     <p>Likes: ${article.likeCount}</p>
                     <p>Comments: ${article.commentCount}</p>
-                    <p>Category: ${article.categoryId.category}</p>
+                    <p class="${categoryClass}"> # ${article.categoryId.category}</p>
                 </div>
                 <hr>
             `;
@@ -184,6 +200,8 @@ function fetchArticlesByAlgo(pageNumber = 0) {
             // 渲染文章列表
             data.forEach(article => {
                 var articleDiv = document.createElement('div');
+                articleDiv.classList.add('article-div'); // 添加 class 為 article-div
+
 
                 // Listen for click event --> 統計點擊次數
                 articleDiv.addEventListener('click', function () {
@@ -196,9 +214,18 @@ function fetchArticlesByAlgo(pageNumber = 0) {
                 });
                 console.log("article.id: " + article.id);
 
+                var content = article.content;
+                var maxContentLength = 300; // 文章最長內容
+
+                // 若大於最長內容則只顯示 300 字
+                var truncatedContent = content.length > maxContentLength ? content.substring(0, maxContentLength) + "..." : content;
+
+                // 根據文章類別設定class
+                var categoryClass = getCategoryClass(article.categoryId.category);
+
                 articleDiv.innerHTML = `
                 <h3>${article.title}</h3>
-                <p>${article.content}</p>
+                <div class="content">${truncatedContent}</div>
 <!--                暫時把image寫死-->
                     <div class="image-wrapper">
                         <img src="https://img.money.com/2022/05/News-Plunging-Stocks-401k.jpg" alt="Stock Market!!" width="400" height="250">
@@ -207,7 +234,7 @@ function fetchArticlesByAlgo(pageNumber = 0) {
                     <p>Author: ${article.userId.nickname}</p>
                     <p>Likes: ${article.likeCount}</p>
                     <p>Comments: ${article.commentCount}</p>
-                    <p>Category: ${article.categoryId.category}</p>
+                    <p class="${categoryClass}"> # ${article.categoryId.category}</p>
                 </div>
                 <hr>
             `;
@@ -231,6 +258,22 @@ function fetchArticlesByAlgo(pageNumber = 0) {
             console.error('Error:', error);
         });
 }
+
+function getCategoryClass(category) {
+    switch (category) {
+        case 'Company News':
+            return 'company-news';
+        case 'Broad Market News':
+            return 'broad-market-news';
+        case 'Company Discussion':
+            return 'company-discussion';
+        case 'Advice Request':
+            return 'advice-request';
+        default:
+            return 'other';
+    }
+}
+
 
 // Get article list when the page loads
 window.onload = function () {

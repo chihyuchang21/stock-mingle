@@ -2,17 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Stock Mingle</title>
     <link href="src/index.css" rel="stylesheet">
 </head>
+<body>
 <div class="navbar">
     <h1>Stock Mingle <br>
-        <div class="slogan">Where Algorithms Meet Investors</div></h1>
-    <img class="publish-btn" src="/image/pencil.png" alt="Post" onclick="redirectToArticlePostPage()">
-    <img class="match-btn" src="/image/friends.png" alt="Match" onclick="redirectToMatchPage()">
-    <img class="account-btn" src="/image/user.png" alt="Log-In / Sign-Up" onclick="redirectToLoginPage()">
-    <img class="logout-btn" src="/image/logout.png" alt="Log-out" onclick="logoutClearLocalStorage()">
+        <div class="slogan">Where Algorithms Meet Investors</div>
+    </h1>
+    <img alt="Post" class="publish-btn" onclick="redirectToArticlePostPage()" src="/image/pencil.png">
+    <img alt="Match" class="match-btn" onclick="redirectToMatchPage()" src="/image/friends.png">
+    <img alt="Log-In / Sign-Up" class="account-btn" onclick="redirectToLoginPage()" src="/image/user.png">
+    <img alt="Log-out" class="logout-btn" onclick="logoutClearLocalStorage()" src="/image/logout.png">
 </div>
 
 <div class="container">
@@ -40,20 +42,17 @@
     </div>
 
 
-
-
     <div class="article-list" id="articleList">
         <!-- 文章在此動態渲染 -->
     </div>
 
 
-
-
-    <div id="pagination" class="pagination">
+    <div class="pagination" id="pagination">
         <!-- 分頁按鈕在此動態渲染 -->
     </div>
 
 </div>
+<!--<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>-->
 <script src="src/index.js"></script>
 </body>
 </html>
