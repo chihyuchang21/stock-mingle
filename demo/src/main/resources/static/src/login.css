@@ -275,3 +275,50 @@ a:hover {
     color: #fff; /* 選擇時的文本顏色 */
 }
 
+/* Profile */
+#profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* 重要，水平與垂直居中 */
+    background-color: #f2f2f2; /* 背景顏色 */
+    border: 1px solid #ccc; /* 邊框 */
+    border-radius: 10px; /* 圓角 */
+    padding: 20px; /* 內邊距 */
+    margin: 20px auto; /* 上下 20px，左右自動置中 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 陰影 */
+    width: 50%; /* 設置寬度為父容器的 70% */
+    text-align: center; /* 文字置中 */
+}
+
+
+#profile-container h2 {
+    margin-bottom: 10px; /* 標題下邊距 */
+    color: #333; /* 文本顏色 */
+}
+
+#profile-container p {
+    margin: 5px 0; /* 段落間距 */
+    color: #666; /* 文本顏色 */
+}
+
+#profile-container img {
+    width: 300px; /* 圖片寬度 */
+    height: 100px; /* 圖片高度 */
+    border-radius: 50%; /* 圓形圖片 */
+    margin-bottom: 10px; /* 圖片下邊距 */
+}
+
+#profile-container .button {
+    background-color: #ffa07a; /* 按鈕背景顏色 */
+    color: #fff; /* 文本顏色 */
+    border: none; /* 移除邊框 */
+    border-radius: 5px; /* 圓角 */
+    padding: 10px 20px; /* 內邊距 */
+    cursor: pointer; /* 鼠標指針 */
+    transition: background-color 0.3s ease; /* 平滑過渡 */
+}
+
+#profile-container .button:hover {
+    background-color: #ff7f50; /* 滑鼠懸停時的背景顏色 */
+}
