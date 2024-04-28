@@ -143,9 +143,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const accountName = accountNameInput.value;
         const password = document.getElementById('signup-password').value;
         const nickname = document.getElementById('signup-nickname').value;
+        // 轉為FK的value
         const genderId = mapGenderToId(document.getElementById('signup-genderId').value);
         const genderMatch = mapGenderToId(document.getElementById('signup-genderMatch').value);
-
+        // 圖片
+        // const image = document.getElementById('upload-images').value;
 
         try {
             const response = await fetch('/api/1.0/user/signup', {
@@ -159,6 +161,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     nickname,
                     genderId,
                     genderMatch,
+                    // image
                 })
             });
 

@@ -39,7 +39,7 @@ function renderChatrooms(chatrooms) {
     // 清空原有的列表
     ul.innerHTML = '';
 
-    // 生成新的聊天室連結
+    // 生成新的聊天室連結在側邊欄
     chatrooms.forEach(chatroom => {
         const li = document.createElement('li');
         const a = document.createElement('a');

@@ -16,6 +16,18 @@
     <properties>
         <java.version>17</java.version>
     </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.amazonaws</groupId>
+                <artifactId>aws-java-sdk-bom</artifactId>
+                <version>1.11.1000</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -103,10 +115,15 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>com.amazonaws</groupId>-->
+        <!--            <artifactId>aws-java-sdk-core</artifactId>-->
+        <!--            <version>1.12.331</version>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk-core</artifactId>
-            <version>1.12.331</version>
+            <artifactId>aws-java-sdk-s3</artifactId>
+            <version>1.12.708</version>
         </dependency>
 
     </dependencies>
@@ -116,9 +133,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <classifier>exec</classifier>
-                </configuration>
+                <!--                <configuration>-->
+                <!--                    <classifier>exec</classifier>-->
+                <!--                </configuration>-->
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

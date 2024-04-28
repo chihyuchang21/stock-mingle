@@ -32,12 +32,6 @@ public class User {
     public User() {
         // no-argument constructor
     }
-
-//    public User(Integer id, String accountName, String nickname, Integer genderId) {
-//        this.id = id;
-//        this.accountName = accountName;
-//        this.nickname = nickname;
-//        this.genderId = genderId;
-//    }
+    
 }
 

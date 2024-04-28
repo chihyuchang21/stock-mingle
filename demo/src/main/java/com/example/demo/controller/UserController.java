@@ -5,6 +5,7 @@ import com.example.demo.dto.MatchFriendInfo;
 import com.example.demo.dto.SignupRequest;
 import com.example.demo.middleware.JwtTokenService;
 import com.example.demo.model.user.User;
+import com.example.demo.service.FileService;
 import com.example.demo.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,15 +30,19 @@ public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
     private final JwtTokenService jwtTokenService;
+    private final FileService fileService;
     @Value("${jwt.secret}")
     private String jwtSecret;
 
     // 使用Constructor注入
     public UserController(UserService userService,
-                          JwtTokenService jwtTokenService) {
+                          JwtTokenService jwtTokenService,
+                          FileService fileService) {
         this.userService = userService;
         this.jwtTokenService = jwtTokenService;
+        this.fileService = fileService;
     }
+
 
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@RequestBody User user) {
@@ -54,6 +60,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Account name already exists"));
         }
 
+        System.out.println("user: " + user);
         String accessToken = jwtTokenService.generateAccessToken(user);
         long accessExpired = 3600;
 
@@ -80,9 +87,9 @@ public class UserController {
 
     @PostMapping("/signup/hashtag")
     public ResponseEntity<?> signUp(@RequestBody SignupRequest signupRequest) {
-        System.out.println("signupRequest:" + signupRequest);
         String accountName = signupRequest.getAccountName();
         List<String> hashtags = signupRequest.getHashtags();
+        MultipartFile userImage = signupRequest.getImage();
 
         // 根據帳戶名查找用戶ID
         Integer userId = userService.getUserIdByAccountName(accountName);
@@ -90,6 +97,8 @@ public class UserController {
             // 如果用戶不存在，返回錯誤信息
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
+
+//        fileService.saveUserImage(userImage, request);
 
         // 保存興趣標籤到數據庫
         for (String hashtag : hashtags) {
@@ -99,6 +108,13 @@ public class UserController {
         // 返回成功信息
         return ResponseEntity.ok("Hashtags saved successfully");
     }
+
+//    @PostMapping("/signup/image")
+//    public ResponseEntity<?> signUp(@RequestBody SignupRequest signupRequest) {
+//        userService.
+//
+//        return ResponseEntity.ok("Image saved successfully");
+//    }
 
 
     @PostMapping("/signin")

@@ -5,12 +5,12 @@ body {
 #main-content {
     max-width: 800px;
     padding: 1em 2em;
-    margin: 0 auto 20px;
+    margin: 0 auto 50px;
     background-color: #fff;
-    border: 1px solid #e5e5e5;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+    /*border: 1px solid #e5e5e5;*/
+    /*-webkit-border-radius: 5px;*/
+    /*-moz-border-radius: 5px;*/
+    /*border-radius: 5px;*/
 }
 
 
@@ -27,8 +27,17 @@ body {
     font-family: 'Segoe Script', cursive;
     margin: 0;
     padding: 0;
-    flex: 1; /* 讓標題佔據剩餘空間 */
+    flex: 1;
+    display: flex;
+    flex-direction: column; /* 將元素堆疊在一起 */
+    align-items: flex-start; /* 左對齊 */
 }
+
+.navbar h1 .slogan {
+    font-family: 'Segoe Script', cursive; /* 口號的字體 */
+    font-size: 14px; /* 口號的字體大小 */
+}
+
 
 .navbar button {
     margin-left: 10px; /* 設置按鈕之間的間距 */

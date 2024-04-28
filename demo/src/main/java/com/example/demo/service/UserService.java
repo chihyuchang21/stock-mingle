@@ -30,8 +30,6 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private HashtagRepository hashtagRepository;
-
-
     @Autowired
     private GenderRepository genderRepository;
 
