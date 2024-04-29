@@ -5,11 +5,14 @@ import com.example.demo.model.article.Category;
 import com.example.demo.model.user.UserClickDetail;
 import com.example.demo.model.user.UserClickEvent;
 import com.example.demo.repository.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -31,6 +34,12 @@ public class ArticleService {
     private UserClickDetailRepository userClickDetailRepository;
     @Autowired
     private CategoryRepository categoryRepository;
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
+    @Autowired
+    private ObjectMapper objectMapper;
+    @Autowired
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public ArticleService(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
@@ -46,7 +55,8 @@ public class ArticleService {
 
     public List<Article> getAllArticles(int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        return articleRepository.findAllArticlesByPage(pageable);
+        logger.info("pageable" + pageable);
+        return articleRepository.findAllArticlesByPage(pageable, redisTemplate, objectMapper);
     }
 
     public Article getArticleById(String id) {
