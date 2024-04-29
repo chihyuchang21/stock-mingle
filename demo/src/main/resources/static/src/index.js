@@ -110,9 +110,9 @@ function fetchArticles(pageNumber = 0) {
     // 發送分頁請求
     fetch(`/api/1.0/articles?paging=${pageNumber}`)
         .then(response => response.json())
-        .then(data => {
+        .then(({totalPages, articles}) => { // 解構新數據結構
             // 渲染文章列表
-            data.forEach(article => {
+            articles.forEach(article => {
                 var articleDiv = document.createElement('div');
                 articleDiv.classList.add('article-div'); // 添加 class 為 article-div
 
@@ -160,17 +160,36 @@ function fetchArticles(pageNumber = 0) {
                 articleList.appendChild(articleDiv);
             });
 
-            // 渲染分頁按鈕
-            for (let i = 0; i <= 50; i++) {
+            // 渲染分頁按鈕 (只顯示 1~4 頁)
+            for (let i = 1; i <= Math.min(totalPages, 4); i++) {
                 var pageButton = document.createElement('button');
                 pageButton.textContent = i;
                 pageButton.addEventListener('click', function () {
-                    fetchArticles(i);
+                    fetchArticles(i - 1); // 注意頁數從 0 開始
                 });
                 pagination.appendChild(pageButton);
             }
-        })
 
+            // 如果總頁數大於 4，顯示 "More" 按鈕
+            if (totalPages > 4) {
+                var moreButton = document.createElement('button');
+                moreButton.textContent = 'More';
+                moreButton.addEventListener('click', function () {
+                    // 渲染剩餘頁數按鈕
+                    for (let i = 4; i < totalPages; i++) {
+                        var pageButton = document.createElement('button');
+                        pageButton.textContent = i + 1;
+                        pageButton.addEventListener('click', function () {
+                            fetchArticles(i); // 注意頁數從 0 開始
+                        });
+                        pagination.appendChild(pageButton);
+                    }
+                    // 移除 "More" 按鈕
+                    pagination.removeChild(moreButton);
+                });
+                pagination.appendChild(moreButton);
+            }
+        })
         .catch(error => {
             console.error('Error:', error);
         });

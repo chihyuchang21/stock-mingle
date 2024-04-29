@@ -69,6 +69,10 @@ public class ArticleService {
         return articleRepository.findByTitleOrContentContaining(keyword, pageable);
     }
 
+    public int countTotalArticles() {
+        return articleRepository.countTotalArticles();
+    }
+
 
     public List<Article> findArticlesByTopics(int page, Category favoriteTopic, Category recommendTopic1, Category recommendTopic2, int pageSize) {
 

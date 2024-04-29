@@ -120,5 +120,7 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
     @Query(value = "SELECT * FROM article WHERE lower(title) LIKE lower(concat('%', :keyword, '%')) OR lower(content) LIKE lower(concat('%', :keyword, '%'))", nativeQuery = true)
     List<Article> findByTitleOrContentContaining(@Param("keyword") String keyword, Pageable pageable);
 
+    @Query("SELECT COUNT(a) FROM Article a")
+    int countTotalArticles();
 
 }

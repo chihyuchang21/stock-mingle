@@ -45,7 +45,7 @@ public class ArticleController {
     // Guests can read all of articles (If no token)
     @GetMapping
     @ResponseBody
-    public ResponseEntity<List<Article>> getAllArticles(@RequestParam(value = "paging", defaultValue = "0") int paging) {
+    public ResponseEntity<Map<String, Object>> getAllArticles(@RequestParam(value = "paging", defaultValue = "0") int paging) {
         int pageSize = 10;
         // 10 uncategorized article data
         List<Article> articleList = articleService.getAllArticles(paging, pageSize);
@@ -55,7 +55,16 @@ public class ArticleController {
             article.setNickname(nickname);
         }
 
-        return ResponseEntity.ok(articleList);
+        // 計算總頁數
+        int totalArticles = articleService.countTotalArticles();
+        int totalPages = (int) Math.ceil((double) totalArticles / pageSize);
+
+        // 返回結果，包括文章列表和總頁數
+        Map<String, Object> response = new HashMap<>();
+        response.put("articles", articleList);
+        response.put("totalPages", totalPages);
+
+        return ResponseEntity.ok(response);
     }
 
 
