@@ -27,11 +27,12 @@ public class User {
 //    @JoinColumn(name = "gender_match", referencedColumnName = "id")
     private Integer genderMatch;
 
+    //    @Lob
     private String image;
 
     public User() {
         // no-argument constructor
     }
-    
+
 }
 

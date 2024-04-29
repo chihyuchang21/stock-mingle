@@ -51,12 +51,14 @@ public class UserService {
         // Hashed Password
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);  //Before entering DB, pwd should be hashed
+        //這行改成Multipartfile的上傳
         user.setImage("default");
 
         // Save User Information to DB
         userRepository.save(user);
         return true;
     }
+
 
     public User authenticateUser(String accountName, String rawPassword) {
         User user = userRepository.getUserByAccountName(accountName);

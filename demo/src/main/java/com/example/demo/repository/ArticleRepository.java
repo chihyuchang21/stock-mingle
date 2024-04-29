@@ -116,4 +116,9 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
 
     Optional<Article> findById(int id);
 
+    // 先用lower轉換為小寫，在用concat把要查的內容包在%中
+    @Query(value = "SELECT * FROM article WHERE lower(title) LIKE lower(concat('%', :keyword, '%')) OR lower(content) LIKE lower(concat('%', :keyword, '%'))", nativeQuery = true)
+    List<Article> findByTitleOrContentContaining(@Param("keyword") String keyword, Pageable pageable);
+
+
 }

@@ -64,6 +64,11 @@ public class ArticleService {
         return optionalArticle.orElse(null);
     }
 
+    public List<Article> findArticlesByKeyword(String keyword, int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return articleRepository.findByTitleOrContentContaining(keyword, pageable);
+    }
+
 
     public List<Article> findArticlesByTopics(int page, Category favoriteTopic, Category recommendTopic1, Category recommendTopic2, int pageSize) {
 

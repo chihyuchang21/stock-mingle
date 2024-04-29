@@ -274,6 +274,86 @@ function getCategoryClass(category) {
     }
 }
 
+// Function to search articles based on keyword
+function searchArticles(keyword) {
+    // Check if the keyword is empty
+    if (keyword === '') {
+        alert('Please enter a keyword to search.');
+        return;
+    }
+
+    // Construct the search API URL with the keyword
+    const apiUrl = `/api/1.0/articles/search?keyword=${encodeURIComponent(keyword)}`;
+
+    // Fetch articles based on the keyword
+    fetch(apiUrl)
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Failed to fetch articles.');
+            }
+        })
+        .then(data => {
+            // Function to render articles on the page
+            function renderArticles(articles) {
+                // Get the article list container
+                const articleList = document.getElementById('articleList');
+
+                // Clear previous articles
+                articleList.innerHTML = '';
+
+                // Check if the data contains the "data" key and it is an array
+                if (Array.isArray(articles.data)) {
+                    // Iterate through each article
+                    articles.data.forEach(article => {
+                        // Truncate content if it exceeds maxContentLength
+                        var content = article.content;
+                        var maxContentLength = 300;
+                        var truncatedContent = content.length > maxContentLength ? content.substring(0, maxContentLength) + "..." : content;
+
+                        // Create a div element for the article
+                        const articleDiv = document.createElement('div');
+                        articleDiv.classList.add('article-div'); // Add a class for styling
+
+                        // Set the HTML content for the article div
+                        articleDiv.innerHTML = `
+                            <h3>${article.title}</h3>
+                            <div class="content">${truncatedContent}</div>
+                            <div class="article-details">
+                                <p>Author: ${article.userId.nickname}</p>
+                                <p>Likes: ${article.likeCount}</p>
+                                <p>Comments: ${article.commentCount}</p>
+                                <p>Category: ${article.categoryId.category}</p>
+                            </div>
+                            <hr>
+                        `;
+
+                        // Append the article div to the article list container
+                        articleList.appendChild(articleDiv);
+                    });
+                } else {
+                    console.error('Data is not in the expected format:', articles);
+                }
+            }
+
+            // Render articles based on the search result
+            renderArticles(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+// Add click event listener to the search button
+searchButton.addEventListener('click', function () {
+    // Get the keyword from the search input
+    const keyword = searchInput.value.trim();
+
+    // Call the searchArticles function with the keyword
+    searchArticles(keyword);
+});
+
 
 // Get article list when the page loads
 window.onload = function () {

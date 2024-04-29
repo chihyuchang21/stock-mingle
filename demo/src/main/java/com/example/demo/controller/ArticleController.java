@@ -110,6 +110,40 @@ public class ArticleController {
         return ResponseEntity.ok(article);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<?> searchProductsByKeyword(
+            @RequestParam("keyword") String keyword,
+            @RequestParam(value = "paging", defaultValue = "0") int paging) {
+
+        //error1: no keyword
+        if (keyword == null) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Keyword parameter is required"));
+        }
+
+        try {
+            int pageSize = 10; // 10 articles every page
+            List<Article> articleList = articleService.findArticlesByKeyword(keyword, paging, pageSize);
+
+            //error2: can't find products
+            if (articleList.isEmpty()) {
+                return ResponseEntity.badRequest().body(Map.of("error", "No articles found."));
+            }
+
+            //Return Array of Product Object
+            Map<String, Object> response = new HashMap<>();
+            response.put("data", articleList);
+
+
+            return ResponseEntity.ok(response);
+
+        } catch (NumberFormatException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Invalid paging value. Please ensure it's a valid integer."));
+        } catch (Exception e) {
+            // Server Error
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "An unexpected error occurred."));
+        }
+    }
+
 
     @PostMapping
     @ResponseBody
