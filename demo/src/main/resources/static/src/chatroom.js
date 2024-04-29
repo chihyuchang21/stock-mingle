@@ -99,7 +99,7 @@ stompClient.onConnect = (frame) => {
         const newMessage = JSON.parse(chats.body);
 
         // 在前端顯示新訊息
-        $("#greetings").append(`<tr><td style="text-align: left;">${newMessage.content}</td><td style="text-align: right;">${newMessage.formattedSendTime}</td></tr>`);
+        $("#messages").append(`<tr><td style="text-align: left;">${newMessage.content}</td><td style="text-align: right;">${newMessage.formattedSendTime}</td></tr>`);
 
     });
 
@@ -123,7 +123,7 @@ function setConnected(connected) {
     } else {
         $("#conversation").hide();
     }
-    $("#greetings").html("");
+    $("#messages").html("");
 }
 
 function connect() {
@@ -199,14 +199,12 @@ function showMessage(pairingHistoryId) {
             console.log('Messages:', data);
             // 在這裡處理從後端返回的訊息，將其顯示在前端頁面上
             data.forEach(message => {
-                $("#greetings").append(`<tr><td style="text-align: left;">${message.content}</td><td style="text-align: right;">${message.formattedSendTime}</td></tr>`);
+                $("#messages").append(`<tr><td style="text-align: left;">${message.content}</td><td style="text-align: right;">${message.formattedSendTime}</td></tr>`);
             });
         })
         .catch(error => {
             console.error('Error:', error);
         });
-
-
 }
 
 $(function () {

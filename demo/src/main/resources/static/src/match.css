@@ -178,3 +178,61 @@ a:hover {
 .content-details {
     flex: 1;
 }
+
+.match-container {
+    font-family: 'Roboto', sans-serif; /* 使用 Roboto 字體 */
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.match-info {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.match-avatar {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.match-nickname {
+    font-family: 'Montserrat', sans-serif; /* 使用 Montserrat 字體 */
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.enter-chat-btn {
+    font-family: 'Montserrat', sans-serif; /* 使用 Montserrat 字體 */
+    background-color: #4CAF50;
+    color: white;
+    padding: 20px 40px;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-align: center;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.enter-chat-btn:hover {
+    background-color: #45a049;
+}

@@ -7,10 +7,6 @@ body {
     padding: 1em 2em;
     margin: 0 auto 50px;
     background-color: #fff;
-    /*border: 1px solid #e5e5e5;*/
-    /*-webkit-border-radius: 5px;*/
-    /*-moz-border-radius: 5px;*/
-    /*border-radius: 5px;*/
 }
 
 
@@ -108,4 +104,73 @@ body {
 
 .content-details {
     flex: 1;
+}
+
+/* 美化聊天室 */
+#chatroom-list {
+    background-color: #f5f5f5; /* 聊天室側邊欄的背景顏色 */
+    width: 300px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 添加陰影效果 */
+}
+
+#chatroom-list h3 {
+    color: #333; /* 標題顏色 */
+    font-size: 24px; /* 標題字體大小 */
+    margin-bottom: 20px; /* 標題下方間距 */
+}
+
+#chatroom-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+#chatroom-list ul li {
+    margin-bottom: 10px; /* 聊天室列表項目之間的間距 */
+    border: 1px solid #ccc; /* 添加方框 */
+    border-radius: 5px; /* 圓角 */
+    padding: 40px; /* 內邊距 */
+}
+
+#chatroom-list ul li:hover {
+    border-color: #ff6f61; /* 懸停時改變邊框顏色 */
+    background-color: #f5f5f5; /* 懸停時改變背景顏色 */
+}
+
+
+#chatroom-list ul li a {
+    color: #666; /* 鏈接顏色 */
+    text-decoration: none; /* 移除下劃線 */
+    font-size: 18px; /* 字體大小 */
+    transition: color 0.3s ease; /* 平滑過渡 */
+}
+
+#chatroom-list ul li a:hover {
+    color: #ff6f61; /* 滑鼠懸停時的顏色 */
+}
+
+#main-content {
+    background-color: #fff; /* 聊天室主內容的背景顏色 */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 添加陰影效果 */
+}
+
+#conversation th {
+    font-size: 20px; /* 表頭字體大小 */
+    color: #333; /* 表頭文字顏色 */
+}
+
+#conversation td {
+    font-size: 18px; /* 表格內容字體大小 */
+}
+
+.form-inline .form-control {
+    width: 70%; /* 輸入框寬度 */
+}
+
+.form-inline .btn {
+    font-size: 20px; /* 按鈕字體大小 */
+    padding: 10px 20px; /* 按鈕內邊距 */
 }
