@@ -78,16 +78,16 @@ public class ArticleController {
 
         // Get user ID from JWT token
         Integer userId = Integer.parseInt(claims.getSubject()); // Assuming subject is user ID
-        logger.info("userid: " + userId);
+//        logger.info("userid: " + userId);
 
         UserClickDetail userClickDetail = userClickDetailRepository.findByUserId(userId).orElse(new UserClickDetail());
 
         Category favoriteTopic = userClickDetail.getFavoriteTopic();
-        logger.info("favoriteTopic: " + favoriteTopic);
+//        logger.info("favoriteTopic: " + favoriteTopic);
         Category recommendTopic1 = userClickDetail.getRecommendTopic1();
-        logger.info("RecommendTopic1: " + recommendTopic1);
+//        logger.info("RecommendTopic1: " + recommendTopic1);
         Category recommendTopic2 = userClickDetail.getRecommendTopic2();
-        logger.info("RecommendTopic2: " + recommendTopic2);
+//        logger.info("RecommendTopic2: " + recommendTopic2);
 
 
         int pageSize = 10;

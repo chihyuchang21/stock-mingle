@@ -69,29 +69,29 @@ public class ArticleService {
         favoriteTopicCount = Math.min(favoriteTopicCount, pageSize);
         recommendTopic1Count = Math.min(recommendTopic1Count, pageSize - favoriteTopicCount);
         recommendTopic2Count = Math.min(recommendTopic2Count, pageSize - favoriteTopicCount - recommendTopic1Count);
-        logger.info("favoriteTopicCount: " + favoriteTopicCount);
-        logger.info("recommendTopic1Count: " + recommendTopic1Count);
-        logger.info("recommendTopic2Count: " + recommendTopic2Count);
+//        logger.info("favoriteTopicCount: " + favoriteTopicCount);
+//        logger.info("recommendTopic1Count: " + recommendTopic1Count);
+//        logger.info("recommendTopic2Count: " + recommendTopic2Count);
 
 
         // 根據每一類文章的數量查找相應的文章
         Pageable pageable = PageRequest.of(page, pageSize);
-        logger.info("pageable: " + pageable);
-        logger.info("Page: " + page);
-        logger.info("pageSize: " + pageSize);
+//        logger.info("pageable: " + pageable);
+//        logger.info("Page: " + page);
+//        logger.info("pageSize: " + pageSize);
 
 
         List<Article> favoriteTopicArticles = articleRepository.findFavoriteTopicArticles(pageable, favoriteTopic);
         List<Article> recommendTopic1Articles = articleRepository.findRecommendTopic1Articles(pageable, recommendTopic1);
         List<Article> recommendTopic2Articles = articleRepository.findRecommendTopic2Articles(pageable, recommendTopic2);
 
-        logger.info("favoriteTopicArticles:" + favoriteTopicArticles);
-        logger.info("recommendTopic1Articles:" + recommendTopic1Articles);
-        logger.info("recommendTopic2Articles:" + recommendTopic2Articles);
-
-        logger.info("favoriteTopic:" + favoriteTopic);
-        logger.info("recommendTopic1:" + recommendTopic1);
-        logger.info("recommendTopic2:" + recommendTopic2);
+//        logger.info("favoriteTopicArticles:" + favoriteTopicArticles);
+//        logger.info("recommendTopic1Articles:" + recommendTopic1Articles);
+//        logger.info("recommendTopic2Articles:" + recommendTopic2Articles);
+//
+//        logger.info("favoriteTopic:" + favoriteTopic);
+//        logger.info("recommendTopic1:" + recommendTopic1);
+//        logger.info("recommendTopic2:" + recommendTopic2);
 
         articles.addAll(favoriteTopicArticles.subList(0, Math.min(favoriteTopicArticles.size(), favoriteTopicCount)));
         articles.addAll(recommendTopic1Articles.subList(0, Math.min(recommendTopic1Articles.size(), recommendTopic1Count)));
