@@ -1,0 +1,106 @@
+#articleDetail {
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    overflow: hidden;
+}
+
+#articleDetail h2 {
+    font-size: 28px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+#articleDetail p {
+    margin-bottom: 15px;
+    line-height: 1.6;
+    color: #555;
+}
+
+#articleDetail p:first-child {
+    font-weight: bold;
+    color: #000;
+}
+
+#articleDetail p:last-child {
+    margin-bottom: 0;
+}
+
+#articleDetail a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+#articleDetail a:hover {
+    text-decoration: underline;
+}
+
+#articleDetail .author {
+    font-style: italic;
+}
+
+#articleDetail .stats {
+    font-size: 14px;
+    color: #777;
+}
+
+/* 根據文章類別變色 */
+#articleDetail p.company-news {
+    background-color: #FF6B6B; /* 粉紅色 */
+    color: white;
+    border-radius: 5px;
+    padding: 2.5px;
+    width: 130px;
+}
+
+#articleDetail p.broad-market-news {
+    background-color: #FFD166; /* 橙黃色 */
+    color: white;
+    border-radius: 5px;
+    padding: 2.5px;
+    width: 160px;
+}
+
+#articleDetail p.company-discussion {
+    background-color: #06D6A0; /* 青色 */
+    color: white;
+    border-radius: 5px;
+    padding: 2.5px;
+    width: 170px;
+}
+
+#articleDetail p.advice-request {
+    background-color: #118AB2; /* 深藍色 */
+    color: white;
+    border-radius: 5px;
+    padding: 2.5px;
+    width: 130px;
+}
+
+#articleDetail p.other {
+    color: white;
+    background-color: #073B4C; /* 深綠色 */
+    border-radius: 5px;
+    padding: 2.5px;
+    width: 70px;
+}
+
+
+/* 圓角邊框 */
+#articleDetail p.${categoryClass} {
+    border-radius: 5px;
+    padding: 2.5px;
+    color: white;
+}
+
+
+.article-more-details {
+    display: flex; /* 將子元素排列在同一行上 */
+}
+
+.article-more-details p {
+    margin-right: 20px; /* 添加右邊距來分隔元素 */
+}

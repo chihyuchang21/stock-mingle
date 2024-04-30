@@ -98,13 +98,30 @@ stompClient.onConnect = (frame) => {
         // 解析新訊息
         const newMessage = JSON.parse(chats.body);
 
+        // 獲取當前時間
+        const currentTime = formatDate(new Date());
+
+        // 使用新消息的時間，如果不存在則使用當前時間
+        const messageTime = newMessage.formattedSendTime ? newMessage.formattedSendTime : currentTime;
+
         // 在前端顯示新訊息
-        $("#messages").append(`<tr><td style="text-align: left;">${newMessage.content}</td><td style="text-align: right;">${newMessage.formattedSendTime}</td></tr>`);
+        $("#messages").append(`<tr><td style="text-align: left;">${newMessage.content}</td><td style="text-align: right;">${messageTime}</td></tr>`);
 
     });
 
     showMessage(pairingHistoryId);
 };
+
+// 格式化日期和時間
+function formatDate(date) {
+    console.log("原date: " + date);
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    console.log("後date: " + `${month}/${day} ${hours}:${minutes}`);
+    return `${month}/${day} ${hours}:${minutes}`;
+}
 
 stompClient.onWebSocketError = (error) => {
     console.error('Error with websocket', error);
@@ -135,6 +152,12 @@ function disconnect() {
     setConnected(false);
     console.log("Disconnected");
 }
+
+// 清空消息框内容
+function clearMessageBox() {
+    $("#content").val("");
+}
+
 
 function sendName() {
     const content = $("#content").val(); // 假設你有一個表單元素用於輸入 content
@@ -180,6 +203,9 @@ function sendName() {
                     'sendTime': timestamp
                 })
             });
+
+            clearMessageBox(); // 發送msg後清空訊息
+
         })
         .catch(error => {
             console.error('Error:', error);

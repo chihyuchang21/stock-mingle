@@ -46,14 +46,18 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json())
             .then(article => {
                 // Populate the article details in the HTML
+
+                var categoryClass = getCategoryClass(article.categoryId.category);
                 const articleDetailDiv = document.getElementById('articleDetail');
                 articleDetailDiv.innerHTML = `
                     <h2>${article.title}</h2>
-                    <p>Category: ${article.categoryId.category}</p>
-                    <p>Content: ${article.content}</p>
-                    <p>Author: ${article.userId}</p>
-                    <p>Likes: ${article.likeCount}</p>
-                    <p>Comments: ${article.commentCount}</p>
+                    <p class="${categoryClass}">  # ${article.categoryId.category}</p>
+                    <p>${article.content}</p>
+                    <div class="article-more-details">
+                        <p>Author: ${article.userId.nickname}</p>
+                        <p>Likes: ${article.likeCount}</p>
+                        <p>Comments: ${article.commentCount}</p>
+                    </div>
                 `;
             })
             .catch(error => {
@@ -64,3 +68,18 @@ document.addEventListener('DOMContentLoaded', function () {
     // Call the fetchArticleDetails function when the page loads
     fetchArticleDetails();
 });
+
+function getCategoryClass(category) {
+    switch (category) {
+        case 'Company News':
+            return 'company-news';
+        case 'Broad market news':
+            return 'broad-market-news';
+        case 'Company Discussion':
+            return 'company-discussion';
+        case 'Advice Request':
+            return 'advice-request';
+        default:
+            return 'other';
+    }
+}

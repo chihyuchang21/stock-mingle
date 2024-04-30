@@ -166,11 +166,34 @@ body {
     font-size: 18px; /* 表格內容字體大小 */
 }
 
+/* 美化輸入框 */
 .form-inline .form-control {
-    width: 70%; /* 輸入框寬度 */
+    width: calc(100% - 100px); /* 調整輸入框寬度，減去按鈕寬度和間距 */
+    padding: 10px; /* 調整內邊距 */
+    border: 1px solid #ccc; /* 添加邊框 */
+    border-radius: 5px; /* 圓角 */
 }
 
+/* 美化按鈕 */
 .form-inline .btn {
     font-size: 20px; /* 按鈕字體大小 */
-    padding: 10px 20px; /* 按鈕內邊距 */
+    padding: 5px 10px; /* 調整內邊距 */
+    /*margin-left: 10px; !* 調整左邊距 *!*/
+    background-color: #ff6f61; /* 按鈕背景顏色 */
+    color: #fff; /* 按鈕文字顏色 */
+    border: none; /* 移除邊框 */
+    border-radius: 5px; /* 圓角 */
+}
+
+/* 懸停時變換按鈕顏色 */
+.form-inline .btn:hover {
+    background-color: #e25e4b; /* 懸停時的背景顏色 */
+}
+
+/* Media query for smaller screens */
+@media screen and (max-width: 767px) {
+    #main-content {
+        max-width: calc(100vw - 40px);
+        margin: 0 auto 50px;
+    }
 }
