@@ -96,6 +96,20 @@ function fetchArticleDetails(articleId) {
         });
 }
 
+// 設置當前頁面的按鈕樣式
+function setActiveButton(pageNumber) {
+    var pagination = document.getElementById('pagination');
+    var buttons = pagination.getElementsByTagName('button');
+    for (let i = 0; i < buttons.length; i++) {
+        if (parseInt(buttons[i].textContent) === pageNumber + 1) {
+            buttons[i].classList.add('active');
+        } else {
+            buttons[i].classList.remove('active');
+        }
+    }
+}
+
+
 /*
 fetchArticle (for guest)
 */
@@ -116,7 +130,6 @@ function fetchArticles(pageNumber = 0) {
                 var articleDiv = document.createElement('div');
                 articleDiv.classList.add('article-div'); // 添加 class 為 article-div
 
-
                 // Listen for click event
                 articleDiv.addEventListener('click', function () {
                     publishClickEvent(article.categoryId, article.timestamp);
@@ -126,7 +139,6 @@ function fetchArticles(pageNumber = 0) {
                 articleDiv.addEventListener('click', function () {
                     fetchArticleDetails(article.id); // 發到後端
                 });
-                console.log("article.id: " + article.id);
 
                 var content = article.content;
                 var maxContentLength = 300; // 文章最長內容
@@ -164,8 +176,12 @@ function fetchArticles(pageNumber = 0) {
             for (let i = 1; i <= Math.min(totalPages, 4); i++) {
                 var pageButton = document.createElement('button');
                 pageButton.textContent = i;
+                if (i === pageNumber + 1) { // 添加激活的按鈕類
+                    pageButton.classList.add('active');
+                }
                 pageButton.addEventListener('click', function () {
                     fetchArticles(i - 1); // 注意頁數從 0 開始
+                    setActiveButton(i - 1);
                 });
                 pagination.appendChild(pageButton);
             }
@@ -189,6 +205,11 @@ function fetchArticles(pageNumber = 0) {
                 });
                 pagination.appendChild(moreButton);
             }
+
+            // 顯示目前頁數
+            // var pageInfo = document.createTextNode(`目前是 ${pageNumber + 1}/${totalPages} 頁`);
+            // pagination.appendChild(pageInfo);
+
         })
         .catch(error => {
             console.error('Error:', error);
