@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.MatchFriendInfo;
-import com.example.demo.dto.SignupRequest;
 import com.example.demo.middleware.JwtTokenService;
 import com.example.demo.model.user.User;
 import com.example.demo.service.FileService;
@@ -86,10 +85,15 @@ public class UserController {
     }
 
     @PostMapping("/signup/hashtag")
-    public ResponseEntity<?> signUp(@RequestBody SignupRequest signupRequest) {
-        String accountName = signupRequest.getAccountName();
-        List<String> hashtags = signupRequest.getHashtags();
-        MultipartFile userImage = signupRequest.getImage();
+    public ResponseEntity<?> signUp(@RequestParam("accountName") String accountName,
+                                    @RequestParam("image") MultipartFile image,
+                                    @RequestParam("hashtags") List<String> hashtags) {
+//        String accountName = signupRequest.getAccountName();
+//        List<String> hashtags = signupRequest.getHashtags();
+//        MultipartFile userImage = signupRequest.getImage();
+
+        System.out.println("image:" + image);
+        System.out.println("hashtags:" + hashtags);
 
         // 根據帳戶名查找用戶ID
         Integer userId = userService.getUserIdByAccountName(accountName);
@@ -102,6 +106,7 @@ public class UserController {
 
         // 保存興趣標籤到數據庫
         for (String hashtag : hashtags) {
+            System.out.println("hashtag" + hashtag);
             userService.saveUserHashtag(userId, hashtag);
         }
 

@@ -175,19 +175,28 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log('Sign up successful. Access token:', data.access_token);
             fetchUserProfile(data.access_token);
 
+
+            const image = document.getElementById('image').files[0]; // 從input file元素中獲取上傳的圖片
+            console.log("Image Object: " + image);
+            console.log("Image name: " + image.name); // 印出文件名
+            console.log("Image size: " + image.size + " bytes"); // 印出文件大小
+
             // 發送hashtags到'/api/1.0/user/signup/hashtag'
-            const hashtagsData = {
-                accountName: accountName,
-                hashtags: selectedHashtags
-            };
+            const formData = new FormData(); // 創建FormData對象，用於包含表單數據
+            formData.append('accountName', accountName);
+            formData.append('image', image); // 將圖片添加到FormData中
+            formData.append('hashtags', JSON.stringify(selectedHashtags)); // 將JSON數據轉換為字符串並添加到FormData中
 
             const hashtagsResponse = await fetch('/api/1.0/user/signup/hashtag', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(hashtagsData)
+                body: formData, // 使用FormData作為body，這將自動設置合適的Content-Type
+                // headers: {
+                //     // 確保服務器能夠正確解析multipart/form-data類型的請求
+                //     // 同時指定接收JSON數據的Content-Type
+                //     'Content-Type': 'multipart/form-data'
+                // }
             });
+
 
             if (!hashtagsResponse.ok) {
                 console.error('Failed to send hashtags data');

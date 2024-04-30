@@ -78,7 +78,7 @@ public class UserService {
     public void saveUserHashtag(Integer userId, String hashtagName) {
         // 創建UserHashtag對象並保存到數據庫
         UserHashtag userHashtag = new UserHashtag();
-
+        System.out.println("HashtagName in Service:" + hashtagName);
         // 先根據userId查詢對應的User對象
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
