@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,10 +88,13 @@ public class UserController {
     @PostMapping("/signup/hashtag")
     public ResponseEntity<?> signUp(@RequestParam("accountName") String accountName,
                                     @RequestParam("image") MultipartFile image,
-                                    @RequestParam("hashtags") List<String> hashtags) {
+                                    @RequestParam("hashtags") String hashtags) {
 //        String accountName = signupRequest.getAccountName();
 //        List<String> hashtags = signupRequest.getHashtags();
 //        MultipartFile userImage = signupRequest.getImage();
+
+        List<String> hashtagList = Arrays.asList(hashtags.split(",")); // 將逗號分隔的String改為單層List<String>
+
 
         System.out.println("image:" + image);
         System.out.println("hashtags:" + hashtags);
@@ -105,7 +109,7 @@ public class UserController {
 //        fileService.saveUserImage(userImage, request);
 
         // 保存興趣標籤到數據庫
-        for (String hashtag : hashtags) {
+        for (String hashtag : hashtagList) {
             System.out.println("hashtag" + hashtag);
             userService.saveUserHashtag(userId, hashtag);
         }

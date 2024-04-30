@@ -185,8 +185,10 @@ document.addEventListener('DOMContentLoaded', function () {
             const formData = new FormData(); // 創建FormData對象，用於包含表單數據
             formData.append('accountName', accountName);
             formData.append('image', image); // 將圖片添加到FormData中
-            formData.append('hashtags', JSON.stringify(selectedHashtags)); // 將JSON數據轉換為字符串並添加到FormData中
 
+            const hashtagsString = selectedHashtags.flat().join(','); // 展開嵌套的列表，將其轉換為單層字符串列表，並以逗號分隔
+            formData.append('hashtags', hashtagsString); // 將單層字符串列表添加到 FormData 中
+            
             const hashtagsResponse = await fetch('/api/1.0/user/signup/hashtag', {
                 method: 'POST',
                 body: formData, // 使用FormData作為body，這將自動設置合適的Content-Type
