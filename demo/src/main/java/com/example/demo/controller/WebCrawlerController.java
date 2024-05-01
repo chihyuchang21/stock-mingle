@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.service.FredStockService;
 import com.example.demo.service.WebCrawlerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,9 +20,11 @@ public class WebCrawlerController {
 
     private static final Logger logger = LoggerFactory.getLogger(WebCrawlerController.class);
     private final WebCrawlerService webCrawlerService;
+    private final FredStockService fredStockService;
 
-    public WebCrawlerController(WebCrawlerService webCrawlerService) {
+    public WebCrawlerController(WebCrawlerService webCrawlerService, FredStockService fredStockService) {
         this.webCrawlerService = webCrawlerService;
+        this.fredStockService = fredStockService;
     }
 
     @GetMapping("/reddit-article")
@@ -50,6 +53,18 @@ public class WebCrawlerController {
     public ResponseEntity<?> getStockGeneralIndex() {
         try {
             webCrawlerService.getStockGeneralIndex();
+            return ResponseEntity.ok("Stock Index Data saved to DB!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to fetch stock general index: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/stock-info-fred")
+    @ResponseBody
+    public ResponseEntity<?> getStockGeneralIndexFromFred() {
+        try {
+            fredStockService.getStockGeneralIndex();
             return ResponseEntity.ok("Stock Index Data saved to DB!");
         } catch (Exception e) {
             e.printStackTrace();
