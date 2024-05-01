@@ -9,6 +9,7 @@ import com.example.demo.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureException;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -88,14 +89,15 @@ public class UserController {
     @PostMapping("/signup/hashtag")
     public ResponseEntity<?> signUp(@RequestParam("accountName") String accountName,
                                     @RequestParam("image") MultipartFile image,
-                                    @RequestParam("hashtags") String hashtags) {
+                                    @RequestParam("hashtags") String hashtags,
+                                    HttpServletRequest request) {
 //        String accountName = signupRequest.getAccountName();
 //        List<String> hashtags = signupRequest.getHashtags();
 //        MultipartFile userImage = signupRequest.getImage();
 
         List<String> hashtagList = Arrays.asList(hashtags.split(",")); // 將逗號分隔的String改為單層List<String>
 
-
+        System.out.println("request: " + request);
         System.out.println("image:" + image);
         System.out.println("hashtags:" + hashtags);
 
@@ -113,6 +115,8 @@ public class UserController {
             System.out.println("hashtag" + hashtag);
             userService.saveUserHashtag(userId, hashtag);
         }
+
+        userService.saveUserImage(image, request, userId);
 
         // 返回成功信息
         return ResponseEntity.ok("Hashtags saved successfully");

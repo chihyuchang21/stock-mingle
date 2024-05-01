@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.dto.MatchFriendInfo;
 import com.example.demo.model.user.*;
 import com.example.demo.repository.*;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Stream;
@@ -32,6 +36,8 @@ public class UserService {
     private HashtagRepository hashtagRepository;
     @Autowired
     private GenderRepository genderRepository;
+    @Autowired
+    private S3Uploader s3Uploader;
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -93,6 +99,44 @@ public class UserService {
         userHashtag.setHashtag(hashtag);
         // 調用Repository保存到數據庫
         userHashtagRepository.save(userHashtag);
+    }
+
+    // 存user圖片
+    public void saveUserImage(MultipartFile image, HttpServletRequest request, Integer userId) {
+        if (image != null && !image.isEmpty()) {
+            String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+            logger.info("baseUrl: " + baseUrl);
+            logger.info("userId: " + userId);
+            String ImageValue = saveMultipartFile(image, userId, baseUrl);
+            logger.info("ImageValue from first func" + ImageValue);
+//            saveImageInfo(ImageValue, userId);
+        }
+    }
+
+    public String saveMultipartFile(MultipartFile image, long userId, String baseUrl) {
+        if (image != null && !image.isEmpty()) {
+            try {
+                // 路徑
+                String baseDir = System.getProperty("user.dir");
+                String relativeDir = "uploads/";
+                String fileName = image.getOriginalFilename();
+                String filePath = baseDir + File.separator + relativeDir + "user" + userId + "-" + fileName;
+
+                logger.info("fileName: " + fileName);
+
+                s3Uploader.saveMultipartFileToFile(image, "uploads/user" + userId + "-" + fileName);
+
+
+                String imageUrl = baseUrl + "/" + relativeDir + "user" + userId + "-" + fileName;
+                logger.info("imageUrl: " + imageUrl);
+                return imageUrl;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+        return null;
     }
 
 
