@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,6 +68,37 @@ public class ArticleService {
         return articleRepository.findByTitleOrContentContaining(keyword, pageable);
     }
 
+    public Article toggleLike(Integer articleId) {
+        // 使用 findById 方法獲取 Optional<Article> 對象 (JPA內建為Optional)
+        Optional<Article> optionalArticle = articleRepository.findById(articleId);
+        // 檢查是否存在對應的文章
+        if (optionalArticle.isPresent()) {
+            Article article = optionalArticle.get(); // 從 Optional 中取得 Article 對象
+            // 根據 isLiked 參數來新增或減少點讚數量
+            article.setLikeCount(article.getLikeCount() + 1);
+            // 更新文章到資料庫
+            return articleRepository.save(article);
+        } else {
+            throw new IllegalArgumentException("Article not found with ID: " + articleId);
+        }
+    }
+
+    public Article cancelLike(Integer articleId) {
+        // 使用 findById 方法獲取 Optional<Article> 對象 (JPA內建為Optional)
+        Optional<Article> optionalArticle = articleRepository.findById(articleId);
+        // 檢查是否存在對應的文章
+        if (optionalArticle.isPresent()) {
+            Article article = optionalArticle.get(); // 從 Optional 中取得 Article 對象
+            // 根據 isLiked 參數來新增或減少點讚數量
+            article.setLikeCount(article.getLikeCount() - 1);
+            // 更新文章到資料庫
+            return articleRepository.save(article);
+        } else {
+            throw new IllegalArgumentException("Article not found with ID: " + articleId);
+        }
+    }
+
+
     public int countTotalArticles() {
         return articleRepository.countTotalArticles();
     }
@@ -118,7 +148,7 @@ public class ArticleService {
 
 
         // 將文章列表打亂
-        Collections.shuffle(articles);
+//        Collections.shuffle(articles);
 
         return articles;
 //        return articleRepository.findAllArticlesByPageAndTopics(favoriteTopic, recommendTopic1, recommendTopic2, pageable);

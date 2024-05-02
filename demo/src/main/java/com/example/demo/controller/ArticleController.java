@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.LikeRequest;
 import com.example.demo.model.article.Article;
 import com.example.demo.model.article.Category;
 import com.example.demo.model.user.User;
@@ -205,6 +206,20 @@ public class ArticleController {
         List<Article> articles = articleService.getAllArticle();
         return ResponseEntity.ok(articles);
     }
+
+    @PostMapping("/like")
+    public ResponseEntity<?> likeArticle(@RequestBody LikeRequest likeRequest) {
+        System.out.println(likeRequest);
+        Integer articleId = likeRequest.getArticleId();
+        try {
+            // call service
+            articleService.toggleLike(articleId);
+            return new ResponseEntity<>(HttpStatus.CREATED); // 點讚成功
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); // 點讚失敗
+        }
+    }
+
 
     @PostMapping("/click-events")
     @ResponseBody

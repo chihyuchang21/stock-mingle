@@ -159,7 +159,7 @@ function fetchArticles(pageNumber = 0) {
                 
 <!--                暫時把image寫死-->
                     <div class="image-wrapper">
-                        <img src="https://img.money.com/2022/05/News-Plunging-Stocks-401k.jpg" alt="Stock Market!!" width="400" height="250">
+<!--                        <img src="https://img.money.com/2022/05/News-Plunging-Stocks-401k.jpg" alt="Stock Market!!" width="400" height="250">-->
                     </div>               
                      <div class="article-details">
                     <p>Author: ${article.userId.nickname}</p>
@@ -268,7 +268,7 @@ function fetchArticlesByAlgo(pageNumber = 0) {
                 <div class="content">${truncatedContent}</div>
 <!--                暫時把image寫死-->
                     <div class="image-wrapper">
-                        <img src="https://img.money.com/2022/05/News-Plunging-Stocks-401k.jpg" alt="Stock Market!!" width="400" height="250">
+<!--                        <img src="https://img.money.com/2022/05/News-Plunging-Stocks-401k.jpg" alt="Stock Market!!" width="400" height="250">-->
                     </div>
                 <div class="article-details">
                     <p>Author: ${article.userId.nickname}</p>

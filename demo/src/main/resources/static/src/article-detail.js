@@ -55,8 +55,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     <p>${article.content}</p>
                     <div class="article-more-details">
                         <p>Author: ${article.userId.nickname}</p>
-                        <p>Likes: ${article.likeCount}</p>
                         <p>Comments: ${article.commentCount}</p>
+                        <p>Likes: <span id="likeCount">${article.likeCount}</span></p> <!-- 使用 span 包點讚數字 -->
+                        <button id="likeButton" onclick="toggleLike(${article.id}, true)">Like</button>
+                        
                     </div>
                 `;
             })
@@ -68,6 +70,38 @@ document.addEventListener('DOMContentLoaded', function () {
     // Call the fetchArticleDetails function when the page loads
     fetchArticleDetails();
 });
+
+function toggleLike(articleId) {
+    // 禁用 Like 按鈕，避免重複點擊
+    document.getElementById('likeButton').disabled = true;
+
+    // 發送 POST 請求給後端的 /api/1.0/articles/like ，傳遞 articleId
+    fetch('/api/1.0/articles/like', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({articleId: articleId})
+    })
+        .then(response => {
+            if (response.ok) {
+                // 如果請求成功，更新點讚數量
+                const likeCountElement = document.getElementById('likeCount');
+                const currentLikeCount = parseInt(likeCountElement.innerText);
+                if (response.status === 201) {
+                    likeCountElement.innerText = currentLikeCount + 1; // 點贊成功，數量 +1
+                } else if (response.status === 204) {
+                    likeCountElement.innerText = currentLikeCount - 1; // 取消點贊成功，數量 -1
+                }
+            } else {
+                console.error('Failed to like/unlike article');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
 
 function getCategoryClass(category) {
     switch (category) {

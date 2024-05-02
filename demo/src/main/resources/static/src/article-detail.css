@@ -99,8 +99,21 @@
 
 .article-more-details {
     display: flex; /* 將子元素排列在同一行上 */
+    align-items: center; /* 垂直居中對齊子元素 */
+
 }
 
 .article-more-details p {
     margin-right: 20px; /* 添加右邊距來分隔元素 */
+}
+
+#likeButton {
+    padding: 1px 3px; /* 設置按鈕內邊距 */
+    width: 60px;
+    height: 30px;
+    border: none; /* 移除按鈕邊框 */
+}
+
+#likeButton:hover {
+    background-color: #D0D0D0; /* 鼠標懸停時的按鈕背景色 */
 }
