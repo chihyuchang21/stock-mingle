@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.LikeRequest;
 import com.example.demo.model.article.Article;
+import com.example.demo.model.article.ArticleComment;
 import com.example.demo.model.article.Category;
 import com.example.demo.model.user.User;
 import com.example.demo.model.user.UserClickDetail;
@@ -114,10 +115,34 @@ public class ArticleController {
     @ResponseBody
     public ResponseEntity<?> getArticleDetails(@RequestParam("id") String id) {
         Article article = articleService.getArticleById(id);
+        List<ArticleComment> comment = articleService.getCommentByArticleId(id);
+        System.out.println("comment: " + comment);
+        logger.info("comment: " + comment);
         if (article == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Article not found"));
         }
         return ResponseEntity.ok(article);
+    }
+
+    @GetMapping("/details/comments")
+    @ResponseBody
+    public ResponseEntity<?> getCommentsDetails(@RequestParam("id") String id) {
+        List<ArticleComment> comment = articleService.getCommentByArticleId(id);
+        int commentCount = comment.size(); //算在前端
+
+//        Map<String, Object> responseBody = new HashMap<>();
+//        responseBody.put("comments", comment);
+//        responseBody.put("commentCount", commentCount);
+        return ResponseEntity.ok(comment);
+    }
+
+    @PostMapping("/details/comments")
+    @ResponseBody
+    public ResponseEntity<?> postCommentsDetails(@RequestParam("id") String id) {
+        List<ArticleComment> comment = articleService.getCommentByArticleId(id);
+        int commentCount = comment.size(); //計算留言的數量
+
+        return ResponseEntity.ok(comment);
     }
 
     @GetMapping("/search")

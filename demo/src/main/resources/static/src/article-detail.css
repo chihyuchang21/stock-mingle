@@ -107,6 +107,28 @@
     margin-right: 20px; /* 添加右邊距來分隔元素 */
 }
 
+.commentParagraph {
+    background-color: white; /* 設置背景色 */
+    height: 75px;
+    /*border: 1px solid #ccc; !* 加上邊框 *!*/
+    /*border-radius: 5px; !* 圓角 *!*/
+    padding: 10px; /* 添加內邊距 */
+    margin-bottom: 10px; /* 底部間距 */
+    font-weight: normal;
+
+    /* 將文字垂直置中 */
+    display: flex;
+    align-items: center;
+
+    /* 上下都有底線 */
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    font-weight: normal !important;
+
+
+}
+
+
 #likeButton {
     padding: 1px 3px; /* 設置按鈕內邊距 */
     width: 60px;
@@ -117,3 +139,32 @@
 #likeButton:hover {
     background-color: #D0D0D0; /* 鼠標懸停時的按鈕背景色 */
 }
+
+/*留言輸入框*/
+.commentInputContainer {
+    margin-top: 20px; /* 添加上方間距 */
+    display: flex; /* 使用 flex 佈局 */
+    align-items: center; /* 垂直居中對齊 */
+}
+
+.commentInputContainer input[type="text"] {
+    flex: 1; /* 自動延伸以填滿剩餘空間 */
+    padding: 10px; /* 添加內邊距 */
+    border: 1px solid #ccc; /* 添加邊框 */
+    border-radius: 5px; /* 圓角 */
+}
+
+.commentInputContainer button {
+    padding: 10px 20px; /* 設置按鈕內邊距 */
+    margin-left: 10px; /* 添加左邊距與 input 框分隔 */
+    background-color: #007bff; /* 按鈕背景色 */
+    color: white; /* 按鈕文字顏色 */
+    border: none; /* 移除按鈕邊框 */
+    border-radius: 5px; /* 圓角 */
+    cursor: pointer; /* 鼠標樣式為手型 */
+}
+
+.commentInputContainer button:hover {
+    background-color: #0056b3; /* 鼠標懸停時的按鈕背景色 */
+}
+

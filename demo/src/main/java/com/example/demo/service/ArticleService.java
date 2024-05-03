@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.model.article.Article;
+import com.example.demo.model.article.ArticleComment;
 import com.example.demo.model.article.Category;
 import com.example.demo.model.user.UserClickDetail;
 import com.example.demo.model.user.UserClickEvent;
@@ -39,6 +40,9 @@ public class ArticleService {
     private ObjectMapper objectMapper;
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    @Autowired
+    private ArticleCommentRepository articleCommentRepository;
+
 
     public ArticleService(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
@@ -62,6 +66,12 @@ public class ArticleService {
         Optional<Article> optionalArticle = articleRepository.findById(Integer.parseInt(id.trim()));
         return optionalArticle.orElse(null);
     }
+
+    public List<ArticleComment> getCommentByArticleId(String id) {
+        List<ArticleComment> comments = articleCommentRepository.findByArticleId(id);
+        return comments;
+    }
+
 
     public List<Article> findArticlesByKeyword(String keyword, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
