@@ -73,48 +73,35 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 });
 
+// websocket
+var stompClient = null;
 
-let stompClient = new StompJs.Client({
-    // local
-    brokerURL: 'wss://3.209.143.199/gs-guide-websocket'
-
-    // Cloud
-    // brokerURL: 'wss://3.209.143.199/gs-guide-websocket'
-});
-
-stompClient.onConnect = (frame) => {
-    setConnected(true);
-    console.log('Connected: ' + frame);
-    // const userPairingHistoryId = $("#userPairingHistoryId").val(); // 先填寫userPairingHistoryId(頻道
-
-    const params = new URLSearchParams(window.location.search);
-
-    const pairingHistoryId = params.get('pairingHistoryId');
-    console.log(pairingHistoryId);
-
-    const subscriptionPath = '/topic/chats/' + pairingHistoryId;
-    console.log('Subscribing to path:', subscriptionPath); // 訂閱的路徑
-
-    stompClient.subscribe(subscriptionPath, (chats) => {
-        console.log('Received Message:', chats.body);
-        console.log('Parsed content:', JSON.parse(chats.body).content); // JSON Parse的結果
-
-        // 解析新訊息
-        const newMessage = JSON.parse(chats.body);
-
-        // 獲取當前時間
-        const currentTime = formatDate(new Date());
-
-        // 使用新消息的時間，如果不存在則使用當前時間
-        const messageTime = newMessage.formattedSendTime ? newMessage.formattedSendTime : currentTime;
-
-        // 在前端顯示新訊息
-        $("#messages").append(`<tr><td style="text-align: left;">${newMessage.content}</td><td style="text-align: right;">${messageTime}</td></tr>`);
-
+function connect() {
+    var socket = new SockJS('https://3.209.143.199/gs-guide-websocket'); // 這端點是 websocket server 的位置
+    stompClient = Stomp.over(socket); // 把 websocket 對象包裹成 stomp 對象，以便用 stomp 協議通訊
+    console.log("here?");
+    stompClient.connect({}, frame => {
+        console.log('Connected: ' + frame);
+        const params = new URLSearchParams(window.location.search);
+        const pairingHistoryId = params.get('pairingHistoryId');
+        console.log(pairingHistoryId);
+        const subscriptionPath = '/topic/chats/' + pairingHistoryId;
+        console.log('Subscribing to path:', subscriptionPath); // 訂閱的路徑
+        stompClient.subscribe(subscriptionPath, chats => {
+            console.log('Received Message:', chats.body);
+            console.log('Parsed content:', JSON.parse(chats.body).content); // JSON Parse 的結果
+            // 解析新訊息
+            const newMessage = JSON.parse(chats.body);
+            // 獲取當前時間
+            const currentTime = formatDate(new Date());
+            // 使用新消息的時間，如果不存在則使用當前時間
+            const messageTime = newMessage.formattedSendTime ? newMessage.formattedSendTime : currentTime;
+            // 在前端顯示新訊息
+            $("#messages").append(`<tr><td style="text-align: left;">${newMessage.content}</td><td style="text-align: right;">${messageTime}</td></tr>`);
+        });
+        showMessage(pairingHistoryId);
     });
-
-    showMessage(pairingHistoryId);
-};
+}
 
 // 格式化日期和時間
 function formatDate(date) {
@@ -127,49 +114,34 @@ function formatDate(date) {
     return `${month}/${day} ${hours}:${minutes}`;
 }
 
-stompClient.onWebSocketError = (error) => {
-    console.error('Error with websocket', error);
-};
+// stompClient.onWebSocketError = error => {
+//     console.error('Error with websocket', error);
+// };
+//
+// stompClient.onStompError = frame => {
+//     console.error('Broker reported error: ' + frame.headers['message']);
+//     console.error('Additional details: ' + frame.body);
+// };
 
-stompClient.onStompError = (frame) => {
-    console.error('Broker reported error: ' + frame.headers['message']);
-    console.error('Additional details: ' + frame.body);
-};
-
-function setConnected(connected) {
-    $("#connect").prop("disabled", connected);
-    $("#disconnect").prop("disabled", !connected);
-    if (connected) {
-        $("#conversation").show();
-    } else {
-        $("#conversation").hide();
-    }
-    $("#messages").html("");
-}
-
-function connect() {
-    stompClient.activate();
-}
-
-function disconnect() {
-    stompClient.deactivate();
-    setConnected(false);
-    console.log("Disconnected");
-}
+// function connect() {
+//     stompClient.activate();
+// }
+//
+// function disconnect() {
+//     stompClient.deactivate();
+//     console.log("Disconnected");
+// }
 
 // 清空消息框内容
 function clearMessageBox() {
     $("#content").val("");
 }
 
-
 function sendName() {
     const content = $("#content").val(); // 假設你有一個表單元素用於輸入 content
-    // var content = tinymce.activeEditor.getContent(); // TinyMCE
     const params = new URLSearchParams(window.location.search);
     const pairingHistoryId = params.get('pairingHistoryId');
     const token = localStorage.getItem('accessToken');
-
     // 使用 fetch 函數獲取使用者(sender)的資訊
     fetch('/api/1.0/user/profile', {
         headers: {
@@ -184,38 +156,26 @@ function sendName() {
         })
         .then(data => {
             console.log('Fetched user profile:', data); // 輸出 fetch 到的資料
-
             const senderUserId = data.data.id; // 從回傳的資料中獲取 senderId，記得要用data.data.id
             const senderNickname = data.data.nickname; // 獲取用戶的暱稱
-
-
             console.log("senderId:" + senderUserId);
             console.log("data.id:" + data.data.id);
-
             const timestamp = new Date().getTime(); //現在時間
             const destination = "/app/hello/" + pairingHistoryId; // 要進入的頻道
-
             console.log('Sending message to:', destination);
-
             // 發送訊息
-            stompClient.publish({
-                destination: destination,
-                body: JSON.stringify({
-                    'senderUserId': senderUserId,
-                    'content': senderNickname + ': ' + content, // 包含暱稱的訊息內容
-                    'userPairingHistoryId': pairingHistoryId,
-                    'sendTime': timestamp
-                })
-            });
-
+            stompClient.send(destination, {}, JSON.stringify({
+                'senderUserId': senderUserId,
+                'content': senderNickname + ': ' + content, // 包含暱稱的訊息內容
+                'userPairingHistoryId': pairingHistoryId,
+                'sendTime': timestamp
+            }));
             clearMessageBox(); // 發送msg後清空訊息
-
         })
         .catch(error => {
             console.error('Error:', error);
         });
 }
-
 
 function showMessage(pairingHistoryId) {
     fetch(`/api/1.0/messages?userPairingHistoryId=${pairingHistoryId}`)
@@ -239,9 +199,7 @@ function showMessage(pairingHistoryId) {
 
 $(function () {
     $("form").on('submit', (e) => e.preventDefault());
-    // $("#connect").click(() => connect());
     connect();
-    // $("#disconnect").click(() => disconnect());
     $("#send").click(() => sendName());
 });
 
