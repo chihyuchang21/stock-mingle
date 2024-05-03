@@ -1,4 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
 #articleDetail {
+    font-family: "Lora", serif;
     max-width: 800px;
     margin: 20px auto;
     background-color: #fff;
@@ -9,6 +12,7 @@
 }
 
 #articleDetail h2 {
+    font-family: "Lora", serif;
     font-size: 28px;
     margin-bottom: 15px;
     color: #333;
@@ -47,44 +51,41 @@
     color: #777;
 }
 
+.board-list hr {
+    border: none; /* 移除原來的邊框 */
+    border-top: 1.5px solid black; /* 添加上方2px粗的黑色邊框 */
+    width: 180px;
+}
+
 /* 根據文章類別變色 */
 #articleDetail p.company-news {
-    background-color: #FF6B6B; /* 粉紅色 */
-    color: white;
-    border-radius: 5px;
+    background-color: #ffe1e7; /* 粉紅色 */
+    color: darkred;
     padding: 2.5px;
-    width: 130px;
+    width: 140px;
 }
 
 #articleDetail p.broad-market-news {
     background-color: #FFD166; /* 橙黃色 */
     color: white;
-    border-radius: 5px;
-    padding: 2.5px;
-    width: 160px;
+    width: 180px;
 }
 
 #articleDetail p.company-discussion {
-    background-color: #06D6A0; /* 青色 */
-    color: white;
-    border-radius: 5px;
-    padding: 2.5px;
+    background-color: #dbfad7; /* 青色 */
+    color: #247046;
     width: 170px;
 }
 
 #articleDetail p.advice-request {
     background-color: #118AB2; /* 深藍色 */
     color: white;
-    border-radius: 5px;
-    padding: 2.5px;
-    width: 130px;
+    width: 140px;
 }
 
 #articleDetail p.other {
-    color: white;
-    background-color: #073B4C; /* 深綠色 */
-    border-radius: 5px;
-    padding: 2.5px;
+    color: midnightblue;
+    background-color: rgb(223, 246, 246);
     width: 70px;
 }
 
@@ -150,14 +151,14 @@
 .commentInputContainer input[type="text"] {
     flex: 1; /* 自動延伸以填滿剩餘空間 */
     padding: 10px; /* 添加內邊距 */
-    border: 1px solid #ccc; /* 添加邊框 */
-    border-radius: 5px; /* 圓角 */
+    /*border: 1px solid #ccc; !* 添加邊框 *!*/
+    /*border-radius: 5px; !* 圓角 *!*/
 }
 
 .commentInputContainer button {
     padding: 10px 20px; /* 設置按鈕內邊距 */
     margin-left: 10px; /* 添加左邊距與 input 框分隔 */
-    background-color: #007bff; /* 按鈕背景色 */
+    background-color: #f39389; /* 按鈕背景色 */
     color: white; /* 按鈕文字顏色 */
     border: none; /* 移除按鈕邊框 */
     border-radius: 5px; /* 圓角 */
@@ -165,6 +166,6 @@
 }
 
 .commentInputContainer button:hover {
-    background-color: #0056b3; /* 鼠標懸停時的按鈕背景色 */
+    background-color: #f36757; /* 鼠標懸停時的按鈕背景色 */
 }
 

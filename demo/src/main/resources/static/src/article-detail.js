@@ -91,8 +91,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         const inputContainer = document.createElement('div');
                         inputContainer.classList.add('commentInputContainer');
                         inputContainer.innerHTML = `
-                        <input type="text" id="commentInput" placeholder="在此輸入留言...">
-                        <button onclick="postComment()">留言</button>
+                        <input type="text" id="commentInput" placeholder="Say something...">
+                        <button onclick="postComment()">Post</button>
                         `;
 
                         // Append input container after commentsDiv

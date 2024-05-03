@@ -283,12 +283,12 @@ function fetchArticlesByAlgo(pageNumber = 0) {
             });
 
             // 渲染分頁按鈕
-            for (let i = 0; i <= 3; i++) {
+            for (let i = 1; i <= 4; i++) {
                 var pageButton = document.createElement('button');
                 pageButton.textContent = i;
                 pageButton.classList.add('pagination-button'); // 添加類名
                 pageButton.addEventListener('click', function () {
-                    fetchArticlesByAlgo(i);
+                    fetchArticlesByAlgo(i - 1);
                 });
                 pagination.appendChild(pageButton);
             }
