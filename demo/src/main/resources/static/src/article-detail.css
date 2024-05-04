@@ -110,7 +110,7 @@
 
 .commentParagraph {
     background-color: white; /* 設置背景色 */
-    height: 75px;
+    height: 150px;
     /*border: 1px solid #ccc; !* 加上邊框 *!*/
     /*border-radius: 5px; !* 圓角 *!*/
     padding: 10px; /* 添加內邊距 */
@@ -148,9 +148,11 @@
     align-items: center; /* 垂直居中對齊 */
 }
 
-.commentInputContainer input[type="text"] {
+.commentInputContainer textarea {
     flex: 1; /* 自動延伸以填滿剩餘空間 */
     padding: 10px; /* 添加內邊距 */
+    font-family: "Lora", serif;
+
     /*border: 1px solid #ccc; !* 添加邊框 *!*/
     /*border-radius: 5px; !* 圓角 *!*/
 }
@@ -161,7 +163,7 @@
     background-color: #f39389; /* 按鈕背景色 */
     color: white; /* 按鈕文字顏色 */
     border: none; /* 移除按鈕邊框 */
-    border-radius: 5px; /* 圓角 */
+    /*border-radius: 5px; !* 圓角 *!*/
     cursor: pointer; /* 鼠標樣式為手型 */
 }
 

@@ -138,12 +138,46 @@ public class ArticleController {
 
     @PostMapping("/details/comments")
     @ResponseBody
-    public ResponseEntity<?> postCommentsDetails(@RequestParam("id") String id) {
-        List<ArticleComment> comment = articleService.getCommentByArticleId(id);
-        int commentCount = comment.size(); //計算留言的數量
+    public ResponseEntity<?> postCommentsDetails(@RequestBody ArticleComment articleComment, @RequestHeader(value = "Authorization") String jwtToken) {
 
-        return ResponseEntity.ok(comment);
+        logger.info("ArticleComment: " + articleComment);
+
+        try {
+            // Remove Bearer prefix and check if the token is present
+            if (jwtToken == null || !jwtToken.startsWith("Bearer ")) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Bearer token is missing"));
+            }
+
+            String token = jwtToken.substring(7); // Remove "Bearer " prefix
+
+            // Parse the JWT token to extract user information
+            Claims claims = Jwts.parser()
+                    .setSigningKey(jwtSecret)
+                    .parseClaimsJws(token)
+                    .getBody();
+
+            // Get user ID from JWT token
+            Integer userId = Integer.parseInt(claims.getSubject()); // Assuming subject is user ID
+            User user = userService.getUserById(userId);
+            articleComment.setUserId(user);
+
+            articleService.postComment(articleComment);
+            Map<String, Object> response = new HashMap<>();
+            response.put("data", articleComment);
+            return ResponseEntity.ok(response);
+
+        } catch (SignatureException ex) {
+            // JWT invalid
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Invalid JWT token"));
+        } catch (JwtException ex) {
+            // Other JWT error
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "JWT token error"));
+        } catch (Exception ex) {
+            // other error
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "An error occurred processing your request"));
+        }
     }
+
 
     @GetMapping("/search")
     public ResponseEntity<?> searchProductsByKeyword(

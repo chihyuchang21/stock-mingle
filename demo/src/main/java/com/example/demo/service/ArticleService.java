@@ -52,6 +52,10 @@ public class ArticleService {
         articleRepository.save(article);
     }
 
+    public void postComment(ArticleComment article) {
+        articleCommentRepository.save(article);
+    }
+
     public List<Article> getAllArticle() {
         return articleRepository.findAll();
     }

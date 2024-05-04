@@ -91,8 +91,9 @@ document.addEventListener('DOMContentLoaded', function () {
                         const inputContainer = document.createElement('div');
                         inputContainer.classList.add('commentInputContainer');
                         inputContainer.innerHTML = `
-                        <input type="text" id="commentInput" placeholder="Say something...">
-                        <button onclick="postComment()">Post</button>
+                        <textarea id="commentInput" placeholder="Say something..."></textarea>
+                        <button onclick="postComment(${article.id})">Post</button> 
+                       <!-- 把article.id送進post func-->
                         `;
 
                         // Append input container after commentsDiv
@@ -115,6 +116,27 @@ document.addEventListener('DOMContentLoaded', function () {
     // Call the fetchArticleDetails function
     fetchArticleDetails();
 });
+
+function postComment(articleId) {
+    const commentInput = document.getElementById('commentInput').value;
+
+    if (commentInput.trim() === '') {
+        alert('Please enter a comment.')
+        return;
+    }
+
+    const newComment = {
+        articleId: articleId,
+        content: content
+    }
+
+    fetch(
+
+
+    )
+
+
+}
 
 
 function toggleLike(articleId) {
