@@ -203,6 +203,7 @@ a:hover {
 }
 
 .image-wrapper {
+    float: right; /* 將圖片浮動到右側 */
     margin-left: 20px;
 }
 
@@ -212,8 +213,17 @@ a:hover {
 
 .content {
     flex: 1;
+    /*float: left; !* 有img 將文章內容浮動到左側 *!*/
+    /*width: 90%; !* 有img 設置文章內容的寬度，這樣右側的圖片就有足夠的空間 *!*/
 }
 
+/*有 img*/
+/*.img {*/
+/*    margin-left: 20px;*/
+/*    float: right; !* 將圖片浮動到右側 *!*/
+/*    width: 10%; !* 設置圖片的寬度，這樣文章內容就有足夠的空間 *!*/
+/*    border-radius: 2px;*/
+/*}*/
 
 /* 分頁按鈕容器的樣式 */
 .pagination {

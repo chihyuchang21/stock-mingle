@@ -156,10 +156,12 @@ function fetchArticles(pageNumber = 0) {
                 articleDiv.innerHTML = `
                 <h3>${article.title}</h3>
                 <div class="content">${truncatedContent}</div>
+<!--                <img src="https://img.money.com/2022/05/News-Plunging-Stocks-401k.jpg" alt="Stock Market!!" width="120" height="120">-->
+
                 
 <!--                暫時把image寫死-->
                     <div class="image-wrapper">
-<!--                        <img src="https://img.money.com/2022/05/News-Plunging-Stocks-401k.jpg" alt="Stock Market!!" width="400" height="250">-->
+<!--                        <img src="https://img.money.com/2022/05/News-Plunging-Stocks-401k.jpg" alt="Stock Market!!" width="100" height="100">-->
                     </div>               
                      <div class="article-details">
                     <p>Author: ${article.userId.nickname}</p>
