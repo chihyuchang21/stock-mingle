@@ -25,7 +25,7 @@ import java.util.Optional;
 @Repository
 public interface ArticleRepository extends JpaRepository<Article, Integer> {
     static final Logger logger = LoggerFactory.getLogger(ArticleRepository.class);
-//    //之後可以加orderby
+//    之後可以加orderby
 
     @Query("SELECT a FROM Article a ORDER BY a.id DESC")
     List<Article> findAllArticlesByPageOrder(Pageable pageable);
@@ -104,6 +104,8 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
 
     @Query("SELECT a FROM Article a WHERE a.categoryId = :favoriteTopic OR a.categoryId = :recommendTopic1 OR a.categoryId = :recommendTopic2")
     List<Article> findAllArticlesByPageAndTopics(Category favoriteTopic, Category recommendTopic1, Category recommendTopic2, Pageable pageable);
+
+    // List好像可以直接用這個
 
     @Query("SELECT a FROM Article a WHERE a.categoryId = :favoriteTopic ORDER BY a.id ASC")
     List<Article> findFavoriteTopicArticles(Pageable pageable, @Param("favoriteTopic") Category favoriteTopic);
