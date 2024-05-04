@@ -28,6 +28,8 @@ public class Article {
     @Transient //DB沒有這一欄
     private String nickname;
 
+    private String image;
+
     // 定義setCategory 方法
     public void setCategory(Category category) {
         this.categoryId = category;
@@ -42,5 +44,4 @@ public class Article {
             return null;
         }
     }
-
 }

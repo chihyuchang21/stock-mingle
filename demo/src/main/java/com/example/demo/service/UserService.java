@@ -107,8 +107,17 @@ public class UserService {
             String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
             logger.info("baseUrl: " + baseUrl);
             logger.info("userId: " + userId);
-            String ImageValue = saveMultipartFile(image, userId, baseUrl);
-            logger.info("ImageValue from first func" + ImageValue);
+            String fileName = image.getOriginalFilename();
+//            String s3Url = "https://d1p236hm2ki7mx.cloudfront.net/uploads/" +
+
+            // 把檔案存到 S3
+            saveMultipartFile(image, userId, baseUrl);
+
+            String fileUrlSaved = "https://d1p236hm2ki7mx.cloudfront.net/uploads/" + "user" + userId + "-" + fileName;
+
+            userRepository.updateUserImage(fileUrlSaved, userId);
+
+            logger.info("https://d1p236hm2ki7mx.cloudfront.net/uploads/" + "user" + userId + "-" + fileName);
 //            saveImageInfo(ImageValue, userId);
         }
     }

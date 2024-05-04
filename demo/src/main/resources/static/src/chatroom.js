@@ -76,7 +76,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 let stompClient = new StompJs.Client({
     // local
-    brokerURL: 'wss://3.209.143.199/gs-guide-websocket'
+    // brokerURL: 'wss://3.209.143.199/gs-guide-websocket'
+    brokerURL: 'ws://localhost:8080/gs-guide-websocket'
 
     // Cloud
     // brokerURL: 'wss://3.209.143.199/gs-guide-websocket'

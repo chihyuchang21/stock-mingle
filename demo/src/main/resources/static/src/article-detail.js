@@ -53,6 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <h2>${article.title}</h2>
                     <p class="${categoryClass}">  # ${article.categoryId.category}</p>
                     <p>${article.content}</p>
+                       <img src="${article.image}" alt="${article.title}" style="width: 500px; height: 150px;"> <!--class="match-avatar" -->
                     <div class="article-more-details">
                         <p>Author: ${article.userId.nickname}</p>
                         <p>Comments: ${article.commentCount}</p>
