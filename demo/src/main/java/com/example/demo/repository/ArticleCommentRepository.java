@@ -10,6 +10,9 @@ import java.util.List;
 public interface ArticleCommentRepository extends JpaRepository<ArticleComment, Integer> {
     List<ArticleComment> findByArticleId(String articleId);
 
+    String countByArticleId(String articleId);
+
+
 }
 
 

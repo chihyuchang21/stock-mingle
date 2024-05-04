@@ -68,14 +68,19 @@ document.addEventListener('DOMContentLoaded', function () {
                         // Create a div to hold comments
                         const commentsDiv = document.createElement('div');
                         commentsDiv.id = 'commentsDiv';
+                        const commentsCount = document.getElementById('commentsCount');
+                        // commentsCount.textContent += comments.length; // 設置評論數量為回應中物件的數量
+
 
                         // Populate comments in the HTML
                         comments.forEach(comment => {
                             const commentDiv = document.createElement('div');
                             const paragraph = document.createElement('p');
 
-                            // Set the text content of the paragraph
-                            paragraph.textContent = `${comment.userId.nickname}: ${comment.content}`;
+                            // Set the text content of the paragraph // Edit Here
+                            // paragraph.innerHTML = `${comment.userId.nickname}:<br>${comment.content}`;
+                            paragraph.innerHTML = `<span class="nickname">${comment.userId.nickname}:</span>${comment.content}`;
+
 
                             // Add CSS class to the paragraph
                             paragraph.classList.add('commentParagraph');
@@ -119,6 +124,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function postComment(articleId) {
     const commentInput = document.getElementById('commentInput').value;
+    var token = localStorage.getItem('accessToken');
+
 
     if (commentInput.trim() === '') {
         alert('Please enter a comment.')
@@ -127,15 +134,29 @@ function postComment(articleId) {
 
     const newComment = {
         articleId: articleId,
-        content: content
+        content: commentInput
     }
 
-    fetch(
 
-
-    )
-
-
+    fetch('/api/1.0/articles/details/comments', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token // 在標頭中包含Bearer Token
+        },
+        body: JSON.stringify(newComment)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to post comment.');
+            }
+            document.getElementById('commentInput').value = ''; // 清除評論輸入框
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error('Error posting comment:', error);
+            alert('Failed to post comment. Please try again later.');
+        });
 }
 
 

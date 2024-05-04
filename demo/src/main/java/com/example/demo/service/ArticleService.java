@@ -52,8 +52,18 @@ public class ArticleService {
         articleRepository.save(article);
     }
 
-    public void postComment(ArticleComment article) {
-        articleCommentRepository.save(article);
+    public void postComment(ArticleComment articleComment) {
+        articleCommentRepository.save(articleComment);
+        updateArticleCommentCount(articleComment.getArticleId());
+    }
+
+    public void updateArticleCommentCount(String articleId) {
+        String commentCount = articleCommentRepository.countByArticleId(articleId);
+        int commentCountInt = Integer.parseInt(commentCount);
+        int articleIdInt = Integer.parseInt(articleId);
+        Article article = articleRepository.findById(articleIdInt).orElse(null);
+        article.setCommentCount(commentCountInt);
+        articleRepository.save(article);
     }
 
     public List<Article> getAllArticle() {
