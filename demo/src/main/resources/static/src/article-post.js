@@ -52,7 +52,9 @@ document.addEventListener('DOMContentLoaded', function () {
         var article = {
             title: title,
             categoryId: categoryId,
-            content: content
+            content: content,
+            likeCount: 0,
+            commentCount: 0,
         };
 
         // 送到後端的data

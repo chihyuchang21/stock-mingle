@@ -354,9 +354,16 @@ function searchArticles(keyword) {
                         var maxContentLength = 300;
                         var truncatedContent = content.length > maxContentLength ? content.substring(0, maxContentLength) + "..." : content;
 
+                        // 根據文章類別設定class
+                        var categoryClass = getCategoryClass(article.categoryId.category);
+                        
                         // Create a div element for the article
                         const articleDiv = document.createElement('div');
                         articleDiv.classList.add('article-div'); // Add a class for styling
+
+                        articleDiv.addEventListener('click', function () {
+                            fetchArticleDetails(article.id); // 發到後端
+                        });
 
                         // Set the HTML content for the article div
                         articleDiv.innerHTML = `
@@ -366,7 +373,7 @@ function searchArticles(keyword) {
                                 <p>Author: ${article.userId.nickname}</p>
                                 <p>Likes: ${article.likeCount}</p>
                                 <p>Comments: ${article.commentCount}</p>
-                                <p>Category: ${article.categoryId.category}</p>
+                                <p class="${categoryClass}"> # ${article.categoryId.category}</p>
                             </div>
                             <hr>
                         `;

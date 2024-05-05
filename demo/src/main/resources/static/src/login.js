@@ -60,8 +60,15 @@ async function fetchUserProfile(token) {
 
         const {data} = await response.json();
         // get name and email from data
-        document.getElementById('user-name').textContent = `Account Name: ${data.accountName}`;
-        document.getElementById('user-account').textContent = `Nick Name: ${data.nickname}`;
+        document.getElementById('user-name').textContent = `${data.nickname}`;
+        // document.getElementById('user-account').textContent = `Welcome back, ${data.nickname}`;
+
+        const imageDiv = document.getElementById('user-image');
+        imageDiv.innerHTML = `
+                    <img src="${data.image}" alt="${data.nickname}" class="image-avatar">
+            `;
+
+
         profileContainer.style.display = 'block';
         authContainer.style.display = 'none';
     } catch (error) {
@@ -188,7 +195,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const hashtagsString = selectedHashtags.flat().join(','); // 展開嵌套的列表，將其轉換為單層字符串列表，並以逗號分隔
             formData.append('hashtags', hashtagsString); // 將單層字符串列表添加到 FormData 中
-            
+
             const hashtagsResponse = await fetch('/api/1.0/user/signup/hashtag', {
                 method: 'POST',
                 body: formData, // 使用FormData作為body，這將自動設置合適的Content-Type

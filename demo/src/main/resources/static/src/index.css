@@ -286,9 +286,9 @@ a:hover {
 }
 
 
-.article-div hr {
-    margin-top: 5px; /* 設置上邊距為5px，其他邊距為預設值（0） */
-}
+/*.article-div hr {*/
+/*    margin-top: 5px; !* 設置上邊距為5px，其他邊距為預設值（0） *!*/
+/*}*/
 
 
 /* 游標滑過效果 */
@@ -298,7 +298,7 @@ a:hover {
 }
 
 .article-div h3 {
-    margin-top: 0.5px;
+    margin-top: 0.05px;
 }
 
 
