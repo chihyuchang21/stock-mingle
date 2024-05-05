@@ -43,7 +43,7 @@ function renderChatrooms(chatrooms) {
     chatrooms.forEach(chatroom => {
         const li = document.createElement('li');
         const a = document.createElement('a');
-        a.href = `chatroom.html?pairingHistoryId=${chatroom}`;
+        a.href = `chatroom-sockjs.html?pairingHistoryId=${chatroom}`;
         a.textContent = `Chatroom ${chatroom}`;
         li.appendChild(a);
         ul.appendChild(li);
@@ -77,7 +77,9 @@ document.addEventListener('DOMContentLoaded', () => {
 var stompClient = null;
 
 function connect() {
-    var socket = new SockJS('https://3.209.143.199/gs-guide-websocket'); // 這端點是 websocket server 的位置
+    // var socket = new SockJS('https://3.209.143.199/gs-guide-websocket'); // 這端點是 websocket server 的位置
+    var socket = new SockJS('http://localhost:8080/gs-guide-websocket'); // 這端點是 websocket server 的位置
+
     stompClient = Stomp.over(socket); // 把 websocket 對象包裹成 stomp 對象，以便用 stomp 協議通訊
     console.log("here?");
     stompClient.connect({}, frame => {

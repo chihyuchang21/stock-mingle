@@ -87,5 +87,5 @@ async function fetchTodayMatch(token) {
 
 function redirectToChatRoom(pairingHistoryId, nickname) {
     console.log(nickname);
-    window.location.href = `chatroom.html?pairingHistoryId=${pairingHistoryId}`;
+    window.location.href = `chatroom-sockjs.html?pairingHistoryId=${pairingHistoryId}`;
 }

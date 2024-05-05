@@ -310,6 +310,7 @@ a:hover {
 }
 
 #searchInput {
+    font-family: "PT Sans", sans-serif; /* 將h2的字體設置為Roboto */
     padding: 10px 10px;
     border: 1px solid #ccc;
     border-radius: 8px 0 0 8px; /* 右上角和右下角是8px的直角，其他角是圓角 */
@@ -318,6 +319,7 @@ a:hover {
 }
 
 #searchButton {
+    font-family: "PT Sans", sans-serif; /* 將h2的字體設置為Roboto */
     padding: 10px 20px;
     background-color: #ffd7bb;
     border: none;
