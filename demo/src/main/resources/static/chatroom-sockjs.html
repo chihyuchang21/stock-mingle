@@ -2,10 +2,7 @@
 <html lang="en">
 <head>
     <title>Today's Match</title>
-    <!--    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"-->
-    <!--          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet">-->
     <link href="src/chatroom-sockjs.css" rel="stylesheet">
-    <link href="src/index.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
@@ -26,41 +23,35 @@
 </div>
 
 
-<div class="col-md-3" id="chatroom-list">
-    <h3>Other Chatrooms</h3>
-    <ul>
-        <li><a href="#">Chatroom 1</a></li>
-        <li><a href="#">Chatroom 2</a></li>
-        <li><a href="#">Chatroom 3</a></li>
-        <!-- 添加其他聊天室的連結 -->
-    </ul>
+<div class="container">
+    <div id="chatroom-list">
+        <h3>Other Chatrooms</h3>
+        <ul>
+            <li><a href="#">Chatroom 1</a></li>
+            <li><a href="#">Chatroom 2</a></li>
+            <li><a href="#">Chatroom 3</a></li>
+        </ul>
+    </div>
+
+    <div id="main-content">
+        <table class="table table-striped" id="conversation">
+            <thead>
+            <tr>
+                <th>Messages</th>
+            </tr>
+            </thead>
+            <tbody id="messages">
+            </tbody>
+        </table>
+        <form class="form-inline">
+            <div class="form-group">
+                <input class="form-control" id="content" placeholder="Type Message Here..." type="text">
+                <button class="btn btn-default" id="send" type="submit">Send</button>
+            </div>
+        </form>
+    </div>
 </div>
 
-<div class="container-chatroom" id="main-content">
-    <div class="row">
-        <div class="col-md-12">
-            <table class="table table-striped" id="conversation">
-                <thead>
-                <tr>
-                    <th>Messages</th>
-                </tr>
-                </thead>
-                <tbody id="messages">
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <form class="form-inline">
-                <div class="form-group">
-                    <input class="form-control" id="content" placeholder="Type Message Here..." type="text">
-                    <button class="btn btn-default" id="send" type="submit">Send</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 <script src="src/chatroom-sockjs.js"></script>
 </body>
 </html>

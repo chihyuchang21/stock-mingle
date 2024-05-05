@@ -4,14 +4,27 @@
 
 
 body {
-    background-color: #f5f5f5;
+    font-family: 'Roboto', sans-serif; /* 使用 Roboto 字體 */
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
+
+/*#main-content {*/
+/*    max-width: 800px;*/
+/*    padding: 1em 2em;*/
+/*    margin: 0 auto 50px;*/
+/*    background-color: #fff;*/
+/*}*/
+
 #main-content {
-    max-width: 800px;
-    padding: 1em 2em;
-    margin: 0 auto 50px;
-    background-color: #fff;
+    /*flex: 1; !* 自動伸展 *!*/
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 添加陰影效果 */
 }
 
 
@@ -55,11 +68,43 @@ body {
     overflow: hidden; /* 禁止內容超出容器範圍 */
 }
 
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    padding: 5px 0;
+}
+
+a {
+    color: #333;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #000;
+    text-decoration: underline;
+}
+
+.slogan {
+    font-size: 14px; /* 調整標語的字體大小 */
+}
+
 
 .publish-btn, .match-btn, .account-btn, .logout-btn {
     width: 30px; /* 設置按鈕寬度 */
     height: 30px; /* 設置按鈕高度 */
     margin-left: 40px;
+}
+
+/* 設定icon */
+.list-item {
+    padding-left: 30px; /* 為了給圖像留出空間 */
+    background-size: 20px; /* 調整圖像大小 */
+    background-repeat: no-repeat; /* 避免重複顯示 */
+    background-position: center left; /* 圖像位置設置在左邊中間 */
 }
 
 .gaming-item {
