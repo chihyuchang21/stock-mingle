@@ -44,7 +44,8 @@ function renderChatrooms(chatrooms) {
         const li = document.createElement('li');
         const a = document.createElement('a');
         a.href = `chatroom-sockjs.html?pairingHistoryId=${chatroom}`;
-        a.textContent = `Chatroom ${chatroom}`;
+        // a.textContent = `Chatroom ${chatroom}`;
+        a.textContent = `Chatroom`;
         li.appendChild(a);
         ul.appendChild(li);
     });

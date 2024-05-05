@@ -4,6 +4,7 @@ import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.MatchFriendInfo;
 import com.example.demo.middleware.JwtTokenService;
 import com.example.demo.model.user.User;
+import com.example.demo.repository.UserPairingHistoryRepository;
 import com.example.demo.service.FileService;
 import com.example.demo.service.UserService;
 import io.jsonwebtoken.Claims;
@@ -32,16 +33,21 @@ public class UserController {
     private final UserService userService;
     private final JwtTokenService jwtTokenService;
     private final FileService fileService;
+
+    private final UserPairingHistoryRepository userPairingHistoryRepository;
+
     @Value("${jwt.secret}")
     private String jwtSecret;
 
     // 使用Constructor注入
     public UserController(UserService userService,
                           JwtTokenService jwtTokenService,
-                          FileService fileService) {
+                          FileService fileService,
+                          UserPairingHistoryRepository userPairingHistoryRepository) {
         this.userService = userService;
         this.jwtTokenService = jwtTokenService;
         this.fileService = fileService;
+        this.userPairingHistoryRepository = userPairingHistoryRepository;
     }
 
 
@@ -235,6 +241,26 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", e.getMessage()));
         }
     }
+
+    // 先送 Integer 再改 String
+//    @GetMapping("/user-pairing-history/{pairingId}")
+//    public Integer getOtherUserId(@PathVariable Integer id) {
+//        // 根據前端發送的id，動態確定是使用user1_id還是user2_id來查詢對應的user_id
+//        UserPairingHistory userPairingHistory = userPairingHistoryRepository.findOtherUserId(id);
+//        if (userPairingHistory != null) {
+//            // 如果找到對應的記錄，則返回另一個用戶的id
+//            if (userPairingHistory.getUser1Id().equals(id)) {
+//                return userPairingHistory.getUser2Id();
+//            } else {
+//                return userPairingHistory.getUser1Id();
+//            }
+//        } else {
+//            // 如果查詢結果為空，返回null或者其他預設值，這裡假設返回0
+//            return 0;
+//        }
+//    }
+//}
+
 
     // move to Service testing endpoint
 //    @GetMapping("/refactor")

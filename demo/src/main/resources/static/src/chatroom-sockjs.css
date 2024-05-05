@@ -4,7 +4,7 @@
 
 
 body {
-    font-family: 'Roboto', sans-serif; /* 使用 Roboto 字體 */
+    font-family: "PT Sans", sans-serif;
     margin: 0;
     padding: 0;
     min-height: 100vh;
@@ -12,16 +12,8 @@ body {
     flex-direction: column;
 }
 
-
-/*#main-content {*/
-/*    max-width: 800px;*/
-/*    padding: 1em 2em;*/
-/*    margin: 0 auto 50px;*/
-/*    background-color: #fff;*/
-/*}*/
-
 #main-content {
-    /*flex: 1; !* 自動伸展 *!*/
+    flex: 1; /* 自動伸展 */
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 添加陰影效果 */
@@ -215,17 +207,45 @@ a:hover {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 添加陰影效果 */
 }
 
-#conversation th {
-    font-size: 20px; /* 表頭字體大小 */
-    color: #333; /* 表頭文字顏色 */
+/*#conversation th {*/
+/*    font-size: 20px; !* 表頭字體大小 *!*/
+/*    color: #333; !* 表頭文字顏色 *!*/
+/*}*/
+
+/*#conversation td {*/
+/*    font-size: 18px; !* 表格內容字體大小 *!*/
+/*}*/
+
+#conversation {
+    width: 100%;
+    border-collapse: collapse; /* 合併邊框 */
 }
 
 #conversation td {
-    font-size: 18px; /* 表格內容字體大小 */
+    padding: 8px; /* 調整內邊距 */
+    border-bottom: 1px solid #ddd; /* 加入底部邊框 */
+    flex: 1; /* 自動伸展 */
 }
+
+#conversation th {
+    flex: 1.5; /* 設置<th>元素的flex為1.5，使其與<td>元素相同寬度 */
+    text-align: left; /* 讓<th>元素文字靠左對齊 */
+}
+
+
+#conversation tr:nth-child(even) {
+    background-color: #FFFAF0; /* 設置偶數行背景色 */
+    text-align: right;
+}
+
+#conversation tr:hover {
+    background-color: #ddd; /* 滑鼠懸停時的背景色 */
+}
+
 
 /* 美化輸入框 */
 .form-inline .form-control {
+    margin-top: 10px;
     width: calc(100% - 100px); /* 調整輸入框寬度，減去按鈕寬度和間距 */
     padding: 10px; /* 調整內邊距 */
     border: 1px solid #ccc; /* 添加邊框 */
@@ -255,3 +275,5 @@ a:hover {
         margin: 0 auto 50px;
     }
 }
+
+/*add-on*/

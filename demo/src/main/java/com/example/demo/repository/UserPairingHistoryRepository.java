@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
@@ -20,6 +21,15 @@ public interface UserPairingHistoryRepository extends JpaRepository<UserPairingH
     @Query(value = "SELECT * FROM user_pairing_history " +
             "WHERE (user1_id = :userId OR user2_id = :userId) AND timestamp = :timestamp", nativeQuery = true)
     List<UserPairingHistory> findByUserIdAndTimestamp(Integer userId, Timestamp timestamp);
+
+    @Query("SELECT CASE " +
+            "WHEN u.user1Id = :id THEN u.user2Id " +
+            "WHEN u.user2Id = :id THEN u.user1Id " +
+            "END " +
+            "FROM UserPairingHistory u " +
+            "WHERE u.user1Id = :id OR u.user2Id = :id")
+    List<UserPairingHistory> findOtherUserId(@Param("id") Integer id);
+
 
 //    @Query(value = "SELECT * FROM user_pairing_history " +
 //            "JOIN User u1 ON user_pairing_history.user1_id = u1.id " +
