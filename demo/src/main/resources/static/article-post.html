@@ -13,6 +13,7 @@
     <img class="publish-btn" src="/image/pencil.png" alt="Post" onclick="redirectToArticlePostPage()">
     <img class="match-btn" src="/image/friends.png" alt="Match" onclick="redirectToMatchPage()">
     <img class="account-btn" src="/image/user.png" alt="Log-In / Sign-Up" onclick="redirectToLoginPage()">
+    <img alt="Log-out" class="logout-btn" onclick="logoutClearLocalStorage()" src="/image/logout.png">
 </div>
 
 <div class="container">
@@ -30,7 +31,8 @@
 <!--            <li></li>-->
 <!--        </ul>-->
 
-        <h2>Stock Index Today</h2>
+        <h2>Stock Index</h2>
+        <hr>
         <ul>
             <li class="list-item dow-jones">Dow Jones: 37,983.24</li>
             <li class="list-item sp-500">S&P 500: 5,123.41</li>
@@ -40,10 +42,6 @@
     </div>
 
     <form id="articleForm">
-        <label for="title">Title:</label><br>
-        <input type="text" id="title" name="title"><br>
-        <label for="content">Content:</label><br>
-        <textarea id="content" name="content"></textarea><br>
         <label for="category">Category:</label><br>
         <select id="category" name="category">
             <option value="1">Company News</option>
@@ -52,6 +50,10 @@
             <option value="4">Advice Request</option>
             <option value="5">Others</option>
         </select><br>
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title"><br>
+        <label for="content">Content:</label><br>
+        <textarea id="content" name="content"></textarea><br>
         <button type="submit">Submit</button>
     </form>
 

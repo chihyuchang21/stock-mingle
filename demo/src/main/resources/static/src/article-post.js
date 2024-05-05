@@ -70,7 +70,10 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => {
                 if (response.ok) {
                     alert("Article published successfully!");
-                    // Refresh article list
+                    // Clear input fields
+                    document.getElementById('title').value = '';
+                    tinymce.activeEditor.setContent(''); // Clear content in TinyMCE editor
+                    document.getElementById('category').selectedIndex = 0; // Reset category selection
                     // TODO: fetchArticles();
                 } else {
                     alert("Failed to publish article!");

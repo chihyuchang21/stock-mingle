@@ -23,7 +23,7 @@ body {
 
 .navbar h1 {
     /*font-family: 'Segoe Script', cursive;*/
-    font-family: "PT Sans", sans-serif; /* 使用 Roboto 字體 */
+    font-family: "PT Sans", sans-serif;
     margin: 0;
     padding: 0;
     flex: 1; /* 讓標題佔據剩餘空間 */
