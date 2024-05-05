@@ -1,0 +1,212 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+
+body {
+    background-color: #f5f5f5;
+}
+
+#main-content {
+    max-width: 800px;
+    padding: 1em 2em;
+    margin: 0 auto 50px;
+    background-color: #fff;
+}
+
+
+.navbar {
+    background-color: #ff6f61; /* 活潑的橙紅色 */
+    color: #fff;
+    padding: 10px;
+    display: flex;
+    justify-content: flex-end; /* 將內容靠右對齊 */
+    align-items: center;
+}
+
+.navbar h1 {
+    font-family: "PT Sans", sans-serif; /* 使用 Roboto 字體 */
+    margin: 0;
+    padding: 0;
+    flex: 1; /* 讓標題佔據剩餘空間 */
+    letter-spacing: 2px; /* 調整字元之間的空間 */
+    font-size: 32px;
+}
+
+.navbar h1 .slogan {
+    display: flex; /* 使用 flexbox */
+    align-items: center; /* 垂直居中對齊 */
+    font-size: 10px;
+}
+
+.navbar .slogan h1 {
+    margin-right: 5px; /* 調整標題和副標題之間的間距 */
+}
+
+
+.navbar button {
+    margin-left: 10px; /* 設置按鈕之間的間距 */
+}
+
+.container {
+    flex: 1;
+    display: flex;
+    position: relative;
+    overflow: hidden; /* 禁止內容超出容器範圍 */
+}
+
+
+.publish-btn, .match-btn, .account-btn, .logout-btn {
+    width: 30px; /* 設置按鈕寬度 */
+    height: 30px; /* 設置按鈕高度 */
+    margin-left: 40px;
+}
+
+.gaming-item {
+    background-image: url('/image/console.png');
+}
+
+.sports-item {
+    background-image: url('/image/sports.png');
+}
+
+.business-item {
+    background-image: url('/image/briefcase.png');
+}
+
+.crypto-item {
+    background-image: url('/image/bitcoin.png');
+}
+
+.television-item {
+    background-image: url('/image/television.png');
+}
+
+.celebrity-item {
+    background-image: url('/image/magazine.png');
+}
+
+.dow-jones {
+    background-image: url('/image/letter-d.png');
+}
+
+.sp-500 {
+    background-image: url('/image/spark.png');
+}
+
+.nasdaq {
+    background-image: url('/image/nasdaq.png');
+}
+
+.philadelphia {
+    background-image: url('/image/liberty-bell.png');
+}
+
+.article-content {
+    display: flex;
+    align-items: flex-start;
+}
+
+/*.image-wrapper {*/
+/*    margin-right: 10px;*/
+/*}*/
+
+.article-content img {
+    max-width: 200px;
+}
+
+.content-details {
+    flex: 1;
+}
+
+/* 美化聊天室 */
+#chatroom-list {
+    background-color: #f5f5f5; /* 聊天室側邊欄的背景顏色 */
+    width: 300px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 添加陰影效果 */
+}
+
+#chatroom-list h3 {
+    color: #333; /* 標題顏色 */
+    font-size: 24px; /* 標題字體大小 */
+    margin-bottom: 20px; /* 標題下方間距 */
+}
+
+#chatroom-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+#chatroom-list ul li {
+    margin-bottom: 10px; /* 聊天室列表項目之間的間距 */
+    border: 1px solid #ccc; /* 添加方框 */
+    border-radius: 5px; /* 圓角 */
+    padding: 40px; /* 內邊距 */
+}
+
+#chatroom-list ul li:hover {
+    border-color: #ff6f61; /* 懸停時改變邊框顏色 */
+    background-color: #f5f5f5; /* 懸停時改變背景顏色 */
+}
+
+
+#chatroom-list ul li a {
+    color: #666; /* 鏈接顏色 */
+    text-decoration: none; /* 移除下劃線 */
+    font-size: 18px; /* 字體大小 */
+    transition: color 0.3s ease; /* 平滑過渡 */
+}
+
+#chatroom-list ul li a:hover {
+    color: #ff6f61; /* 滑鼠懸停時的顏色 */
+}
+
+#main-content {
+    background-color: #fff; /* 聊天室主內容的背景顏色 */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 添加陰影效果 */
+}
+
+#conversation th {
+    font-size: 20px; /* 表頭字體大小 */
+    color: #333; /* 表頭文字顏色 */
+}
+
+#conversation td {
+    font-size: 18px; /* 表格內容字體大小 */
+}
+
+/* 美化輸入框 */
+.form-inline .form-control {
+    width: calc(100% - 100px); /* 調整輸入框寬度，減去按鈕寬度和間距 */
+    padding: 10px; /* 調整內邊距 */
+    border: 1px solid #ccc; /* 添加邊框 */
+    border-radius: 5px; /* 圓角 */
+}
+
+/* 美化按鈕 */
+.form-inline .btn {
+    font-size: 20px; /* 按鈕字體大小 */
+    padding: 5px 10px; /* 調整內邊距 */
+    /*margin-left: 10px; !* 調整左邊距 *!*/
+    background-color: #ff6f61; /* 按鈕背景顏色 */
+    color: #fff; /* 按鈕文字顏色 */
+    border: none; /* 移除邊框 */
+    border-radius: 5px; /* 圓角 */
+}
+
+/* 懸停時變換按鈕顏色 */
+.form-inline .btn:hover {
+    background-color: #e25e4b; /* 懸停時的背景顏色 */
+}
+
+/* Media query for smaller screens */
+@media screen and (max-width: 767px) {
+    #main-content {
+        max-width: calc(100vw - 40px);
+        margin: 0 auto 50px;
+    }
+}
