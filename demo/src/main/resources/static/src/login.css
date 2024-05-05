@@ -189,11 +189,15 @@ a:hover {
 #auth-container {
     margin: 0 auto; /* 左右margin */
     max-width: 1000px;
+    justify-content: space-between; /* 將兩個表單放在容器的兩側 */
+    display: flex;
+
 }
+
 
 /* Sign In Form */
 #sign-in-form {
-    margin-top: 20px; /* 上邊距 */
+    margin-top: 150px; /* 上邊距 */
 }
 
 #sign-in-form input[type="text"],
