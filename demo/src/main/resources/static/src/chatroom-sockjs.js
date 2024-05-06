@@ -43,9 +43,9 @@ function renderChatrooms(chatrooms) {
     chatrooms.forEach(chatroom => {
         const li = document.createElement('li');
         const a = document.createElement('a');
-        a.href = `chatroom-sockjs.html?pairingHistoryId=${chatroom}`;
-        // a.textContent = `Chatroom ${chatroom}`;
-        a.textContent = `Chatroom`;
+        a.href = `chatroom-sockjs.html?pairingHistoryId=${chatroom.chatroomId}`;
+        // a.textContent = `Chatroom ${chatroom.chatroomId}`;
+        a.textContent = `${chatroom.otherUserNickname}`;
         li.appendChild(a);
         ul.appendChild(li);
     });
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // 發送 API 請求，並添加 headers
-    fetch('/api/1.0/messages/chatroom', {
+    fetch('/api/1.0/messages/chatroom-nickname', {
         headers: headers
     })
         .then(response => response.json())
