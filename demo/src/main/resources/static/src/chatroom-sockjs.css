@@ -207,14 +207,12 @@ a:hover {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 添加陰影效果 */
 }
 
-/*#conversation th {*/
-/*    font-size: 20px; !* 表頭字體大小 *!*/
-/*    color: #333; !* 表頭文字顏色 *!*/
-/*}*/
+.user-image {
+    width: 40px; /* 設置圖像寬度 */
+    height: 40px; /* 設置圖像高度 */
+    border-radius: 50%; /* 設置圖像為圓形 */
+}
 
-/*#conversation td {*/
-/*    font-size: 18px; !* 表格內容字體大小 *!*/
-/*}*/
 
 #conversation {
     width: 100%;

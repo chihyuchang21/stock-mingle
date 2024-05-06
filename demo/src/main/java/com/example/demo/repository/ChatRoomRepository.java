@@ -13,12 +13,10 @@ import java.util.List;
 public interface ChatRoomRepository extends JpaRepository<Message, Long> {
     List<Message> findByUserPairingHistoryId(Integer userPairingHistoryId);
 
-    @Query("SELECT DISTINCT m.userPairingHistoryId FROM Message m WHERE m.senderUserId = :userId")
-    List<Integer> findUserPairingHistoryIdsByUserId(@Param("userId") Integer userId);
 
     @Query("SELECT DISTINCT NEW com.example.demo.dto.ChatRoomInfo(m.userPairingHistoryId, " +
             "CASE WHEN m.senderUserId = up.user1Id THEN up.user2Id " +
-            "WHEN m.senderUserId = up.user2Id THEN up.user1Id ELSE NULL END, u.nickname) " +
+            "WHEN m.senderUserId = up.user2Id THEN up.user1Id ELSE NULL END, u.nickname, u.image) " +
             "FROM Message m " +
             "JOIN UserPairingHistory up ON m.userPairingHistoryId = up.id " +
             "JOIN User u ON CASE WHEN m.senderUserId = up.user1Id THEN up.user2Id " +

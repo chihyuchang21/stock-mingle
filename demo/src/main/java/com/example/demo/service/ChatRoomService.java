@@ -36,9 +36,6 @@ public class ChatRoomService {
         return chatRoomRepository.findByUserPairingHistoryId(userPairingHistoryId);
     }
 
-    public List<Integer> getChatroomsByUserId(Integer userId) {
-        return chatRoomRepository.findUserPairingHistoryIdsByUserId(userId);
-    }
 
     public List<ChatRoomInfo> getChatroomInfoByUserId(Integer userId) {
         return chatRoomRepository.findChatroomInfoByUserId(userId);

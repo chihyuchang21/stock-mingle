@@ -44,11 +44,22 @@ function renderChatrooms(chatrooms) {
         const li = document.createElement('li');
         const a = document.createElement('a');
         a.href = `chatroom-sockjs.html?pairingHistoryId=${chatroom.chatroomId}`;
-        // a.textContent = `Chatroom ${chatroom.chatroomId}`;
-        a.textContent = `${chatroom.otherUserNickname}`;
+
+        // 創建圖像元素並添加類名
+        const img = document.createElement('img');
+        img.src = chatroom.otherUserImage; // 使用者圖片的URL
+        img.alt = 'User Image'; // 圖片的替代文字
+        img.classList.add('user-image'); // 添加類名
+
+
+        // 將圖像和文字放入連結中
+        a.appendChild(img);
+        a.appendChild(document.createTextNode(` ${chatroom.otherUserNickname}`));
+
         li.appendChild(a);
         ul.appendChild(li);
     });
+
 }
 
 
