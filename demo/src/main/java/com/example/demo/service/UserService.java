@@ -223,9 +223,10 @@ public class UserService {
                 });
     }
 
-
+    @Scheduled(cron = "0 40 23 * * ?") // 每天23:40執行
     // Using AWS Lambda to execute the function once again at every midnight (start from day 2)
     public ResponseEntity<List<UserSimilarity>> calculateAllUsersSimilarityAndSaveAfterDay2() {
+        logger.info("exexuting function calculateAllUsersSimilarityAndSaveAfterDay2...");
         List<User> users = getAllUsers();
         List<UserPairingHistory> historyUserPairing = getHistoryUserPairing();
 
@@ -267,7 +268,7 @@ public class UserService {
                 alreadyPairedUsersToday.add(mostSimilarUserId);
             }
         }
-
+        logger.info("finishing execution of function calculateAllUsersSimilarityAndSaveAfterDay2...");
         return ResponseEntity.ok(similarities);
     }
 

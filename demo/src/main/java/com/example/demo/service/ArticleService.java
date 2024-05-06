@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -184,6 +185,7 @@ public class ArticleService {
         userClickEventRepository.save(userClickEvent);
     }
 
+    @Scheduled(cron = "0 15 23 * * ?") // 每天23:15執行
     public void calculateCosineSimilarity() {
         List<UserClickDetail> userClickDetails = userClickDetailRepository.findAll();
 
@@ -419,6 +421,7 @@ public class ArticleService {
         }
     }
 
+    @Scheduled(cron = "0 0 23 * * ?") // 每天23:00執行
     public void updateUserClickDetail() {
         List<Object[]> results = userClickEventRepository.countClicksByUserId();
         for (Object[] result : results) {
