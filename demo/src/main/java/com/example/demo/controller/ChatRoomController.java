@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.ChatRoomInfo;
 import com.example.demo.model.message.Message;
 import com.example.demo.service.ChatRoomService;
 import io.jsonwebtoken.Claims;
@@ -66,6 +67,30 @@ public class ChatRoomController {
 
         // 返回聊天室列表
         return ResponseEntity.ok(chatroom);
+    }
+
+    @GetMapping("/api/1.0/messages/chatroom-nickname")
+    public ResponseEntity<?> getChatroomInfo(@RequestHeader(name = "Authorization") String authorizationHeader) {
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            // error (401): no token
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Can't find token"));
+        }
+        String token = authorizationHeader.substring(7); // Remove "Bearer " prefix
+
+        // Parse the JWT token to extract user information
+        Claims claims = Jwts.parser()
+                .setSigningKey(jwtSecret)
+                .parseClaimsJws(token)
+                .getBody();
+
+        Map<String, Object> userClaims = claims.get("user", Map.class);
+        Integer userId = Integer.parseInt(userClaims.get("id").toString()); // Assuming ID is an Integer
+
+        // 調用服務並將解析的ID傳遞給它 (先用Message)
+        List<ChatRoomInfo> chatrooms = chatRoomService.getChatroomInfoByUserId(userId);
+
+        // 返回聊天室列表
+        return ResponseEntity.ok(chatrooms);
     }
 
 

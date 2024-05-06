@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.ChatRoomInfo;
 import com.example.demo.model.message.Message;
 import com.example.demo.repository.ChatRoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,4 +39,10 @@ public class ChatRoomService {
     public List<Integer> getChatroomsByUserId(Integer userId) {
         return chatRoomRepository.findUserPairingHistoryIdsByUserId(userId);
     }
+
+    public List<ChatRoomInfo> getChatroomInfoByUserId(Integer userId) {
+        return chatRoomRepository.findChatroomInfoByUserId(userId);
+    }
+
+
 }
