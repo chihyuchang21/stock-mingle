@@ -107,13 +107,13 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
 
     // List好像可以直接用這個
 
-    @Query("SELECT a FROM Article a WHERE a.categoryId = :favoriteTopic ORDER BY a.id ASC")
+    @Query("SELECT a FROM Article a WHERE a.categoryId = :favoriteTopic ORDER BY a.id DESC")
     List<Article> findFavoriteTopicArticles(Pageable pageable, @Param("favoriteTopic") Category favoriteTopic);
 
-    @Query("SELECT a FROM Article a WHERE a.categoryId = :recommendTopic1 ORDER BY a.id ASC")
+    @Query("SELECT a FROM Article a WHERE a.categoryId = :recommendTopic1 ORDER BY a.id DESC")
     List<Article> findRecommendTopic1Articles(Pageable pageable, @Param("recommendTopic1") Category recommendTopic1);
 
-    @Query("SELECT a FROM Article a WHERE a.categoryId = :recommendTopic2 ORDER BY a.id ASC")
+    @Query("SELECT a FROM Article a WHERE a.categoryId = :recommendTopic2 ORDER BY a.id DESC")
     List<Article> findRecommendTopic2Articles(Pageable pageable, @Param("recommendTopic2") Category recommendTopic2);
 
     Optional<Article> findById(int id);
@@ -125,5 +125,5 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
 
     @Query("SELECT COUNT(a) FROM Article a")
     int countTotalArticles();
-    
+
 }

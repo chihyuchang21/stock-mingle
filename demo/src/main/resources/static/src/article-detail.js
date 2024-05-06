@@ -49,20 +49,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 var categoryClass = getCategoryClass(article.categoryId.category);
                 const articleDetailDiv = document.getElementById('articleDetail');
+                let imageElement = ''; // Initialize an empty string for the image element
+
+                // Check if article.image is not null or 'default'
+                if (article.image !== null && article.image !== 'default') {
+                    imageElement = `<img src="${article.image}" alt="${article.title}" style="width: 500px; height: 150px;">`;
+                }
+
                 articleDetailDiv.innerHTML = `
-                    <h2>${article.title}</h2>
-                    <p class="${categoryClass}">  # ${article.categoryId.category}</p>
-                    <p>${article.content}</p>
-                       <img src="${article.image}" alt="${article.title}" style="width: 500px; height: 150px;"> <!--class="match-avatar" -->
-                    <div class="article-more-details">
-                        <p>Author: ${article.userId.nickname}</p>
-                        <p>Comments: ${article.commentCount}</p>
-                        <p>Likes: <span id="likeCount">${article.likeCount}</span></p> <!-- 使用 span 包點讚數字 -->
-                        <button id="likeButton" onclick="toggleLike(${article.id}, true)">Like</button>
-                        
-                    </div>
-                `;
-                // Fetch comments for the article
+                <h2>${article.title}</h2>
+                <p class="${categoryClass}">  # ${article.categoryId.category}</p>
+                <p>${article.content}</p>
+                ${imageElement} <!-- Insert the image element -->
+                <div class="article-more-details">
+                    <p>Author: ${article.userId.nickname}</p>
+                    <p>Comments: ${article.commentCount}</p>
+                    <p>Likes: <span id="likeCount">${article.likeCount}</span></p> <!-- 使用 span 包點讚數字 -->
+                    <button id="likeButton" onclick="toggleLike(${article.id}, true)">Like</button>
+                </div>
+            `;                // Fetch comments for the article
                 fetch(`/api/1.0/articles/details/comments?id=${articleId}`)
                     .then(response => response.json())
                     .then(comments => {

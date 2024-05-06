@@ -50,6 +50,7 @@ public class ArticleService {
 
     public void postArticle(Article article) {
         articleRepository.save(article);
+        redisTemplate.delete("articles");
     }
 
     public void postComment(ArticleComment articleComment) {
