@@ -301,6 +301,46 @@ function fetchArticlesByAlgo(pageNumber = 0) {
         });
 }
 
+function fetchStockIndex() {
+    fetch('/api/1.0/stock-info-to-front-end')
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Failed to fetch stock information.');
+            }
+        })
+        .then(data => {
+            // parse stock info
+            data.forEach(stock => {
+                const name = stock.name;
+                const value = stock.value;
+
+                // put info in elements
+                switch (name) {
+                    case 'Dow Jones Industrial Average':
+                        document.querySelector('.dow-jones').textContent = `Dow Jones: ${value}`;
+                        break;
+                    case 'S&P 500':
+                        document.querySelector('.sp-500').textContent = `S&P 500: ${value}`;
+                        break;
+                    case 'NASDAQ Composite':
+                        document.querySelector('.nasdaq').textContent = `NASDAQ: ${value}`;
+                        break;
+                    case 'Philadelphia Semiconductor Index':
+                        document.querySelector('.philadelphia').textContent = `Philadelphia: ${value}`;
+                        break;
+                    default:
+                        break;
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+
 function getCategoryClass(category) {
     switch (category) {
         case 'Company News':
@@ -356,7 +396,7 @@ function searchArticles(keyword) {
 
                         // 根據文章類別設定class
                         var categoryClass = getCategoryClass(article.categoryId.category);
-                        
+
                         // Create a div element for the article
                         const articleDiv = document.createElement('div');
                         articleDiv.classList.add('article-div'); // Add a class for styling
@@ -410,7 +450,9 @@ window.onload = function () {
 
     if (!accessToken) {
         fetchArticles();
+        fetchStockIndex();
     } else {
         fetchArticlesByAlgo();
+        fetchStockIndex();
     }
 };

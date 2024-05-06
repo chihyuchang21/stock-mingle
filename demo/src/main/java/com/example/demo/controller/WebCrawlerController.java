@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.stock.StockInformation;
 import com.example.demo.service.FredStockService;
 import com.example.demo.service.WebCrawlerService;
 import org.slf4j.Logger;
@@ -12,6 +13,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -59,6 +64,26 @@ public class WebCrawlerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to fetch stock general index: " + e.getMessage());
         }
     }
+
+    @GetMapping("/stock-info-to-front-end")
+    public ResponseEntity<?> getStockInfoToFrontEnd() {
+        try {
+            List<StockInformation> stockInformationList = webCrawlerService.getStockInfoToFrontEnd();
+            List<Map<String, String>> stockInfoMapList = new ArrayList<>();
+            for (StockInformation stockInfo : stockInformationList) {
+                Map<String, String> stockInfoMap = new HashMap<>();
+                stockInfoMap.put("name", stockInfo.getName());
+                stockInfoMap.put("value", stockInfo.getValue());
+                stockInfoMapList.add(stockInfoMap);
+            }
+            return ResponseEntity.ok(stockInfoMapList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to retrieve stock general index: " + e.getMessage());
+        }
+    }
+
 
     @GetMapping("/stock-info-fred")
     @ResponseBody

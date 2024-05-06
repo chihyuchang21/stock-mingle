@@ -157,6 +157,10 @@ public class WebCrawlerService {
         }
     }
 
+    public List<StockInformation> getStockInfoToFrontEnd() {
+        return stockInformationRepository.findAll();
+    }
+
     public void getStockGeneralIndex() throws IOException {
         crawlAndSaveIndex("Dow Jones Industrial Average", "https://finance.yahoo.com/quote/%5EDJI");
         crawlAndSaveIndex("S&P 500", "https://finance.yahoo.com/quote/%5EGSPC");
