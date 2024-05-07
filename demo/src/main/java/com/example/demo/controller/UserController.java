@@ -223,11 +223,9 @@ public class UserController {
 
             // Get user ID from JWT token
             Integer userId = Integer.parseInt(claims.getSubject()); // Assuming subject is user ID
-            logger.info("userid: " + userId);
 
             // Use userService to get user's friends
             Stream<MatchFriendInfo> todayMatchPerson = userService.getTodayMatch(userId);
-            logger.info("todayMatchPerson: " + todayMatchPerson);
 
             Map<String, Object> responseMap = new HashMap<>();
             responseMap.put("data", todayMatchPerson);

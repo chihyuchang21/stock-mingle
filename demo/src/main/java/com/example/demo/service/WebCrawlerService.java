@@ -203,7 +203,6 @@ public class WebCrawlerService {
 //            priceElement = doc.selectFirst("fin-streamer[data-symbol=^TWII]");
         }
 
-        logger.info("priceElement: " + priceElement);
 
         if (priceElement != null) {
             return priceElement.text();

@@ -12,9 +12,23 @@ function redirectToLoginPage() {
     window.location.href = 'login.html';
 }
 
+// 要先登入
 function redirectToMatchPage() {
-    window.location.href = 'match.html';
+    // Check for access token
+    const accessToken = localStorage.getItem('accessToken');
+
+    // If access token is not found
+    if (!accessToken) {
+        // Display alert message
+        alert("Please log in or sign up first.");
+        // Redirect to login page
+        window.location.href = 'login.html';
+    } else {
+        // Redirect to match page
+        window.location.href = 'match.html';
+    }
 }
+
 
 function logoutClearLocalStorage() {
     localStorage.removeItem('accessToken');
@@ -100,7 +114,7 @@ function fetchArticleDetails(articleId) {
 function setActiveButton(pageNumber) {
     var pagination = document.getElementById('pagination');
     var buttons = pagination.getElementsByTagName('button');
-    for (let i = 0; i < buttons.length; i++) {
+    for (let i = 0; i < 20; i++) {
         if (parseInt(buttons[i].textContent) === pageNumber + 1) {
             buttons[i].classList.add('active');
         } else {
@@ -164,7 +178,7 @@ function fetchArticles(pageNumber = 0) {
 <!--                        <img src="https://img.money.com/2022/05/News-Plunging-Stocks-401k.jpg" alt="Stock Market!!" width="100" height="100">-->
                     </div>               
                      <div class="article-details">
-                    <p>Author: ${article.userId.nickname}</p>
+                    <p>${article.userId.nickname}</p>
                     <p>Likes: ${article.likeCount}</p>
                     <p>Comments: ${article.commentCount}</p>
                     <p class="${categoryClass}"> # ${article.categoryId.category}</p>
@@ -199,6 +213,7 @@ function fetchArticles(pageNumber = 0) {
                         pageButton.textContent = i + 1;
                         pageButton.addEventListener('click', function () {
                             fetchArticles(i); // 注意頁數從 0 開始
+                            setActiveButton(i - 1);
                         });
                         pagination.appendChild(pageButton);
                     }
@@ -239,7 +254,16 @@ function fetchArticlesByAlgo(pageNumber = 0) {
     })
         .then(response => response.json())
         .then(data => {
-            // 渲染文章列表
+
+            console.log("fetched algo data: " + data);
+            // 檢查返回的數據是否為空數組，代表沒有演算法計算的歷史資料
+            if (data.length === 0) {
+                // 如果是空數組，則調用 fetchArticles 函數
+                fetchArticles(pageNumber);
+                return; // 結束函數
+            }
+
+            // 渲染 Algo 文章列表
             data.forEach(article => {
                 var articleDiv = document.createElement('div');
                 articleDiv.classList.add('article-div'); // 添加 class 為 article-div
@@ -273,7 +297,7 @@ function fetchArticlesByAlgo(pageNumber = 0) {
 <!--                        <img src="https://img.money.com/2022/05/News-Plunging-Stocks-401k.jpg" alt="Stock Market!!" width="400" height="250">-->
                     </div>
                 <div class="article-details">
-                    <p>Author: ${article.userId.nickname}</p>
+                    <p>${article.userId.nickname}</p>
                     <p>Likes: ${article.likeCount}</p>
                     <p>Comments: ${article.commentCount}</p>
                     <p class="${categoryClass}"> # ${article.categoryId.category}</p>
@@ -289,8 +313,13 @@ function fetchArticlesByAlgo(pageNumber = 0) {
                 var pageButton = document.createElement('button');
                 pageButton.textContent = i;
                 pageButton.classList.add('pagination-button'); // 添加類名
+                if (i === pageNumber + 1) { // 添加激活的按鈕類
+                    pageButton.classList.add('active');
+                }
                 pageButton.addEventListener('click', function () {
                     fetchArticlesByAlgo(i - 1);
+                    setActiveButton(i - 1);
+
                 });
                 pagination.appendChild(pageButton);
             }
@@ -410,7 +439,7 @@ function searchArticles(keyword) {
                             <h3>${article.title}</h3>
                             <div class="content">${truncatedContent}</div>
                             <div class="article-details">
-                                <p>Author: ${article.userId.nickname}</p>
+                                <p>${article.userId.nickname}</p>
                                 <p>Likes: ${article.likeCount}</p>
                                 <p>Comments: ${article.commentCount}</p>
                                 <p class="${categoryClass}"> # ${article.categoryId.category}</p>

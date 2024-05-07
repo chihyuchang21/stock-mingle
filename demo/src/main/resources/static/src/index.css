@@ -250,7 +250,7 @@ a:hover {
 
 /* 分頁按鈕的當前頁樣式 */
 .pagination button.active {
-    background-color: #8f1125;
+    background-color: #ffa07a;
 }
 
 /* 根據文章類別變色 */

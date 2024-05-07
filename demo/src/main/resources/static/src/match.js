@@ -36,6 +36,7 @@ const accessToken = localStorage.getItem('accessToken');
 
 if (accessToken) {
     fetchTodayMatch(accessToken);
+    fetchStockIndex();
 } else {
     console.log("No Access Token")
 }
@@ -56,6 +57,43 @@ async function fetchTodayMatch(token) {
 
         const {data} = await response.json();
 
+        // DB中還沒有產生配對，印出配對說明
+        if (Array.isArray(data) && data.length === 0) {
+            const matchDiv = document.getElementById('today-match');
+            matchDiv.innerHTML = `
+        <div class="match-info">
+            <h1>How Stock Mingle Match ?</h1>
+            <img src="https://xsgames.co/randomusers/assets/avatars/female/31.jpg" alt="default" class="match-avatar">
+            <p class="match-nickname">A 24-hour fate awaits here.<br>At midnight, this page will automatically pair you with a friend.<br>If either of you fails to join the chat, the fate will vanish forever, never to appear again...</p>
+            <div id="countdown"></div>
+        </div>
+    `;
+
+            // 設定目標時間為今天午夜
+            const targetTime = new Date();
+            targetTime.setHours(24, 0, 0, 0); // 設定為午夜
+            const countdownElement = document.getElementById('countdown');
+
+            function updateCountdown() {
+                const now = new Date();
+                const difference = targetTime.getTime() - now.getTime();
+
+                if (difference <= 0) {
+                    countdownElement.textContent = "倒數結束";
+                    return;
+                }
+
+                const hours = Math.floor(difference / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+                countdownElement.textContent = `${hours} hours ${minutes} minutes ${seconds} seconds until midnight`;
+            }
+
+            // 每秒更新一次倒數計時器
+            setInterval(updateCountdown, 1000);
+        }
+
         if (currentIndex < data.length) {
             const nickname = data[currentIndex].nickname;
             const image = data[currentIndex].image;
@@ -71,10 +109,34 @@ async function fetchTodayMatch(token) {
                     <img src="${image}" alt="${nickname}" class="match-avatar">
                     <p class="match-nickname">${nickname}</p>
                  
-                    <button class="enter-chat-btn" onclick="redirectToChatRoom('${pairingHistoryId}')">Go to Chatroom</button>
+                    <button class="enter-chat-btn" onclick="redirectToChatRoom('${pairingHistoryId}')">Go to Chatroom</button><br>
+            <div id="countdown"></div>
+        </div>
+    `;
 
-                </div>
-            `;
+            // 設定目標時間為今天午夜
+            const targetTime = new Date();
+            targetTime.setHours(24, 0, 0, 0); // 設定為午夜
+            const countdownElement = document.getElementById('countdown');
+
+            function updateCountdown() {
+                const now = new Date();
+                const difference = targetTime.getTime() - now.getTime();
+
+                if (difference <= 0) {
+                    countdownElement.textContent = "倒數結束";
+                    return;
+                }
+
+                const hours = Math.floor(difference / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+                countdownElement.textContent = `${hours} hours ${minutes} minutes ${seconds} seconds until midnight`;
+            }
+
+            // 每秒更新一次倒數計時器
+            setInterval(updateCountdown, 1000);
         } else {
             console.log("No more nicknames available");
         }
@@ -82,6 +144,45 @@ async function fetchTodayMatch(token) {
     } catch (error) {
         console.error('Error:', error);
     }
+}
+
+function fetchStockIndex() {
+    fetch('/api/1.0/stock-info-to-front-end')
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Failed to fetch stock information.');
+            }
+        })
+        .then(data => {
+            // parse stock info
+            data.forEach(stock => {
+                const name = stock.name;
+                const value = stock.value;
+
+                // put info in elements
+                switch (name) {
+                    case 'Dow Jones Industrial Average':
+                        document.querySelector('.dow-jones').textContent = `Dow Jones: ${value}`;
+                        break;
+                    case 'S&P 500':
+                        document.querySelector('.sp-500').textContent = `S&P 500: ${value}`;
+                        break;
+                    case 'NASDAQ Composite':
+                        document.querySelector('.nasdaq').textContent = `NASDAQ: ${value}`;
+                        break;
+                    case 'Philadelphia Semiconductor Index':
+                        document.querySelector('.philadelphia').textContent = `Philadelphia: ${value}`;
+                        break;
+                    default:
+                        break;
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 }
 
 

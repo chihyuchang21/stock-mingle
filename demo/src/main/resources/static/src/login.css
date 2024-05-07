@@ -187,6 +187,7 @@ a:hover {
 
 /* Auth Container */
 #auth-container {
+    font-family: "Lora", serif;
     margin: 0 auto; /* 左右margin */
     max-width: 1000px;
     justify-content: space-between; /* 將兩個表單放在容器的兩側 */
@@ -203,7 +204,7 @@ a:hover {
 #sign-in-form input[type="text"],
 #sign-in-form input[type="password"],
 #sign-in-form button {
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Lora", serif;
     width: 60%; /* 寬度填滿容器 */
     padding: 10px; /* 內邊距 */
     margin-bottom: 10px; /* 下邊距 */
@@ -229,7 +230,7 @@ a:hover {
 #sign-up-form input[type="password"],
 #sign-up-form input[type="text"]#signup-nickname,
 #sign-up-form select {
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Lora", serif;
     width: 60%; /* 寬度填滿container */
     padding: 10px; /* 內邊距 */
     margin-bottom: 10px; /* 下邊距 */
@@ -242,7 +243,7 @@ a:hover {
     background-color: #ffa07a;
     color: #fff;
     cursor: pointer;
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Lora", serif;
     width: 60%; /* 寬度填滿container */
     padding: 10px; /* 內邊距 */
     margin-bottom: 10px; /* 下邊距 */

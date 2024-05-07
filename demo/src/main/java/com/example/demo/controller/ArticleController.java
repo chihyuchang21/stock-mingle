@@ -116,8 +116,6 @@ public class ArticleController {
     public ResponseEntity<?> getArticleDetails(@RequestParam("id") String id) {
         Article article = articleService.getArticleById(id);
         List<ArticleComment> comment = articleService.getCommentByArticleId(id);
-        System.out.println("comment: " + comment);
-        logger.info("comment: " + comment);
         if (article == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Article not found"));
         }
@@ -140,7 +138,6 @@ public class ArticleController {
     @ResponseBody
     public ResponseEntity<?> postCommentsDetails(@RequestBody ArticleComment articleComment, @RequestHeader(value = "Authorization") String jwtToken) {
 
-        logger.info("ArticleComment: " + articleComment);
 
         try {
             // Remove Bearer prefix and check if the token is present

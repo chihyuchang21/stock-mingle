@@ -211,11 +211,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.error('Failed to send hashtags data');
                 // 在這裡處理失敗的情況，例如顯示錯誤消息給用戶
             } else {
-                console.log('Hashtags data sent successfully');
-                // 在這裡可以進行頁面跳轉或其他操作
+                console.log('All signup data sent successfully');
+                window.location.href = 'index.html';
+                alert("Sign Up Successfully")
             }
         } catch (error) {
-            console.error('Error during sign up:', error);
+            console.error('Error sending hashtags data:', error);
         }
     });
 

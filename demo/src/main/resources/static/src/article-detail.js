@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <p>${article.content}</p>
                 ${imageElement} <!-- Insert the image element -->
                 <div class="article-more-details">
-                    <p>Author: ${article.userId.nickname}</p>
+                    <p>${article.userId.nickname}</p>
                     <p>Comments: ${article.commentCount}</p>
                     <p>Likes: <span id="likeCount">${article.likeCount}</span></p> <!-- 使用 span 包點讚數字 -->
                     <button id="likeButton" onclick="toggleLike(${article.id}, true)">Like</button>
