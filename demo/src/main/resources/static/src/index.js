@@ -5,7 +5,18 @@ Redirect: window.location.href
 const accessToken = localStorage.getItem('accessToken');
 
 function redirectToArticlePostPage() {
-    window.location.href = 'article-post.html';
+    // Check for access token
+    const accessToken = localStorage.getItem('accessToken');
+    // If access token is not found
+    if (!accessToken) {
+        // Display alert message
+        alert("Please log in or sign up first.");
+        // Redirect to login page
+        window.location.href = 'login.html';
+    } else {
+        // Redirect to match page
+        window.location.href = 'article-post.html';
+    }
 }
 
 function redirectToLoginPage() {
@@ -13,7 +24,18 @@ function redirectToLoginPage() {
 }
 
 function redirectToChatroomPage() {
-    window.location.href = 'chatroom-sockjs.html';
+    // Check for access token
+    const accessToken = localStorage.getItem('accessToken');
+    // If access token is not found
+    if (!accessToken) {
+        // Display alert message
+        alert("Please log in or sign up first.");
+        // Redirect to login page
+        window.location.href = 'login.html';
+    } else {
+        // Redirect to match page
+        window.location.href = 'chatroom-sockjs.html';
+    }
 }
 
 // 要先登入

@@ -3,16 +3,24 @@ Redirect: window.location.href
 */
 
 function redirectToArticlePostPage() {
-    window.location.href = 'article-post.html';
+    // Check for access token
+    const accessToken = localStorage.getItem('accessToken');
+    // If access token is not found
+    if (!accessToken) {
+        // Display alert message
+        alert("Please log in or sign up first.");
+        // Redirect to login page
+        window.location.href = 'login.html';
+    } else {
+        // Redirect to match page
+        window.location.href = 'article-post.html';
+    }
 }
 
 function redirectToLoginPage() {
     window.location.href = 'login.html';
 }
 
-function redirectToMatchPage() {
-    window.location.href = 'match.html';
-}
 
 function logoutClearLocalStorage() {
     localStorage.removeItem('accessToken');
@@ -20,6 +28,40 @@ function logoutClearLocalStorage() {
     setTimeout(function () {
         window.location.href = 'index.html';
     }, 1000); // 在跳轉前等待 1 秒 (1000 毫秒)
+}
+
+
+function redirectToChatroomPage() {
+    // Check for access token
+    const accessToken = localStorage.getItem('accessToken');
+    // If access token is not found
+    if (!accessToken) {
+        // Display alert message
+        alert("Please log in or sign up first.");
+        // Redirect to login page
+        window.location.href = 'login.html';
+    } else {
+        // Redirect to match page
+        window.location.href = 'chatroom-sockjs.html';
+    }
+}
+
+
+// 要先登入
+function redirectToMatchPage() {
+    // Check for access token
+    const accessToken = localStorage.getItem('accessToken');
+
+    // If access token is not found
+    if (!accessToken) {
+        // Display alert message
+        alert("Please log in or sign up first.");
+        // Redirect to login page
+        window.location.href = 'login.html';
+    } else {
+        // Redirect to match page
+        window.location.href = 'match.html';
+    }
 }
 
 // Get the navbar h1 element

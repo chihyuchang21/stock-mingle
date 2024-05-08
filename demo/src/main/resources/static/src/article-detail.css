@@ -2,6 +2,7 @@
 
 #articleDetail {
     font-family: "Lora", serif;
+    letter-spacing: 0.3px;
     max-width: 800px;
     margin: 20px auto;
     background-color: #fff;
@@ -14,7 +15,7 @@
 #articleDetail h2 {
     font-family: "Lora", serif;
     font-size: 28px;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
     color: #333;
 }
 
@@ -87,7 +88,7 @@
 #articleDetail p.other {
     color: midnightblue;
     background-color: rgb(223, 246, 246);
-    width: 70px;
+    width: 85px;
 }
 
 
@@ -114,8 +115,8 @@
     height: auto; /* 讓高度根據內容自動調整 */
     /*border: 1px solid #ccc; !* 加上邊框 *!*/
     /*border-radius: 5px; !* 圓角 *!*/
-    /*padding: 10px; !* 添加內邊距 *!*/
-    margin-bottom: 10px; /* 底部間距 */
+    padding: 10px; /* 添加內邊距 */
+    /*margin-bottom: 10px; !* 底部間距 *!*/
     font-weight: normal;
 
     /*!* 將文字垂直置中 *!*/
@@ -127,8 +128,8 @@
 
 
     /* 上下都有底線 */
-    border-top: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #ece9e9;
+    /*border-bottom: 1px solid #ece9e9;*/
     font-weight: normal !important;
 }
 
@@ -177,6 +178,7 @@
     border: none; /* 移除按鈕邊框 */
     /*border-radius: 5px; !* 圓角 *!*/
     cursor: pointer; /* 鼠標樣式為手型 */
+    height: 56px;
 }
 
 .commentInputContainer button:hover {

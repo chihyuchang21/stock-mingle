@@ -15,7 +15,7 @@ body {
 .navbar {
     background-color: #ff6f61; /* 活潑的橙紅色 */
     color: #fff;
-    padding: 10px;
+    padding: 18px;
     display: flex;
     justify-content: flex-end; /* 將內容靠右對齊 */
     align-items: center;
@@ -54,10 +54,10 @@ body {
 
 .board-list {
     font-family: 'Garamond', serif;
-    flex: 0 0 200px; /* 固定寬度 */
+    flex: 0 0 220px; /* 固定寬度 */
     background-color: #e0e0e0; /* 淡灰色 */
-    padding: 10px;
-    /*margin-right: 20px; !* 添加右邊間隙 *!*/
+    padding: 5px;
+    margin-right: 20px; /* 添加右邊間隙 */
 }
 
 .board-list hr {
@@ -112,7 +112,7 @@ a:hover {
     font-size: 14px; /* 調整標語的字體大小 */
 }
 
-.publish-btn, .match-btn, .account-btn, .logout-btn {
+.publish-btn, .match-btn, .account-btn, .chatroom-btn, .logout-btn {
     width: 30px; /* 設置按鈕寬度 */
     height: 30px; /* 設置按鈕高度 */
     margin-left: 40px;
@@ -125,6 +125,8 @@ a:hover {
     background-size: 20px; /* 調整圖像大小 */
     background-repeat: no-repeat; /* 避免重複顯示 */
     background-position: center left; /* 圖像位置設置在左邊中間 */
+    margin-left: 20px;
+
 }
 
 .gaming-item {

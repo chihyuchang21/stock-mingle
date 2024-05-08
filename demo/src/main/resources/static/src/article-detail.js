@@ -3,11 +3,37 @@ Redirect: window.location.href
 */
 
 function redirectToArticlePostPage() {
-    window.location.href = 'article-post.html';
+    // Check for access token
+    const accessToken = localStorage.getItem('accessToken');
+    // If access token is not found
+    if (!accessToken) {
+        // Display alert message
+        alert("Please log in or sign up first.");
+        // Redirect to login page
+        window.location.href = 'login.html';
+    } else {
+        // Redirect to match page
+        window.location.href = 'article-post.html';
+    }
 }
 
 function redirectToLoginPage() {
     window.location.href = 'login.html';
+}
+
+function redirectToChatroomPage() {
+    // Check for access token
+    const accessToken = localStorage.getItem('accessToken');
+    // If access token is not found
+    if (!accessToken) {
+        // Display alert message
+        alert("Please log in or sign up first.");
+        // Redirect to login page
+        window.location.href = 'login.html';
+    } else {
+        // Redirect to match page
+        window.location.href = 'chatroom-sockjs.html';
+    }
 }
 
 function redirectToMatchPage() {
@@ -62,15 +88,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 <p>${article.content}</p>
                 ${imageElement} <!-- Insert the image element -->
                 <div class="article-more-details">
-                <img src="${article.userId.image}" alt="${article.userId.nickname}" style="width: 25px; height: 25px; border-radius: 50%;">
-                    <p>${article.userId.nickname}</p>
+                    <img src="${article.userId.image}" alt="${article.userId.nickname}" style="width: 25px; height: 25px; border-radius: 50%;">
+                    <p> ${article.userId.nickname}</p>
                                 <p>
                                 <span class="like-icon" style="display: inline-block; width: 15px; height: 15px; background-image: url('/image/like-black.png'); background-size: cover;"></span> ${article.likeCount}
                                 </p>  
                                 <p>
                                 <span class="comment-icon" style="display: inline-block; width: 14px; height: 14px; background-image: url('/image/comment.png'); background-size: cover;"></span> ${article.commentCount}
                                 </p>                    
-                                <button id="likeButton" onclick="toggleLike(${article.id}, true)">Like</button>
+                                <button id="likeButton" onclick="toggleLike(${article.id}, true)">
+                                    <i class="fa-regular fa-thumbs-up"></i> Like
+                                </button>
                 </div>
             `;                // Fetch comments for the article
                 fetch(`/api/1.0/articles/details/comments?id=${articleId}`)
@@ -133,6 +161,7 @@ document.addEventListener('DOMContentLoaded', function () {
     fetchArticleDetails();
 });
 
+
 function postComment(articleId) {
     const commentInput = document.getElementById('commentInput').value;
     var token = localStorage.getItem('accessToken');
@@ -193,6 +222,7 @@ function toggleLike(articleId) {
                 } else if (response.status === 204) {
                     likeCountElement.innerText = currentLikeCount - 1; // 取消點贊成功，數量 -1
                 }
+
             } else {
                 console.error('Failed to like/unlike article');
             }

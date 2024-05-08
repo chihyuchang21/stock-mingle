@@ -23,7 +23,7 @@ body {
 .navbar {
     background-color: #ff6f61; /* 活潑的橙紅色 */
     color: #fff;
-    padding: 10px;
+    padding: 18px;
     display: flex;
     justify-content: flex-end; /* 將內容靠右對齊 */
     align-items: center;
@@ -85,7 +85,7 @@ a:hover {
 }
 
 
-.publish-btn, .match-btn, .account-btn, .logout-btn {
+.publish-btn, .match-btn, .account-btn, .chatroom-btn, .logout-btn {
     width: 30px; /* 設置按鈕寬度 */
     height: 30px; /* 設置按鈕高度 */
     margin-left: 40px;
@@ -97,6 +97,8 @@ a:hover {
     background-size: 20px; /* 調整圖像大小 */
     background-repeat: no-repeat; /* 避免重複顯示 */
     background-position: center left; /* 圖像位置設置在左邊中間 */
+    margin-left: 20px;
+
 }
 
 .gaming-item {
@@ -168,7 +170,7 @@ a:hover {
 #chatroom-list h3 {
     color: #333; /* 標題顏色 */
     font-size: 24px; /* 標題字體大小 */
-    margin-bottom: 20px; /* 標題下方間距 */
+    margin-bottom: 10px; /* 標題下方間距 */
 }
 
 #chatroom-list ul {
@@ -178,14 +180,14 @@ a:hover {
 
 #chatroom-list ul li {
     margin-bottom: 10px; /* 聊天室列表項目之間的間距 */
-    border: 1px solid #ccc; /* 添加方框 */
+    border: none; /* 添加方框 */
     border-radius: 5px; /* 圓角 */
-    padding: 40px; /* 內邊距 */
+    padding: 20px; /* 內邊距 */
+    background-color: white;
 }
 
 #chatroom-list ul li:hover {
-    border-color: #ff6f61; /* 懸停時改變邊框顏色 */
-    background-color: #f5f5f5; /* 懸停時改變背景顏色 */
+    background-color: #fa9990; /* 懸停時改變背景顏色 */
 }
 
 
@@ -197,7 +199,7 @@ a:hover {
 }
 
 #chatroom-list ul li a:hover {
-    color: #ff6f61; /* 滑鼠懸停時的顏色 */
+    color: #ece9e9; /* 滑鼠懸停時的顏色 */
 }
 
 #main-content {

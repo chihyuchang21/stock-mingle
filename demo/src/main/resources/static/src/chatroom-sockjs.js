@@ -3,16 +3,56 @@ Redirect: window.location.href
 */
 
 function redirectToArticlePostPage() {
-    window.location.href = 'article-post.html';
+    // Check for access token
+    const accessToken = localStorage.getItem('accessToken');
+    // If access token is not found
+    if (!accessToken) {
+        // Display alert message
+        alert("Please log in or sign up first.");
+        // Redirect to login page
+        window.location.href = 'login.html';
+    } else {
+        // Redirect to match page
+        window.location.href = 'article-post.html';
+    }
 }
 
 function redirectToLoginPage() {
     window.location.href = 'login.html';
 }
 
-function redirectToMatchPage() {
-    window.location.href = 'match.html';
+function redirectToChatroomPage() {
+    // Check for access token
+    const accessToken = localStorage.getItem('accessToken');
+    // If access token is not found
+    if (!accessToken) {
+        // Display alert message
+        alert("Please log in or sign up first.");
+        // Redirect to login page
+        window.location.href = 'login.html';
+    } else {
+        // Redirect to match page
+        window.location.href = 'chatroom-sockjs.html';
+    }
 }
+
+// 要先登入
+function redirectToMatchPage() {
+    // Check for access token
+    const accessToken = localStorage.getItem('accessToken');
+
+    // If access token is not found
+    if (!accessToken) {
+        // Display alert message
+        alert("Please log in or sign up first.");
+        // Redirect to login page
+        window.location.href = 'login.html';
+    } else {
+        // Redirect to match page
+        window.location.href = 'match.html';
+    }
+}
+
 
 function logoutClearLocalStorage() {
     localStorage.removeItem('accessToken');
@@ -89,8 +129,8 @@ document.addEventListener('DOMContentLoaded', () => {
 var stompClient = null;
 
 function connect() {
-    // var socket = new SockJS('https://3.209.143.199/gs-guide-websocket'); // 這端點是 websocket server 的位置
-    var socket = new SockJS('http://localhost:8080/gs-guide-websocket'); // 這端點是 websocket server 的位置
+    var socket = new SockJS('https://stockmingle.site/gs-guide-websocket'); // 這端點是 websocket server 的位置
+    // var socket = new SockJS('http://localhost:8080/gs-guide-websocket'); // 這端點是 websocket server 的位置
 
     stompClient = Stomp.over(socket); // 把 websocket 對象包裹成 stomp 對象，以便用 stomp 協議通訊
     console.log("here?");
