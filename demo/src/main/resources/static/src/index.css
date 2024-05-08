@@ -15,7 +15,7 @@ body {
 .navbar {
     background-color: #ff6f61; /* 活潑的橙紅色 */
     color: #fff;
-    padding: 10px;
+    padding: 18px;
     display: flex;
     justify-content: flex-end; /* 將內容靠右對齊 */
     align-items: center;
@@ -28,6 +28,7 @@ body {
     padding: 0;
     flex: 1; /* 讓標題佔據剩餘空間 */
     letter-spacing: 2px; /* 調整字元之間的空間 */
+
 }
 
 .navbar .slogan {
@@ -55,7 +56,7 @@ body {
 
 .board-list {
     /*font-family: "Lora", serif;*/
-    flex: 0 0 200px; /* 固定寬度 */
+    flex: 0 0 220px; /* 固定寬度 */
     background-color: #e0e0e0; /* 淡灰色 */
     padding: 5px;
     margin-right: 20px; /* 添加右邊間隙 */
@@ -142,10 +143,14 @@ a:hover {
     font-size: 14px; /* 調整標語的字體大小 */
 }
 
-.publish-btn, .match-btn, .account-btn, .logout-btn {
-    width: 30px; /* 設置按鈕寬度 */
-    height: 30px; /* 設置按鈕高度 */
+.publish-btn, .match-btn, .chatroom-btn, .account-btn, .logout-btn {
+    width: 28px; /* 設置按鈕寬度 */
+    height: 28px; /* 設置按鈕高度 */
     margin-left: 40px;
+}
+
+.logout-btn {
+    margin-right: 5px;
 }
 
 
@@ -286,9 +291,10 @@ a:hover {
 }
 
 
-/*.article-div hr {*/
-/*    margin-top: 5px; !* 設置上邊距為5px，其他邊距為預設值（0） *!*/
-/*}*/
+.article-div hr {
+    border-color: #fdfcfc;
+    border-width: 0.1px;
+}
 
 
 /* 游標滑過效果 */
@@ -315,6 +321,7 @@ a:hover {
     border: 1px solid #ccc;
     border-radius: 8px 0 0 8px; /* 右上角和右下角是8px的直角，其他角是圓角 */
     width: 250px;
+    height: 15px;
     font-size: 16px;
 }
 
@@ -326,7 +333,7 @@ a:hover {
     border-radius: 0 8px 8px 0;
     color: #772504;
     cursor: pointer;
-    font-size: 16px;
+    text-align: center;
 }
 
 #searchButton:hover {
@@ -336,4 +343,16 @@ a:hover {
 #searchButton:hover {
     background-color: #ff5a4d;
 }
+
+.user-info {
+    display: flex;
+    align-items: center; /* 垂直居中對齊 */
+    margin-right: 10px; /* 調整圖片和昵稱之間的間距 */
+}
+
+.user-info img {
+    margin-right: 5px; /* 調整圖片和昵稱之間的間距 */
+}
+
+
 

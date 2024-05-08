@@ -12,6 +12,10 @@ function redirectToLoginPage() {
     window.location.href = 'login.html';
 }
 
+function redirectToChatroomPage() {
+    window.location.href = 'chatroom-sockjs.html';
+}
+
 // 要先登入
 function redirectToMatchPage() {
     // Check for access token
@@ -177,12 +181,19 @@ function fetchArticles(pageNumber = 0) {
                     <div class="image-wrapper">
 <!--                        <img src="https://img.money.com/2022/05/News-Plunging-Stocks-401k.jpg" alt="Stock Market!!" width="100" height="100">-->
                     </div>               
-                     <div class="article-details">
-                    <p>${article.userId.nickname}</p>
-                    <p>Likes: ${article.likeCount}</p>
-                    <p>Comments: ${article.commentCount}</p>
+                    <div class="article-details">
+                        <div class="user-info">
+                            <img src="${article.userId.image}" alt="${article.userId.nickname}" style="width: 25px; height: 25px; border-radius: 50%;">
+                            <p>${article.userId.nickname}</p>
+                        </div>
+                           <p>
+                              <span class="like-icon" style="display: inline-block; width: 15px; height: 15px; background-image: url('/image/like-black.png'); background-size: cover;"></span> ${article.likeCount}
+                           </p> 
+                           <p>
+                              <span class="comment-icon" style="display: inline-block; width: 14px; height: 14px; background-image: url('/image/comment.png'); background-size: cover;"></span> ${article.commentCount}
+                           </p>
                     <p class="${categoryClass}"> # ${article.categoryId.category}</p>
-                </div>
+                    </div>
                 <hr>
             `;
                 articleList.appendChild(articleDiv);
@@ -296,12 +307,19 @@ function fetchArticlesByAlgo(pageNumber = 0) {
                     <div class="image-wrapper">
 <!--                        <img src="https://img.money.com/2022/05/News-Plunging-Stocks-401k.jpg" alt="Stock Market!!" width="400" height="250">-->
                     </div>
-                <div class="article-details">
-                    <p>${article.userId.nickname}</p>
-                    <p>Likes: ${article.likeCount}</p>
-                    <p>Comments: ${article.commentCount}</p>
-                    <p class="${categoryClass}"> # ${article.categoryId.category}</p>
-                </div>
+                      <div class="article-details">
+                         <div class="user-info">
+                           <img src="${article.userId.image}" alt="${article.userId.nickname}" style="width: 25px; height: 25px; border-radius: 50%;">
+                             <p>${article.userId.nickname}</p>
+                            </div>
+                            <p>
+                            <span class="like-icon" style="display: inline-block; width: 15px; height: 15px; background-image: url('/image/like-black.png'); background-size: cover;"></span> ${article.likeCount}
+                            </p>  
+                            <p>
+                            <span class="comment-icon" style="display: inline-block; width: 14px; height: 14px; background-image: url('/image/comment.png'); background-size: cover;"></span> ${article.commentCount}
+                            </p>
+                            <p class="${categoryClass}"> # ${article.categoryId.category}</p>
+                           </div>
                 <hr>
             `;
 
@@ -348,16 +366,16 @@ function fetchStockIndex() {
                 // put info in elements
                 switch (name) {
                     case 'Dow Jones Industrial Average':
-                        document.querySelector('.dow-jones').textContent = `Dow Jones: ${value}`;
+                        document.querySelector('.dow-jones').textContent = `Dow Jones ${value}`;
                         break;
                     case 'S&P 500':
-                        document.querySelector('.sp-500').textContent = `S&P 500: ${value}`;
+                        document.querySelector('.sp-500').textContent = `S&P 500  ${value}`;
                         break;
                     case 'NASDAQ Composite':
-                        document.querySelector('.nasdaq').textContent = `NASDAQ: ${value}`;
+                        document.querySelector('.nasdaq').textContent = `NASDAQ  ${value}`;
                         break;
                     case 'Philadelphia Semiconductor Index':
-                        document.querySelector('.philadelphia').textContent = `Philadelphia: ${value}`;
+                        document.querySelector('.philadelphia').textContent = `Philadelphia ${value}`;
                         break;
                     default:
                         break;
@@ -439,9 +457,16 @@ function searchArticles(keyword) {
                             <h3>${article.title}</h3>
                             <div class="content">${truncatedContent}</div>
                             <div class="article-details">
-                                <p>${article.userId.nickname}</p>
-                                <p>Likes: ${article.likeCount}</p>
-                                <p>Comments: ${article.commentCount}</p>
+                                 <div class="user-info">
+                                    <img src="${article.userId.image}" alt="${article.userId.nickname}" style="width: 25px; height: 25px; border-radius: 50%;">
+                                    <p>${article.userId.nickname}</p>
+                                </div>
+                                <p>
+                                <span class="like-icon" style="display: inline-block; width: 15px; height: 15px; background-image: url('/image/like-black.png'); background-size: cover;"></span> ${article.likeCount}
+                                </p>  
+                                <p>
+                                <span class="comment-icon" style="display: inline-block; width: 14px; height: 14px; background-image: url('/image/comment.png'); background-size: cover;"></span> ${article.commentCount}
+                                </p>
                                 <p class="${categoryClass}"> # ${article.categoryId.category}</p>
                             </div>
                             <hr>

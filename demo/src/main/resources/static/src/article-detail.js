@@ -62,10 +62,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 <p>${article.content}</p>
                 ${imageElement} <!-- Insert the image element -->
                 <div class="article-more-details">
+                <img src="${article.userId.image}" alt="${article.userId.nickname}" style="width: 25px; height: 25px; border-radius: 50%;">
                     <p>${article.userId.nickname}</p>
-                    <p>Comments: ${article.commentCount}</p>
-                    <p>Likes: <span id="likeCount">${article.likeCount}</span></p> <!-- 使用 span 包點讚數字 -->
-                    <button id="likeButton" onclick="toggleLike(${article.id}, true)">Like</button>
+                                <p>
+                                <span class="like-icon" style="display: inline-block; width: 15px; height: 15px; background-image: url('/image/like-black.png'); background-size: cover;"></span> ${article.likeCount}
+                                </p>  
+                                <p>
+                                <span class="comment-icon" style="display: inline-block; width: 14px; height: 14px; background-image: url('/image/comment.png'); background-size: cover;"></span> ${article.commentCount}
+                                </p>                    
+                                <button id="likeButton" onclick="toggleLike(${article.id}, true)">Like</button>
                 </div>
             `;                // Fetch comments for the article
                 fetch(`/api/1.0/articles/details/comments?id=${articleId}`)
