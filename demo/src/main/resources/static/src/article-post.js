@@ -129,3 +129,48 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     });
 });
+
+function fetchUserProfile(token) {
+    fetch('/api/1.0/user/profile', {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        }
+    })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error('Network response was not ok.');
+        })
+        .then(data => {
+            const accountBtn = document.querySelector('.account-btn');
+            // 若 user 圖片存在，則把 account-btn 的 src 換成 image;
+            // console.log(data);
+            console.log("data.data.nickname: " + data["data"]["nickname"]);
+            console.log("data.data.image: " + data["data"]["image"]);
+            if (data) {
+                accountBtn.src = data["data"]["image"];
+                // 改圓角
+                accountBtn.style.borderRadius = "50%";
+                accountBtn.style.width = "32px"; /* 設置按鈕寬度 */
+                accountBtn.style.height = "32px"; /* 設置按鈕高度 */
+
+                console.log("accountBtn.src: " + accountBtn.src);
+            }
+        })
+        .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+        });
+}
+
+
+// Get article list when the page loads
+window.onload = function () {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (!accessToken) {
+    } else {
+        fetchUserProfile(accessToken);
+    }
+};

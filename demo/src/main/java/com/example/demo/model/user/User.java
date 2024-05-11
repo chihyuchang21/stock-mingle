@@ -34,5 +34,9 @@ public class User {
         // no-argument constructor
     }
 
+    public User(Integer id) {
+        this.id = id;
+    }
+
 }
 

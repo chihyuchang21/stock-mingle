@@ -25,7 +25,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     // 根據帳號名查詢用戶 ID
     @Query("SELECT u.id FROM User u WHERE u.accountName = :accountName")
-    Integer getUserIdByAccountName(String accountName);
+    Integer getUserIdByAccountName(@Param("accountName") String accountName);
 
     // 告訴Spring Data JPA這是一個修改操作
     @Modifying

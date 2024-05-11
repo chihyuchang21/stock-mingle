@@ -210,7 +210,7 @@ public class ArticleController {
         }
     }
 
-
+    //("/newArticles")
     @PostMapping
     @ResponseBody
     public ResponseEntity<?> postArticle(@RequestBody Article article, @RequestHeader(value = "Authorization") String jwtToken) {
@@ -247,6 +247,8 @@ public class ArticleController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "JWT token error"));
         } catch (Exception ex) {
             // other error
+            ex.printStackTrace();
+            // 其他错误
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "An error occurred processing your request"));
         }
     }
