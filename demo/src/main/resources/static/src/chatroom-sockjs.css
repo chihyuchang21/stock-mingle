@@ -53,6 +53,10 @@ body {
     margin-left: 10px; /* 設置按鈕之間的間距 */
 }
 
+.navbar:hover {
+    cursor: pointer;
+}
+
 .container {
     flex: 1;
     display: flex;
@@ -260,6 +264,7 @@ a:hover {
 
 /* 美化按鈕 */
 .form-inline .btn {
+    font-family: "PT Sans", sans-serif;
     font-size: 20px; /* 按鈕字體大小 */
     padding: 5px 10px; /* 調整內邊距 */
     /*margin-left: 10px; !* 調整左邊距 *!*/

@@ -39,6 +39,10 @@ body {
     margin-right: 5px; /* 調整標題和副標題之間的間距 */
 }
 
+.navbar:hover {
+    cursor: pointer;
+}
+
 
 .navbar button {
     margin-left: 10px; /* 設置按鈕之間的間距 */
@@ -75,6 +79,10 @@ body {
 
 .board-list ul {
     font-family: "PT Sans", sans-serif;
+}
+
+.board-list:hover {
+    cursor: default;
 }
 
 .today-match {

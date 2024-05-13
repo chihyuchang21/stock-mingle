@@ -28,7 +28,10 @@ body {
     padding: 0;
     flex: 1; /* 讓標題佔據剩餘空間 */
     letter-spacing: 2px; /* 調整字元之間的空間 */
+}
 
+.navbar:hover {
+    cursor: pointer;
 }
 
 .navbar .slogan {
@@ -63,6 +66,10 @@ body {
     justify-content: space-between;
 }
 
+.board-list:hover {
+    cursor: default;
+}
+
 .board-list hr {
     border: none; /* 移除原來的邊框 */
     border-top: 1.5px solid black; /* 添加上方2px粗的黑色邊框 */
@@ -81,6 +88,7 @@ body {
 }
 
 .article-list {
+    width: 500px;
     font-family: "Lora", serif;
     letter-spacing: 0.3px;
     font-size: 16px; /* 設置字體大小 */
@@ -91,6 +99,7 @@ body {
     overflow-y: auto; /* 僅當內容超出容器時啟用垂直捲動 */
     max-height: calc(90vh - 50px); /* 視口高度減去頂部導航欄高度 */
     margin-top: 20px;
+    /*margin-right: 40px;*/
 }
 
 #pagination {
@@ -304,6 +313,10 @@ a:hover {
     padding: 2.5px;
 }
 
+.article-div {
+    margin-left: 55px;
+    margin-right: 55px;
+}
 
 .article-div hr {
     border-color: #fdfcfc;
