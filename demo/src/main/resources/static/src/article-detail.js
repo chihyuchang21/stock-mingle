@@ -96,8 +96,8 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <p>
                                 <span class="comment-icon" style="display: inline-block; width: 14px; height: 14px; background-image: url('/image/comment.png'); background-size: cover;"></span> ${article.commentCount}
                                 </p>                    
-                                <button id="likeButton" onclick="toggleLike(${article.id}, true)">
-                                    <i class="fa-regular fa-thumbs-up"></i> Like
+                                  <button id="likeButton" onclick="toggleLike(${article.id}, true)">
+                                   <i class="fa-regular fa-thumbs-up"></i> Like
                                 </button>
                 </div>
             `;                // Fetch comments for the article
@@ -215,13 +215,14 @@ function toggleLike(articleId) {
         .then(response => {
             if (response.ok) {
                 // 如果請求成功，更新點讚數量
-                const likeCountElement = document.getElementById('likeCount');
-                const currentLikeCount = parseInt(likeCountElement.innerText);
-                if (response.status === 201) {
-                    likeCountElement.innerText = currentLikeCount + 1; // 點贊成功，數量 +1
-                } else if (response.status === 204) {
-                    likeCountElement.innerText = currentLikeCount - 1; // 取消點贊成功，數量 -1
-                }
+                // const likeCountElement = document.getElementById('likeCount');
+                // const currentLikeCount = parseInt(likeCountElement.innerText);
+                // likeCountElement.innerText = currentLikeCount + 1;
+                // if (response.status === 201) {
+                //     likeCountElement.innerText = currentLikeCount + 1; // 點贊成功，數量 +1
+                // } else if (response.status === 204) {
+                //     likeCountElement.innerText = currentLikeCount - 1; // 取消點贊成功，數量 -1
+                // }
 
             } else {
                 console.error('Failed to like/unlike article');

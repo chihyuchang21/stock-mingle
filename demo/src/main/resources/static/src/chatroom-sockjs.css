@@ -209,10 +209,16 @@ a:hover {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 添加陰影效果 */
 }
 
+.user-info-container {
+    display: flex; /* 使用 flex 布局 */
+    align-items: center;
+}
+
 .user-image {
     width: 40px; /* 設置圖像寬度 */
     height: 40px; /* 設置圖像高度 */
     border-radius: 50%; /* 設置圖像為圓形 */
+    margin-right: 10px;
 }
 
 

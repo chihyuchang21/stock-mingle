@@ -60,6 +60,7 @@ body {
     background-color: #e0e0e0; /* 淡灰色 */
     padding: 5px;
     margin-right: 20px; /* 添加右邊間隙 */
+    justify-content: space-between;
 }
 
 .board-list hr {
@@ -76,11 +77,10 @@ body {
 }
 
 .board-list ul {
-    font-family: "Lora", serif; /* 將ul的字體設置為Lora */
+    font-family: "PT Sans", sans-serif;
 }
 
 .article-list {
-    /*font-family: "Poppins", sans-serif; !* 使用 Roboto 字體 *!*/
     font-family: "Lora", serif;
     letter-spacing: 0.3px;
     font-size: 16px; /* 設置字體大小 */
@@ -271,26 +271,31 @@ a:hover {
 .company-news {
     background-color: #ffe1e7; /* 粉紅色 */
     color: darkred;
+    border-radius: 25px;
 }
 
 .broad-market-news {
     background-color: #FFD166; /* 橙黃色 */
     color: white;
+    border-radius: 25px;
 }
 
 .company-discussion {
     background-color: #dbfad7; /* 青色 */
     color: #247046;
+    border-radius: 25px;
 }
 
 .advice-request {
     background-color: #118AB2; /* 深藍色 */
     color: white;
+    border-radius: 25px;
 }
 
 .other {
     background-color: rgb(223, 246, 246);
     color: midnightblue;
+    border-radius: 25px;
 }
 
 /* 圓角邊框 */

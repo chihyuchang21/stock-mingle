@@ -456,6 +456,8 @@ function searchArticles(keyword) {
             if (response.ok) {
                 return response.json();
             } else {
+                alert('Keyword not found.');
+                window.location.href = 'index.html'; // Redirect to index.html
                 throw new Error('Failed to fetch articles.');
             }
         })
@@ -470,6 +472,15 @@ function searchArticles(keyword) {
 
                 // Check if the data contains the "data" key and it is an array
                 if (Array.isArray(articles.data)) {
+
+                    // Check if any articles are found
+                    if (articles.data.length === 0) {
+                        alert('Keyword not found.');
+                        window.location.href = 'index.html'; // Redirect to index.html
+                        return;
+                    }
+
+
                     // Iterate through each article
                     articles.data.forEach(article => {
                         // Truncate content if it exceeds maxContentLength
@@ -479,6 +490,12 @@ function searchArticles(keyword) {
 
                         // 根據文章類別設定class
                         var categoryClass = getCategoryClass(article.categoryId.category);
+
+                        // Highlight the keyword in the content
+                        var highlightedContent = truncatedContent.replace(new RegExp(keyword, 'gi'), '<span style="background-color: #ecec60;">$&</span>');
+                        // Highlight the keyword in the title
+                        var highlightedTitle = article.title.replace(new RegExp(keyword, 'gi'), '<span style="background-color: #ecec60;">$&</span>');
+
 
                         // Create a div element for the article
                         const articleDiv = document.createElement('div');
@@ -490,8 +507,8 @@ function searchArticles(keyword) {
 
                         // Set the HTML content for the article div
                         articleDiv.innerHTML = `
-                            <h3>${article.title}</h3>
-                            <div class="content">${truncatedContent}</div>
+                            <h3>${highlightedTitle}</h3>
+                            <div class="content">${highlightedContent}</div>
                             <div class="article-details">
                                  <div class="user-info">
                                     <img src="${article.userId.image}" alt="${article.userId.nickname}" style="width: 25px; height: 25px; border-radius: 50%;">

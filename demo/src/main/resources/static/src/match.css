@@ -74,7 +74,7 @@ body {
 }
 
 .board-list ul {
-    font-family: "Lora", serif; /* 將ul的字體設置為Lora */
+    font-family: "PT Sans", sans-serif;
 }
 
 .today-match {
@@ -236,8 +236,8 @@ a:hover {
 }
 
 .match-avatar {
-    width: 300px;
-    height: 300px;
+    width: 200px;
+    height: 200px;
     border-radius: 50%;
     object-fit: cover;
     margin-bottom: 10px;

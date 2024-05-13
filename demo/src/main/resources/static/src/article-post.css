@@ -6,7 +6,8 @@
 /* 添加自定義 CSS */
 #articleForm {
     font-family: "Lora", serif;
-    max-width: 800px;
+    min-width: 800px;
+    max-width: 8500px;
     margin: 10px auto; /* 將 margin 設為 auto，使其水平置中 */
     background-color: #fff;
     padding: 20px;

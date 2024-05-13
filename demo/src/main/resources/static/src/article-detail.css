@@ -3,6 +3,7 @@
 #articleDetail {
     font-family: "Lora", serif;
     letter-spacing: 0.3px;
+    min-width: 750px;
     max-width: 800px;
     margin: 20px auto;
     background-color: #fff;

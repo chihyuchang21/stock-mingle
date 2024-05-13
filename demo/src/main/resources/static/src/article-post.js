@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     document.getElementById('title').value = '';
                     tinymce.activeEditor.setContent(''); // Clear content in TinyMCE editor
                     document.getElementById('category').selectedIndex = 0; // Reset category selection
-                    // TODO: fetchArticles();
+                    window.location.href = 'index.html';
                 } else {
                     alert("Failed to publish article!");
                 }

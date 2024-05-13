@@ -85,6 +85,9 @@ function renderChatrooms(chatrooms) {
         const a = document.createElement('a');
         a.href = `chatroom-sockjs.html?pairingHistoryId=${chatroom.chatroomId}`;
 
+        const userInfoContainer = document.createElement('div');
+        userInfoContainer.classList.add('user-info-container');
+
         // 創建圖像元素並添加類名
         const img = document.createElement('img');
         img.src = chatroom.otherUserImage; // 使用者圖片的URL
@@ -92,9 +95,10 @@ function renderChatrooms(chatrooms) {
         img.classList.add('user-image'); // 添加類名
 
 
-        // 將圖像和文字放入連結中
-        a.appendChild(img);
-        a.appendChild(document.createTextNode(` ${chatroom.otherUserNickname}`));
+        userInfoContainer.appendChild(img);
+        userInfoContainer.appendChild(document.createTextNode(` ${chatroom.otherUserNickname}`));
+
+        a.appendChild(userInfoContainer);
 
         li.appendChild(a);
         ul.appendChild(li);

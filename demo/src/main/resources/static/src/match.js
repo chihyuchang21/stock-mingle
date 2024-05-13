@@ -103,7 +103,7 @@ async function fetchTodayMatch(token) {
             matchDiv.innerHTML = `
         <div class="match-info">
             <h1>How Stock Mingle Match ?</h1>
-            <img src="https://xsgames.co/randomusers/assets/avatars/female/31.jpg" alt="default" class="match-avatar">
+            <img src="image/question-mark.png" alt="default" class="match-avatar">
             <p class="match-nickname">A 24-hour fate awaits here.<br>At midnight, this page will automatically pair you with a friend.<br>If either of you fails to join the chat, the fate will vanish forever, never to appear again...</p>
             <div id="countdown"></div>
         </div>
