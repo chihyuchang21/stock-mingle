@@ -103,8 +103,13 @@ function renderChatrooms(chatrooms) {
         li.appendChild(a);
         ul.appendChild(li);
     });
-
 }
+
+// construct new function
+// function render currentChatroom(){
+//
+// }
+// construct new function
 
 
 // 在頁面加載時呼叫API獲取聊天室列表並渲染到頁面上
@@ -127,6 +132,10 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => {
             console.error('Error fetching chatrooms:', error);
         });
+
+    // construct new function (fetch current chatroom info)
+    // construct new function (fetch current chatroom info)
+
 });
 
 // websocket

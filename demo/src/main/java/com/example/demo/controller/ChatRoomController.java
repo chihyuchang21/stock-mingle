@@ -69,6 +69,28 @@ public class ChatRoomController {
         return ResponseEntity.ok(chatrooms);
     }
 
+//    @GetMapping("/api/1.0/messages/current-chatroom")
+//    public ResponseEntity<?> getCurrentChatroom(@RequestHeader(name = "Authorization") String authorizationHeader, Integer currentChatroomId) {
+//        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+//            // error (401): no token
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Can't find token"));
+//        }
+//        String token = authorizationHeader.substring(7); // Remove "Bearer " prefix
+//
+//        // Parse the JWT token to extract user information
+//        Claims claims = Jwts.parser()
+//                .setSigningKey(jwtSecret)
+//                .parseClaimsJws(token)
+//                .getBody();
+//
+//        Map<String, Object> userClaims = claims.get("user", Map.class);
+//        Integer userId = Integer.parseInt(userClaims.get("id").toString()); // Assuming ID is an Integer
+//
+//        ChatRoomInfo currentChatroom = chatRoomService.getCurrentChatroomByUserId(userId, currentChatroomId);
+//
+//        return ResponseEntity.ok(currentChatroom);
+//    }
+
 
 //    @GetMapping("/details")
 //    @ResponseBody
