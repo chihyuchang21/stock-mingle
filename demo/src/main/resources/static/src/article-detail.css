@@ -62,34 +62,53 @@
 
 /* 根據文章類別變色 */
 #articleDetail p.company-news {
-    background-color: #ffe1e7; /* 粉紅色 */
-    color: darkred;
-    padding: 2.5px;
+    /*background-color: #ffe1e7; !* 粉紅色 *!*/
+    /*color: darkred;*/
+    background-color: #ec6782;
+    color: white;
+    padding-right: 8px !important; /* 調整內容與邊框的距離 */
+    padding-left: 8px !important; /* 調整內容與邊框的距離 */
     width: 140px;
 }
 
 #articleDetail p.broad-market-news {
-    background-color: #FFD166; /* 橙黃色 */
+    /*background-color: #FFD166; !* 橙黃色 *!*/
+    background-color: black;
     color: white;
     width: 180px;
+    padding-right: 2px !important; /* 調整內容與邊框的距離 */
+    padding-left: 8px !important; /* 調整內容與邊框的距離 */
 }
 
 #articleDetail p.company-discussion {
-    background-color: #dbfad7; /* 青色 */
-    color: #247046;
+    /*background-color: #dbfad7; !* 青色 *!*/
+    /*color: #247046;*/
     width: 180px;
+    background-color: seagreen; /* color for final recording */
+    color: white;
+    border-radius: 25px;
+    padding-right: 8px !important; /* 調整內容與邊框的距離 */
+    padding-left: 8px !important; /* 調整內容與邊框的距離 */
 }
 
 #articleDetail p.advice-request {
     background-color: #118AB2; /* 深藍色 */
     color: white;
     width: 140px;
+    padding-right: 8px !important; /* 調整內容與邊框的距離 */
+    padding-left: 8px !important; /* 調整內容與邊框的距離 */
 }
 
 #articleDetail p.other {
-    color: midnightblue;
-    background-color: rgb(223, 246, 246);
+    /*color: midnightblue;*/
+    /*background-color: rgb(223, 246, 246);*/
     width: 85px;
+    color: white;
+    border-radius: 25px;
+    padding-right: 2px !important; /* 調整內容與邊框的距離 */
+    padding-left: 8px !important; /* 調整內容與邊框的距離 */
+    background-color: rebeccapurple;
+
 }
 
 
