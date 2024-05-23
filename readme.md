@@ -2,11 +2,11 @@
 
 ## About Stock Mingle
 "Stock Mingle" is a comprehensive stock forum that combines social networking and algorithm-based posts recommendation system  
+**Hurry up and check it out!** → [Stock Mingle](https://stockmingle.site)
 - users can engage in discussions :speech_balloon:  
 - share insights :fire:  
 - connect with like-minded individuals :sparkling_heart:  
 - access real-time, personalized information :computer:  
-**Hurry up and check it out!** → [Stock Mingle](https://stockmingle.site)
 
 
 ## Features
@@ -19,11 +19,15 @@
 ## Architecture
 ![AWS Structure Diagram.jpg](image%2FAWS%20Structure%20Diagram.jpg)
 
-
 ## Live Demo
-
+### HomePage & Search
+[index-search live demo.mp4](..%2FStock%20Mingle%20Doc%2Flive%20demo%20video%2Findex-search%20live%20demo.mp4)
+### Post Recommendation & Article
+[post-comments live demo.mp4](..%2FStock%20Mingle%20Doc%2Flive%20demo%20video%2Fpost-comments%20live%20demo.mp4)
+### Friends Match & Chatroom
+[match-chatroom live demo.mp4](..%2FStock%20Mingle%20Doc%2Flive%20demo%20video%2Fmatch-chatroom%20live%20demo.mp4)
 ## Database Schema
-
+![DB Schema.png](..%2FStock%20Mingle%20Doc%2FDB%20Schema.png)
 
 ## Test Account
 account : janedoe  
