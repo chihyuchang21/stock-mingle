@@ -25,7 +25,7 @@
 ### Post Recommendation & Article
 [post-comments live demo.mp4](..%2FStock%20Mingle%20Doc%2Flive%20demo%20video%2Fpost-comments%20live%20demo.mp4)
 ### Friends Match & Chatroom
-[match-chatroom live demo.mp4](..%2FStock%20Mingle%20Doc%2Flive%20demo%20video%2Fmatch-chatroom%20live%20demo.mp4)
+[match-chatroom live demo.mp4](https://youtu.be/o4NW2p1zVmM)
 ## Database Schema
 ![DB Schema.png](https://github.com/chihyuchang21/stock-mingle/blob/sp6-refactor/demo/src/main/resources/static/image/DB%20Schema.png)
 
