@@ -2,25 +2,32 @@
 
 ## About Stock Mingle
 "Stock Mingle" is a comprehensive stock forum that combines social networking and algorithm-based posts recommendation system  
-users can engage in discussions :speech_balloon:  
-share insights :fire:  
-connect with like-minded individuals :sparkling_heart:  
-access real-time, personalized information :computer:
+- users can engage in discussions :speech_balloon:  
+- share insights :fire:  
+- connect with like-minded individuals :sparkling_heart:  
+- access real-time, personalized information :computer:  
+**Hurry up and check it out!** → [Stock Mingle](https://stockmingle.site)
+
 
 ## Features
-- Member
-- Posts Recommendation
-- Match
-- Article
-- Stock Watch
+- **Member**: logout, login, and registration features using JWT authentication.
+- **Posts Recommendation**: Stock Mingle tracks user interactions and clicks, calculates cosine similarity, and generates recommended content based on calculation result.
+- **Match Friends**: Once-a-day matching opportunity to entice users to seize meaningful connections. If no interaction with the matched friend occurs in the chat room before midnight, the match will not be repeated.
+- **Article**: Users can post articles and leave comments under their favorite posts to interact with the authors.
+- **Stock Watch**: Daily updates of key stock indices are displayed in the sidebar.
 
 ## Architecture
+![AWS Structure Diagram.jpg](image%2FAWS%20Structure%20Diagram.jpg)
 
-![image](https://imgur.com/RTdwbiB)
+
+## Live Demo
+
+## Database Schema
+
 
 ## Test Account
 account : janedoe  
-password : test1235  
+password : test1235
 
 ## Contact Me
 Email: chihyuchang21@gmail.com  
