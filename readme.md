@@ -17,7 +17,7 @@
 - **Stock Watch**: Daily updates of key stock indices are displayed in the sidebar.
 
 ## Architecture
-![AWS Structure Diagram.jpg](image%2FAWS%20Structure%20Diagram.jpg)
+![AWS Structure Diagram.jpg](https://github.com/chihyuchang21/stock-mingle/blob/sp6-refactor/demo/src/main/resources/static/image/AWS%20Structure%20Diagram.jpg)
 
 ## Live Demo
 ### HomePage & Search
@@ -27,7 +27,7 @@
 ### Friends Match & Chatroom
 [match-chatroom live demo.mp4](..%2FStock%20Mingle%20Doc%2Flive%20demo%20video%2Fmatch-chatroom%20live%20demo.mp4)
 ## Database Schema
-![DB Schema.png](..%2FStock%20Mingle%20Doc%2FDB%20Schema.png)
+![DB Schema.png](https://github.com/chihyuchang21/stock-mingle/blob/sp6-refactor/demo/src/main/resources/static/image/DB%20Schema.png)
 
 ## Test Account
 account : janedoe  
