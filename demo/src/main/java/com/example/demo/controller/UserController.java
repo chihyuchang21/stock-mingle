@@ -128,13 +128,6 @@ public class UserController {
         return ResponseEntity.ok("Hashtags saved successfully");
     }
 
-//    @PostMapping("/signup/image")
-//    public ResponseEntity<?> signUp(@RequestBody SignupRequest signupRequest) {
-//        userService.
-//
-//        return ResponseEntity.ok("Image saved successfully");
-//    }
-
 
     @PostMapping("/signin")
     public ResponseEntity<?> signIn(@RequestBody LoginRequest loginRequest) {

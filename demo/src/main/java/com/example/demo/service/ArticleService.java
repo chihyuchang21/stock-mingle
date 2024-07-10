@@ -18,9 +18,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ArticleService {
@@ -270,7 +268,7 @@ public class ArticleService {
                     double[] similaritiesCN = {cnBmSimilarity, cnCdSimilarity, cnArSimilarity, cnOtSimilarity};
                     String[] topicsCN = {"Broad market news", "Company Discussion", "Advice Request", "Others"};
 
-                    int maxIndexCN = 0;
+                    int maxIndexCN = 0; // TD-DO: using similarities sorting
                     for (int i = 1; i < similaritiesCN.length; i++) {
                         if (similaritiesCN[i] > similaritiesCN[maxIndexCN]) {
                             maxIndexCN = i;
@@ -418,6 +416,115 @@ public class ArticleService {
             userClickDetailRepository.save(userClickDetail);
         }
     }
+
+    //    ========================== Function Refactor ===============================    //
+    public void calculateCosineSimilarityRefactor() {
+        List<UserClickDetail> userClickDetails = userClickDetailRepository.findAll();
+
+        // Calculate topic click lengths
+        Map<String, Double> topicClickLengths = calculateTopicClickLengths(userClickDetails);
+
+        // Calculate topic dots products
+        Map<String, Map<String, Double>> topicDotProducts = calculateTopicDotProducts(userClickDetails);
+
+        // Calculate cosine similarity
+        Map<String, Map<String, Double>> cosineSimilarities = calculateCosineSimilarities(topicClickLengths, topicDotProducts);
+
+        // update recommend topics1```````````````````````
+        updateRecommendTopics(userClickDetails, cosineSimilarities);
+    }
+
+    private Map<String, Double> calculateTopicClickLengths(List<UserClickDetail> userClickDetails) {
+        Map<String, Double> topicClickLengths = new HashMap<>();
+        for (UserClickDetail userClickDetail : userClickDetails) {
+            double cnClickLength = Math.pow(userClickDetail.getCompanyNewsClick(), 2);
+            double bmClickLength = Math.pow(userClickDetail.getBroadMarketNewsClick(), 2);
+            double cdClickLength = Math.pow(userClickDetail.getCompanyDiscussionClick(), 2);
+            double arClickLength = Math.pow(userClickDetail.getAdviceRequestClick(), 2);
+            double otClickLength = Math.pow(userClickDetail.getOthersClick(), 2);
+            // To-do: space
+            // HashMap .getOrDefault https://www.runoob.com/java/java-hashmap-getordefault.html
+            topicClickLengths.put("Company News", topicClickLengths.getOrDefault("Company News", 0.0) + cnClickLength);
+            topicClickLengths.put("Broad market news", topicClickLengths.getOrDefault("Broad market news", 0.0) + bmClickLength);
+            topicClickLengths.put("Company Discussion", topicClickLengths.getOrDefault("Company Discussion", 0.0) + cdClickLength);
+            topicClickLengths.put("Advice Request", topicClickLengths.getOrDefault("Advice Request", 0.0) + arClickLength);
+            topicClickLengths.put("Others", topicClickLengths.getOrDefault("Others", 0.0) + otClickLength);
+        }
+        // Using .replaceAll to do Math.sqrt
+        // HashMap .replaceAll method https://www.runoob.com/java/java-hashmap-replaceall.html
+        topicClickLengths.replaceAll((k, v) -> Math.sqrt(v));
+        return topicClickLengths;
+    }
+
+    private Map<String, Map<String, Double>> calculateTopicDotProducts(List<UserClickDetail> userClickDetails) {
+        Map<String, Map<String, Double>> topicDotProducts = new HashMap<>();
+        for (UserClickDetail userClickDetail : userClickDetails) {
+            double cnClick = userClickDetail.getCompanyNewsClick();
+            double bmClick = userClickDetail.getBroadMarketNewsClick();
+            double cdClick = userClickDetail.getCompanyDiscussionClick();
+            double arClick = userClickDetail.getAdviceRequestClick();
+            double otClick = userClickDetail.getOthersClick();
+
+            // Calculating Dot Product
+            Map<String, Double> dotProducts = topicDotProducts.computeIfAbsent("Company News", k -> new HashMap<>());
+            dotProducts.put("Broad market news", dotProducts.getOrDefault("Broad market news", 0.0) + cnClick * bmClick);
+            dotProducts.put("Company Discussion", dotProducts.getOrDefault("Company Discussion", 0.0) + cnClick * cdClick);
+            dotProducts.put("Advice Request", dotProducts.getOrDefault("Advice Request", 0.0) + cnClick * arClick);
+            dotProducts.put("Others", dotProducts.getOrDefault("Others", 0.0) + cnClick * otClick);
+
+            // Repeat the above process for other topics
+
+            // Update dot products for other topics
+        }
+        return topicDotProducts;
+    }
+
+    // Map -> EntrySet (for each key value)
+    private Map<String, Map<String, Double>> calculateCosineSimilarities(Map<String, Double> topicClickLengths, Map<String, Map<String, Double>> topicDotProducts) {
+        Map<String, Map<String, Double>> cosineSimilarities = new HashMap<>();
+        for (Map.Entry<String, Map<String, Double>> entry : topicDotProducts.entrySet()) {
+            String topic = entry.getKey();
+            Map<String, Double> dotProducts = entry.getValue();
+            Map<String, Double> similarities = new HashMap<>();
+            for (Map.Entry<String, Double> dotProductEntry : dotProducts.entrySet()) {
+                String otherTopic = dotProductEntry.getKey();
+                double dotProduct = dotProductEntry.getValue();
+                double similarity = dotProduct / (topicClickLengths.get(topic) * topicClickLengths.get(otherTopic));
+                similarities.put(otherTopic, similarity);
+            }
+            cosineSimilarities.put(topic, similarities);
+        }
+        return cosineSimilarities;
+    }
+
+    private void updateRecommendTopics(List<UserClickDetail> userClickDetails, Map<String, Map<String, Double>> cosineSimilarities) {
+        for (UserClickDetail userClickDetail : userClickDetails) {
+            Category favoriteTopic = userClickDetail.getFavoriteTopic();
+            String favoriteTopicName = favoriteTopic.getCategory();
+            Map<String, Double> similarities = cosineSimilarities.get(favoriteTopicName);
+
+//            (entry, key, value)
+            // Find the first and second most similar topics
+            String recommendTopic1 = similarities.entrySet().stream()
+                    .max(Map.Entry.comparingByValue()) // sorting by value?
+                    .map(Map.Entry::getKey)
+                    .orElse(null); // why?
+
+            similarities.remove(recommendTopic1); // Remove the first most similar topic
+
+            String recommendTopic2 = similarities.entrySet().stream()
+                    .max(Map.Entry.comparingByValue())
+                    .map(Map.Entry::getKey)
+                    .orElse(null);
+
+            // Update the userClickDetail with recommended topics
+            userClickDetail.setRecommendTopic1(categoryRepository.findByCategory(recommendTopic1));
+            userClickDetail.setRecommendTopic2(categoryRepository.findByCategory(recommendTopic2));
+            userClickDetailRepository.save(userClickDetail);
+        }
+    }
+    //    ========================== Function Refactor ===============================    //
+
 
     @Scheduled(cron = "0 0 23 * * ?") // 每天23:00執行
     public void updateUserClickDetail() {

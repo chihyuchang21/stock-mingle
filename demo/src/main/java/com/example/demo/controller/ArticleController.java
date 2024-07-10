@@ -44,7 +44,7 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
-    // Guests can read all of articles (If no token)
+    // Guests can read all articles (If no token)
     @GetMapping
     @ResponseBody
     public ResponseEntity<Map<String, Object>> getAllArticles(@RequestParam(value = "paging", defaultValue = "0") int paging) {
@@ -57,11 +57,11 @@ public class ArticleController {
             article.setNickname(nickname);
         }
 
-        // 計算總頁數
+        // Calculate total pages
         int totalArticles = articleService.countTotalArticles();
         int totalPages = (int) Math.ceil((double) totalArticles / pageSize);
 
-        // 返回結果，包括文章列表和總頁數
+        // Return results, including article lists and total pages
         Map<String, Object> response = new HashMap<>();
         response.put("articles", articleList);
         response.put("totalPages", totalPages);
@@ -78,7 +78,7 @@ public class ArticleController {
         }
 
 //        try {
-        // 從JWT token中解析用戶ID
+        // parse user ID from JWT token
         String token = jwtToken.substring(7); // Remove "Bearer " prefix
 
         // Parse the JWT token to extract user information
@@ -89,20 +89,15 @@ public class ArticleController {
 
         // Get user ID from JWT token
         Integer userId = Integer.parseInt(claims.getSubject()); // Assuming subject is user ID
-//        logger.info("userid: " + userId);
 
         UserClickDetail userClickDetail = userClickDetailRepository.findByUserId(userId).orElse(new UserClickDetail());
-
         Category favoriteTopic = userClickDetail.getFavoriteTopic();
-//        logger.info("favoriteTopic: " + favoriteTopic);
         Category recommendTopic1 = userClickDetail.getRecommendTopic1();
-//        logger.info("RecommendTopic1: " + recommendTopic1);
         Category recommendTopic2 = userClickDetail.getRecommendTopic2();
-//        logger.info("RecommendTopic2: " + recommendTopic2);
 
 
         int pageSize = 10;
-        // 根據用戶的興趣和推薦主題查找相關的文章
+        // According to user interests and recommended topics to search articles
         List<Article> articles = articleService.findArticlesByTopics(paging, favoriteTopic, recommendTopic1, recommendTopic2, pageSize);
 
         return ResponseEntity.ok(articles);
@@ -115,7 +110,7 @@ public class ArticleController {
     @ResponseBody
     public ResponseEntity<?> getArticleDetails(@RequestParam("id") String id) {
         Article article = articleService.getArticleById(id);
-        List<ArticleComment> comment = articleService.getCommentByArticleId(id);
+//        List<ArticleComment> comment = articleService.getCommentByArticleId(id);
         if (article == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Article not found"));
         }
@@ -126,11 +121,6 @@ public class ArticleController {
     @ResponseBody
     public ResponseEntity<?> getCommentsDetails(@RequestParam("id") String id) {
         List<ArticleComment> comment = articleService.getCommentByArticleId(id);
-        int commentCount = comment.size(); //算在前端
-
-//        Map<String, Object> responseBody = new HashMap<>();
-//        responseBody.put("comments", comment);
-//        responseBody.put("commentCount", commentCount);
         return ResponseEntity.ok(comment);
     }
 
