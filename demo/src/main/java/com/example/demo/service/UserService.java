@@ -49,7 +49,7 @@ public class UserService {
 
     // For Sign-up
     public boolean registerUser(User user) {
-        //Check if account name already exists
+        // Check if account name already exists
         if (userRepository.existsByAccountName(user.getAccountName())) {
             return false;   // Account name already exists
         }
@@ -57,7 +57,6 @@ public class UserService {
         // Hashed Password
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);  //Before entering DB, pwd should be hashed
-        //這行改成Multipartfile的上傳
         user.setImage("default");
 
         // Save User Information to DB
@@ -75,33 +74,32 @@ public class UserService {
     }
 
 
-    //To return autoID to Controller
+    // To return autoID to Controller
     public Integer getUserIdByAccountName(String accountName) {
         return userRepository.getUserIdByAccountName(accountName);
     }
 
-    // 保存用戶興趣標籤到數據庫的方法
+    // Method to save user interest hashtags to the database
     public void saveUserHashtag(Integer userId, String hashtagName) {
-        // 創建UserHashtag對象並保存到數據庫
+        // Create a UserHashtag object and save it to the database
         UserHashtag userHashtag = new UserHashtag();
         System.out.println("HashtagName in Service:" + hashtagName);
-        // 先根據userId查詢對應的User對象
+        // First, query the corresponding User object by userId
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // 再根據hashtag查詢對應的Hashtag對象
+        // Then, query the corresponding Hashtag object by hashtagName
         Hashtag hashtag = hashtagRepository.findByHashtagName(hashtagName)
                 .orElseThrow(() -> new RuntimeException("Hashtag not found"));
 
-
-        // 根據用戶ID和興趣標籤設置UserHashtag對象的屬性
+        // Set the properties of the UserHashtag object according to user ID and interest hashtag
         userHashtag.setUser(user);
         userHashtag.setHashtag(hashtag);
-        // 調用Repository保存到數據庫
+        // Call the Repository to save it to the database
         userHashtagRepository.save(userHashtag);
     }
 
-    // 存user圖片
+    // Save user image
     public void saveUserImage(MultipartFile image, HttpServletRequest request, Integer userId) {
         if (image != null && !image.isEmpty()) {
             String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
@@ -109,7 +107,7 @@ public class UserService {
             logger.info("userId: " + userId);
             String fileName = image.getOriginalFilename();
 
-            // 把檔案存到 S3
+            // Save the file to S3
             saveMultipartFile(image, userId, baseUrl);
 
             String fileUrlSaved = "https://d1p236hm2ki7mx.cloudfront.net/uploads/" + "user" + userId + "-" + fileName;
@@ -123,7 +121,7 @@ public class UserService {
     public String saveMultipartFile(MultipartFile image, long userId, String baseUrl) {
         if (image != null && !image.isEmpty()) {
             try {
-                // 路徑
+                // Path
                 String baseDir = System.getProperty("user.dir");
                 String relativeDir = "uploads/";
                 String fileName = image.getOriginalFilename();
@@ -132,7 +130,6 @@ public class UserService {
                 logger.info("fileName: " + fileName);
 
                 s3Uploader.saveMultipartFileToFile(image, "uploads/user" + userId + "-" + fileName);
-
 
                 String imageUrl = baseUrl + "/" + relativeDir + "user" + userId + "-" + fileName;
                 logger.info("imageUrl: " + imageUrl);
@@ -166,9 +163,9 @@ public class UserService {
 
 
     public void savePairToDatabase(Integer userId1, Integer userId2) {
-        // user1,2 跟 user2,1視為相同的配對
+        // Treat user1,2 and user2,1 as the same pairing
         if (userPairingHistoryRepository.existsByUser1IdAndUser2Id(userId2, userId1)) {
-            return; // 如若DB中有已經有相同配對則不儲存
+            return; // If the same pairing already exists in the database, do not save it
         }
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -179,9 +176,9 @@ public class UserService {
         userPairingHistory.setUser2Id(userId2);
         userPairingHistory.setTimestamp(timestamp);
 
-        // 要用UserPairingRepo
         userPairingHistoryRepository.save(userPairingHistory);
     }
+
 
     /**
      * Retrieves the list of matched friends for the specified user on the current day.
@@ -193,7 +190,7 @@ public class UserService {
     public Stream<MatchFriendInfo> getTodayMatch(Integer userId) {
         List<UserPairingHistory> allPairingHistories = userPairingHistoryRepository.findAll();
 
-        // flat map將每個元素都映射為element
+        // Use flatMap to map each element to a stream of elements
         return allPairingHistories.stream()
                 .flatMap(pairingHistory -> {
                     if (pairingHistory.getUser1Id().equals(userId) || pairingHistory.getUser2Id().equals(userId)) {
@@ -201,17 +198,17 @@ public class UserService {
                         Integer otherUserId = (pairingHistory.getUser1Id().equals(userId)) ? pairingHistory.getUser2Id() : pairingHistory.getUser1Id();
                         User otherUser = userRepository.findById(otherUserId).orElse(null);
                         if (otherUser != null) {
-                            return Stream.of(new MatchFriendInfo(otherUser.getNickname(), otherUser.getImage(), pairingHistory.getId())); // 添加了 pairingHistoryId
+                            return Stream.of(new MatchFriendInfo(otherUser.getNickname(), otherUser.getImage(), pairingHistory.getId())); // Added pairingHistoryId
                         }
                     }
                     return Stream.empty();
                 });
     }
 
-    @Scheduled(cron = "0 40 23 * * ?") // 每天23:40執行
-    // Using AWS Lambda to execute the function once again at every midnight (start from day 2)
+    @Scheduled(cron = "0 40 23 * * ?") // Executes daily at 23:40
+// Using AWS Lambda to execute the function again at midnight (starting from day 2)
     public ResponseEntity<List<UserSimilarity>> calculateAllUsersSimilarityAndSaveAfterDay2() {
-        logger.info("exexuting function calculateAllUsersSimilarityAndSaveAfterDay2...");
+        logger.info("Executing function calculateAllUsersSimilarityAndSaveAfterDay2...");
         List<User> users = getAllUsers();
         List<UserPairingHistory> historyUserPairing = getHistoryUserPairing();
 
@@ -232,7 +229,7 @@ public class UserService {
 
             for (User otherUser : users) {
                 if (user.getId().equals(otherUser.getId()) || alreadyPairedUsersToday.contains(userId1)) {
-                    continue; // 跳過自己或已參與配對的用戶
+                    continue; // Skip the user itself or users already paired today
                 }
                 Double similarity = calculateSimilarity(userId1, otherUser.getId());
                 if ((user.getGenderMatch() == otherUser.getGenderId() || otherUser.getGenderMatch() == user.getGenderId())
@@ -246,14 +243,14 @@ public class UserService {
             if (mostSimilarUserId != null) {
                 Pair<Integer, Integer> currentPair = Pair.of(Math.min(userId1, mostSimilarUserId), Math.max(userId1, mostSimilarUserId));
                 similarities.add(new UserSimilarity(userId1, mostSimilarUserId, maxSimilarity));
-                savePairToDatabase(userId1, mostSimilarUserId); //把配對存入DB
+                savePairToDatabase(userId1, mostSimilarUserId); // Save the pairing to the database
                 historypairedUserIds.add(userId1);
                 historypairedUserIds.add(mostSimilarUserId);
                 alreadyPairedUsersToday.add(userId1);
                 alreadyPairedUsersToday.add(mostSimilarUserId);
             }
         }
-        logger.info("finishing execution of function calculateAllUsersSimilarityAndSaveAfterDay2...");
+        logger.info("Finished execution of function calculateAllUsersSimilarityAndSaveAfterDay2...");
         return ResponseEntity.ok(similarities);
     }
 
