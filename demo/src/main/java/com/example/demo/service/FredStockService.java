@@ -42,19 +42,19 @@ public class FredStockService {
     private String parseIndexValue(String responseBody, String url) {
         Document doc = Jsoup.parse(responseBody);
 
-        // 找到包含S&P 500指數的元素
+        // Find the element containing the S&P 500 index
         Element sp500Element = doc.selectFirst(".series-meta-observation-value");
 
         if (sp500Element != null) {
-            // 提取S&P 500指數
+            // Extract the S&P 500 index
             String indexText = sp500Element.text();
-            // 清理數字中的逗號
+            // Remove commas from the number
             indexText = indexText.replaceAll(",", "");
-            // 轉換為double型別
+            // Convert to double type
             return indexText;
         }
 
-        // 如果未找到指數，返回0
+        // Return a message if the index is not found
         return "Can't find index";
     }
 
@@ -62,20 +62,8 @@ public class FredStockService {
         crawlAndSaveIndex("Dow Jones Industrial Average", "https://fred.stlouisfed.org/series/DJIA");
         crawlAndSaveIndex("S&P 500", "https://fred.stlouisfed.org/series/SP500");
         crawlAndSaveIndex("NASDAQ Composite", "https://fred.stlouisfed.org/series/NASDAQCOM");
-//        crawlAndSaveIndex("Philadelphia Semiconductor Index", "https://finance.yahoo.com/quote/%5ESOX");
     }
 
-//    public void getStockGeneralIndexFromFred() throws IOException {
-//        String url = "https://fred.stlouisfed.org/series/SP500";
-//
-//        // 使用Jsoup獲取網頁HTML內容
-//        String html = fetchHtml(url);
-//
-//        // 解析HTML並提取S&P 500指數
-//        double sp500Index = parseSP500Index(html);
-//
-//        System.out.println("S&P 500每日指數: " + sp500Index);
-//    }
 
     private void saveToDatabase(String indexName, String indexValue) {
         StockInformation stockInformation = new StockInformation();

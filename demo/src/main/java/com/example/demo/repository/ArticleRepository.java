@@ -25,16 +25,15 @@ import java.util.Optional;
 @Repository
 public interface ArticleRepository extends JpaRepository<Article, Integer> {
     static final Logger logger = LoggerFactory.getLogger(ArticleRepository.class);
-//    之後可以加orderby
 
     @Query("SELECT a FROM Article a ORDER BY a.id DESC")
     List<Article> findAllArticlesByPageOrder(Pageable pageable);
 
-    // JPA不能用Autowired故使用參數傳遞此方法
+    // Autowired cannot be used with JPA, so parameters are passed to this method instead.
     default List<Article> findAllArticlesByPage(Pageable pageable, RedisTemplate<String, String> redisTemplate, ObjectMapper objectMapper) {
         String key = "articles";
 
-        // 第一頁的文章才存cache
+        // Only cache the articles on the first page
         boolean isFirstPage = pageable.getPageNumber() == 0;
 
         try {
@@ -64,10 +63,10 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
         }
 
         logger.info("Articles retrieved from database.");
-        // 使用Spring Data JPA的findAllArticlesByPage方法來從數據庫獲取文章
+        // Use the findAllArticlesByPage method of Spring Data JPA to retrieve articles from the database
         List<Article> articles = findAllArticlesByPageOrder(pageable);
 
-        // 添加info到每個文章對象中
+        // Add info to each article object.
         for (Article article : articles) {
             article.setNickname(article.getUserNickname());
             article.setCategoryId(article.getCategoryId());
@@ -76,7 +75,7 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
         }
 
         try {
-            // 只有在第一頁時才存儲到緩存中
+            // Store the articles in the cache only on the first page.
             if (isFirstPage) {
                 ValueOperations<String, String> opsForCache = redisTemplate.opsForValue();
                 String articlesJson = objectMapper.writeValueAsString(articles);
@@ -105,7 +104,7 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
     @Query("SELECT a FROM Article a WHERE a.categoryId = :favoriteTopic OR a.categoryId = :recommendTopic1 OR a.categoryId = :recommendTopic2")
     List<Article> findAllArticlesByPageAndTopics(Category favoriteTopic, Category recommendTopic1, Category recommendTopic2, Pageable pageable);
 
-    // List好像可以直接用這個
+    // It seems that List can be used directly for this purpose
 
     @Query("SELECT a FROM Article a WHERE a.categoryId = :favoriteTopic ORDER BY a.id DESC")
     List<Article> findFavoriteTopicArticles(Pageable pageable, @Param("favoriteTopic") Category favoriteTopic);
@@ -119,7 +118,7 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
     Optional<Article> findById(int id);
 
 
-    // 先用lower轉換為小寫，在用concat把要查的內容包在%中
+    // First, convert the text to lowercase using lower, and then use concat to wrap the content to be searched with %
     @Query(value = "SELECT * FROM article WHERE lower(title) LIKE lower(concat('%', :keyword, '%')) OR lower(content) LIKE lower(concat('%', :keyword, '%'))", nativeQuery = true)
     List<Article> findByTitleOrContentContaining(@Param("keyword") String keyword, Pageable pageable);
 

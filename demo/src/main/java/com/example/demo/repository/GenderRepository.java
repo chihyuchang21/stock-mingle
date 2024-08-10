@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface GenderRepository extends JpaRepository<Gender, Integer> {
 
-    // 根據性別值查詢 Gender Object
+    // Query the Gender object based on the gender value
     Gender findByGender(String gender);
 }

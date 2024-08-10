@@ -19,7 +19,7 @@ public class FileService {
     @Autowired
     UserRepository userRepository;
 
-    //function 1: save String and throw to function 3
+    // function 1: save String and throw to function 3
     public void saveUserImage(MultipartFile picture_file, HttpServletRequest request) {
         if (picture_file != null && !picture_file.isEmpty()) {
             // Get fileName
@@ -28,8 +28,6 @@ public class FileService {
             String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
             // Save files and get full url
             String campaignFileValue = saveMultipartFile(picture_file, baseUrl);
-            // Save Image to db
-//            saveCampaignImageInfo(campaignFileValue);
         }
     }
 
@@ -37,15 +35,13 @@ public class FileService {
     public String saveMultipartFile(MultipartFile file, String baseUrl) {
         if (file != null && !file.isEmpty()) {
             try {
-                // 路徑
+                // Path
                 String baseDir = System.getProperty("user.dir");
                 String relativeDir = "uploads/";
                 String fileName = file.getOriginalFilename();
                 String filePath = baseDir + File.separator + relativeDir + "product" + "-" + fileName;
 
                 s3Uploader.saveMultipartFileToFile(file, "uploads/product" + "-" + fileName);
-//                file.transferTo(new File(filePath));
-
                 String imageUrl = baseUrl + "/" + relativeDir + "product" + "-" + fileName;
                 return imageUrl;
 
@@ -56,11 +52,4 @@ public class FileService {
         }
         return null;
     }
-
-    //function 3: call Dao to insert data
-//    public void saveCampaignImageInfo(String campaignFileValue) {
-//        userRepository.save(campaignFileValue);
-//    }
-
-
 }

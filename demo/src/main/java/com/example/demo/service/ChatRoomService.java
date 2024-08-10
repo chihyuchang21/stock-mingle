@@ -39,8 +39,4 @@ public class ChatRoomService {
     public List<ChatRoomInfo> getChatroomInfoByUserId(Integer userId) {
         return chatRoomRepository.findChatroomInfoByUserId(userId);
     }
-
-//    public ChatRoomInfo getCurrentChatroomByUserId(Integer userId, Integer currentChatroomId) {
-//        return chatRoomRepository.findCurrentChatroomByUserId(userId, currentChatroomId);
-//    }
 }

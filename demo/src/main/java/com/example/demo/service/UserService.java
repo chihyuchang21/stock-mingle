@@ -108,7 +108,6 @@ public class UserService {
             logger.info("baseUrl: " + baseUrl);
             logger.info("userId: " + userId);
             String fileName = image.getOriginalFilename();
-//            String s3Url = "https://d1p236hm2ki7mx.cloudfront.net/uploads/" +
 
             // 把檔案存到 S3
             saveMultipartFile(image, userId, baseUrl);
@@ -118,7 +117,6 @@ public class UserService {
             userRepository.updateUserImage(fileUrlSaved, userId);
 
             logger.info("https://d1p236hm2ki7mx.cloudfront.net/uploads/" + "user" + userId + "-" + fileName);
-//            saveImageInfo(ImageValue, userId);
         }
     }
 
@@ -159,7 +157,6 @@ public class UserService {
     public Set<String> getUserHashtags(Integer userId) {
         Set<String> hashtags = new HashSet<>();
         List<UserHashtag> userHashtags = userHashtagRepository.findByUserId(userId);
-//        logger.info("userHashtags from service" + userHashtags);
         for (UserHashtag userHashtag : userHashtags) {
             String hashtagName = userHashtag.getHashtag().getHashtagName();
             hashtags.add(hashtagName);

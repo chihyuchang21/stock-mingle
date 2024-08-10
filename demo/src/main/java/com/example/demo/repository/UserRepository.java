@@ -23,11 +23,11 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     User getUserByAccountName(String accountName);
 
-    // 根據帳號名查詢用戶 ID
+    // Query the user ID based on the account name
     @Query("SELECT u.id FROM User u WHERE u.accountName = :accountName")
     Integer getUserIdByAccountName(@Param("accountName") String accountName);
 
-    // 告訴Spring Data JPA這是一個修改操作
+    // Inform Spring Data JPA that this is an update operation
     @Modifying
     @Transactional
     @Query("UPDATE User u SET u.image = :fileUrlSaved WHERE u.id = :userId")

@@ -8,7 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface HashtagRepository extends JpaRepository<Hashtag, Integer> {
-    // 以hashtag名稱查詢對應的Hashtag對象
+    // Query the corresponding Hashtag object by the hashtag name.
     Optional<Hashtag> findByHashtagName(String hashtagName);
 }
 

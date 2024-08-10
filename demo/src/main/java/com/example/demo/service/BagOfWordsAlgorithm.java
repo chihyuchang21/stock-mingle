@@ -12,24 +12,18 @@ public class BagOfWordsAlgorithm {
 
 
     public static double calculateSimilarity(Set<String> set1, Set<String> set2) {
-        // 兩個set的交集大小
+        // Size of the intersection of the two sets
         int intersectionSize = getIntersectionSize(set1, set2);
 
-//        logger.info("intersectionSize: " + intersectionSize);
-
-        // 兩個set的聯集大小
+        // Size of the union of the two sets
         int unionSize = set1.size() + set2.size() - intersectionSize;
 
-//        logger.info("unionSize: " + unionSize);
-
-        // 計算相似度得分
+        // Calculate the similarity score
         double similarityScore = (double) intersectionSize / unionSize;
 
-//        logger.info("similarityScore: " + similarityScore);
-
         return similarityScore;
-
     }
+
 
     private static int getIntersectionSize(Set<String> set1, Set<String> set2) {
         int count = 0;

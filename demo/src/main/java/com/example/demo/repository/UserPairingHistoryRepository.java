@@ -30,8 +30,4 @@ public interface UserPairingHistoryRepository extends JpaRepository<UserPairingH
             "WHERE u.user1Id = :id OR u.user2Id = :id")
     List<UserPairingHistory> findOtherUserId(@Param("id") Integer id);
 
-
-    default void logQueryParameters(Integer userId, Timestamp timestamp) {
-        logger.info("Querying user_pairing_history with userId: {} and timestamp: {}", userId, timestamp);
-    }
 }

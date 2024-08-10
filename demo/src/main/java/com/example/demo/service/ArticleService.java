@@ -92,14 +92,14 @@ public class ArticleService {
     }
 
     public Article toggleLike(Integer articleId) {
-        // 使用 findById 方法獲取 Optional<Article> 對象 (JPA內建為Optional)
+        // Use the findById method to get an Optional<Article> object (JPA built-in as Optional)
         Optional<Article> optionalArticle = articleRepository.findById(articleId);
-        // 檢查是否存在對應的文章
+        // Check if the corresponding article exists
         if (optionalArticle.isPresent()) {
-            Article article = optionalArticle.get(); // 從 Optional 中取得 Article 對象
-            // 根據 isLiked 參數來新增或減少點讚數量
+            Article article = optionalArticle.get(); // Retrieve the Article object from the Optional
+            // Increment the like count based on the isLiked parameter
             article.setLikeCount(article.getLikeCount() + 1);
-            // 更新文章到資料庫
+            // Update the article in the database
             return articleRepository.save(article);
         } else {
             throw new IllegalArgumentException("Article not found with ID: " + articleId);
@@ -107,73 +107,48 @@ public class ArticleService {
     }
 
     public Article cancelLike(Integer articleId) {
-        // 使用 findById 方法獲取 Optional<Article> 對象 (JPA內建為Optional)
+        // Use the findById method to get an Optional<Article> object (JPA built-in as Optional)
         Optional<Article> optionalArticle = articleRepository.findById(articleId);
-        // 檢查是否存在對應的文章
+        // Check if the corresponding article exists
         if (optionalArticle.isPresent()) {
-            Article article = optionalArticle.get(); // 從 Optional 中取得 Article 對象
-            // 根據 isLiked 參數來新增或減少點讚數量
+            Article article = optionalArticle.get(); // Retrieve the Article object from the Optional
+            // Decrement the like count based on the isLiked parameter
             article.setLikeCount(article.getLikeCount() - 1);
-            // 更新文章到資料庫
+            // Update the article in the database
             return articleRepository.save(article);
         } else {
             throw new IllegalArgumentException("Article not found with ID: " + articleId);
         }
     }
 
-
     public int countTotalArticles() {
         return articleRepository.countTotalArticles();
     }
 
-
     public List<Article> findArticlesByTopics(int page, Category favoriteTopic, Category recommendTopic1, Category recommendTopic2, int pageSize) {
 
         List<Article> articles = new ArrayList<>();
-        // 計算每一類文章的數量
+        // Calculate the number of articles for each category
         int favoriteTopicCount = (int) Math.ceil(7.0 / (7 + 2 + 1) * pageSize);
         int recommendTopic1Count = (int) Math.ceil(2.0 / (7 + 2 + 1) * pageSize);
         int recommendTopic2Count = (int) Math.ceil(1.0 / (7 + 2 + 1) * pageSize);
 
-
-        // 確保每一類文章的數量不超過pageSize
+        // Ensure that the number of articles for each category does not exceed pageSize
         favoriteTopicCount = Math.min(favoriteTopicCount, pageSize);
         recommendTopic1Count = Math.min(recommendTopic1Count, pageSize - favoriteTopicCount);
         recommendTopic2Count = Math.min(recommendTopic2Count, pageSize - favoriteTopicCount - recommendTopic1Count);
-//        logger.info("favoriteTopicCount: " + favoriteTopicCount);
-//        logger.info("recommendTopic1Count: " + recommendTopic1Count);
-//        logger.info("recommendTopic2Count: " + recommendTopic2Count);
 
-
-        // 根據每一類文章的數量查找相應的文章
+        // Find the corresponding articles based on the number of articles for each category
         Pageable pageable = PageRequest.of(page, pageSize);
-//        logger.info("pageable: " + pageable);
-//        logger.info("Page: " + page);
-//        logger.info("pageSize: " + pageSize);
-
 
         List<Article> favoriteTopicArticles = articleRepository.findFavoriteTopicArticles(pageable, favoriteTopic);
         List<Article> recommendTopic1Articles = articleRepository.findRecommendTopic1Articles(pageable, recommendTopic1);
         List<Article> recommendTopic2Articles = articleRepository.findRecommendTopic2Articles(pageable, recommendTopic2);
-
-//        logger.info("favoriteTopicArticles:" + favoriteTopicArticles);
-//        logger.info("recommendTopic1Articles:" + recommendTopic1Articles);
-//        logger.info("recommendTopic2Articles:" + recommendTopic2Articles);
-//
-//        logger.info("favoriteTopic:" + favoriteTopic);
-//        logger.info("recommendTopic1:" + recommendTopic1);
-//        logger.info("recommendTopic2:" + recommendTopic2);
-
         articles.addAll(favoriteTopicArticles.subList(0, Math.min(favoriteTopicArticles.size(), favoriteTopicCount)));
         articles.addAll(recommendTopic1Articles.subList(0, Math.min(recommendTopic1Articles.size(), recommendTopic1Count)));
         articles.addAll(recommendTopic2Articles.subList(0, Math.min(recommendTopic2Articles.size(), recommendTopic2Count)));
 
-
-        // 將文章列表打亂
-//        Collections.shuffle(articles);
-
         return articles;
-//        return articleRepository.findAllArticlesByPageAndTopics(favoriteTopic, recommendTopic1, recommendTopic2, pageable);
     }
 
 
@@ -548,13 +523,11 @@ public class ArticleService {
                 }
             }
 
-            // 將最多點擊次數對應的類別作為favorite topic
-//                String favoriteTopic = topics[maxIndex];
 
             // 儲存外鍵的值
             Category favoriteTopic = categoryRepository.findByCategory(topics[maxIndex]);
 
-//                String favoriteTopic = "";
+
             String recommendTopic1 = ""; // define how to get recommend topic 1
             String recommendTopic2 = ""; // define how to get recommend topic 2
 
@@ -567,8 +540,6 @@ public class ArticleService {
             detail.setAdviceRequestClick(adviceRequestClick);
             detail.setOthersClick(othersClick);
             detail.setFavoriteTopic(favoriteTopic);
-//                detail.setRecommendTopic1(recommendTopic1);
-//                detail.setRecommendTopic2(recommendTopic2);
             userClickDetailRepository.save(detail);
         }
     }

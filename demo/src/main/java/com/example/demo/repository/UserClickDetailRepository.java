@@ -8,9 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface UserClickDetailRepository extends JpaRepository<UserClickDetail, Integer> {
-    //用Optional儲存可能為空的值
+    // Use Optional to store potentially null values
     Optional<UserClickDetail> findByUserId(Integer userId);
-
-//    UserClickDetail findForAlgoByUserId(Integer userId);
-
 }
