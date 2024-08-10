@@ -10,7 +10,6 @@ public class Hashtag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     @Column(name = "hashtag_name")
     private String hashtagName;
 }

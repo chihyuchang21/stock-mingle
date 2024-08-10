@@ -13,30 +13,28 @@ public class Article {
     private String title;
 
     @ManyToOne
-    @JoinColumn(name = "categoryId") //FK
+    @JoinColumn(name = "categoryId") // FK
     private Category categoryId;
 
     private String content;
 
     @ManyToOne
-    @JoinColumn(name = "userId") //FK
+    @JoinColumn(name = "userId") // FK
     private User userId;
 
     private Integer likeCount;
     private Integer commentCount;
 
-    @Transient //DB沒有這一欄
+    @Transient // DB does not have this column
     private String nickname;
 
     private String image;
 
-    // 定義setCategory 方法
+    // Define setCategory method
     public void setCategory(Category category) {
         this.categoryId = category;
     }
 
-
-    // 獲取User暱稱
     public String getUserNickname() {
         if (this.userId != null) {
             return this.userId.getNickname();
@@ -44,6 +42,4 @@ public class Article {
             return null;
         }
     }
-
-
 }

@@ -23,7 +23,7 @@ public class UserClickDetail {
     @JoinColumn(name = "favorite_topic", referencedColumnName = "id")
     private Category favoriteTopic;
 
-    //解決Hibernate提出的關於列映射重複問題
+    // Resolve the issue of duplicate column mapping raised by Hibernate
     @ManyToOne
     @JoinColumn(name = "recommend_topic1", referencedColumnName = "id")
     private Category recommendTopic1;

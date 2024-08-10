@@ -23,16 +23,16 @@ import java.util.Map;
 @Controller
 public class ChatRoomController {
 
-    // 不同聊天室的訂閱路徑
+    // Subscription paths for different chat rooms
     private static final String GREETINGS_TOPIC_PREFIX = "/topic/chats/";
     @Value("${jwt.secret}")
     private String jwtSecret;
     @Autowired
     private ChatRoomService chatRoomService;
 
-    // 訂閱路徑動態生成
+    // Dynamically generate subscription paths
     @MessageMapping("/hello/{userPairingHistoryId}")
-    @SendTo(GREETINGS_TOPIC_PREFIX + "{userPairingHistoryId}") // 動態生成路徑
+    @SendTo(GREETINGS_TOPIC_PREFIX + "{userPairingHistoryId}") // Dynamically generate the path
     public Message sendMessageToSpecificRoom(@DestinationVariable String userPairingHistoryId, Message message) {
         Message savedMessage = chatRoomService.saveMessage(message);
         return savedMessage;
@@ -62,46 +62,12 @@ public class ChatRoomController {
         Map<String, Object> userClaims = claims.get("user", Map.class);
         Integer userId = Integer.parseInt(userClaims.get("id").toString()); // Assuming ID is an Integer
 
-        // 調用服務並將解析的ID傳遞給它 (先用Message)
+        // Call the service and pass the parsed ID to it (use Message for now)
         List<ChatRoomInfo> chatrooms = chatRoomService.getChatroomInfoByUserId(userId);
 
-        // 返回聊天室列表
+        // Return the list of chat rooms
         return ResponseEntity.ok(chatrooms);
     }
-
-//    @GetMapping("/api/1.0/messages/current-chatroom")
-//    public ResponseEntity<?> getCurrentChatroom(@RequestHeader(name = "Authorization") String authorizationHeader, Integer currentChatroomId) {
-//        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-//            // error (401): no token
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Can't find token"));
-//        }
-//        String token = authorizationHeader.substring(7); // Remove "Bearer " prefix
-//
-//        // Parse the JWT token to extract user information
-//        Claims claims = Jwts.parser()
-//                .setSigningKey(jwtSecret)
-//                .parseClaimsJws(token)
-//                .getBody();
-//
-//        Map<String, Object> userClaims = claims.get("user", Map.class);
-//        Integer userId = Integer.parseInt(userClaims.get("id").toString()); // Assuming ID is an Integer
-//
-//        ChatRoomInfo currentChatroom = chatRoomService.getCurrentChatroomByUserId(userId, currentChatroomId);
-//
-//        return ResponseEntity.ok(currentChatroom);
-//    }
-
-
-//    @GetMapping("/details")
-//    @ResponseBody
-//    public ResponseEntity<?> getArticleDetails(@RequestParam("id") String id) {
-//        Article article = articleService.getArticleById(id);
-//        if (article == null) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Article not found"));
-//        }
-//        return ResponseEntity.ok(article);
-//    }
-
 }
 
 

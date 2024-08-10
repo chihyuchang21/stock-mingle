@@ -8,7 +8,6 @@ import java.util.List;
 
 @Repository
 public interface UserHashtagRepository extends JpaRepository<UserHashtag, Integer> {
-    //    UserHashtag findByUserId(Integer userId);
     List<UserHashtag> findByUserId(Integer userId);
 
 }

@@ -31,20 +31,6 @@ public interface UserPairingHistoryRepository extends JpaRepository<UserPairingH
     List<UserPairingHistory> findOtherUserId(@Param("id") Integer id);
 
 
-//    @Query(value = "SELECT * FROM user_pairing_history " +
-//            "JOIN User u1 ON user_pairing_history.user1_id = u1.id " +
-//            "JOIN User u2 ON user_pairing_history.user2_id = u2.id " +
-//            "WHERE (user_pairing_history.user1_id = :userId OR user_pairing_history.user2_id = :userId) AND user_pairing_history.timestamp = :timestamp", nativeQuery = true)
-//    List<UserPairingHistory> findByUserIdAndTimestamp(Integer userId, Timestamp timestamp);
-//
-//    @Query(value = "SELECT CASE WHEN user_pairing_history.user1.id = :userId THEN u2.nickname ELSE u1.nickname END, " +
-//            "CASE WHEN user_pairing_history.user1_id = :userId THEN u2.image ELSE u1.image END " +
-//            "FROM UserPairingHistory user_pairing_history " +
-//            "JOIN User u1 ON user_pairing_history.user1_id = u1.id " +
-//            "JOIN User u2 ON user_pairing_history.user2_id = u2.id " +
-//            "WHERE (user_pairing_history.user1_id = :userId OR user_pairing_history.user2.id = :userId) AND user_pairing_history.timestamp = :timestamp", nativeQuery = true)
-//    List<Object[]> findNicknameAndImageByUserIdAndTimestamp(Integer userId, Timestamp timestamp);
-
     default void logQueryParameters(Integer userId, Timestamp timestamp) {
         logger.info("Querying user_pairing_history with userId: {} and timestamp: {}", userId, timestamp);
     }

@@ -77,7 +77,6 @@ public class ArticleController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Bearer token is missing"));
         }
 
-//        try {
         // parse user ID from JWT token
         String token = jwtToken.substring(7); // Remove "Bearer " prefix
 
@@ -101,16 +100,12 @@ public class ArticleController {
         List<Article> articles = articleService.findArticlesByTopics(paging, favoriteTopic, recommendTopic1, recommendTopic2, pageSize);
 
         return ResponseEntity.ok(articles);
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", e.getMessage()));
-//        }
     }
 
     @GetMapping("/details")
     @ResponseBody
     public ResponseEntity<?> getArticleDetails(@RequestParam("id") String id) {
         Article article = articleService.getArticleById(id);
-//        List<ArticleComment> comment = articleService.getCommentByArticleId(id);
         if (article == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Article not found"));
         }
@@ -171,7 +166,7 @@ public class ArticleController {
             @RequestParam("keyword") String keyword,
             @RequestParam(value = "paging", defaultValue = "0") int paging) {
 
-        //error1: no keyword
+        // error 1: no keyword
         if (keyword == null) {
             return ResponseEntity.badRequest().body(Map.of("error", "Keyword parameter is required"));
         }
@@ -180,12 +175,12 @@ public class ArticleController {
             int pageSize = 10; // 10 articles every page
             List<Article> articleList = articleService.findArticlesByKeyword(keyword, paging, pageSize);
 
-            //error2: can't find products
+            // error 2: can't find products
             if (articleList.isEmpty()) {
                 return ResponseEntity.badRequest().body(Map.of("error", "No articles found."));
             }
 
-            //Return Array of Product Object
+            // Return Array of Product Object
             Map<String, Object> response = new HashMap<>();
             response.put("data", articleList);
 
@@ -200,7 +195,6 @@ public class ArticleController {
         }
     }
 
-    //("/newArticles")
     @PostMapping
     @ResponseBody
     public ResponseEntity<?> postArticle(@RequestBody Article article, @RequestHeader(value = "Authorization") String jwtToken) {
@@ -222,7 +216,6 @@ public class ArticleController {
             Integer userId = Integer.parseInt(claims.getSubject()); // Assuming subject is user ID
             User user = userService.getUserById(userId);
             article.setUserId(user);
-//            logger.info("userid: " + userId);
 
             articleService.postArticle(article);
             Map<String, Object> response = new HashMap<>();
@@ -238,7 +231,6 @@ public class ArticleController {
         } catch (Exception ex) {
             // other error
             ex.printStackTrace();
-            // 其他错误
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "An error occurred processing your request"));
         }
     }
@@ -262,9 +254,9 @@ public class ArticleController {
         try {
             // call service
             articleService.toggleLike(articleId);
-            return new ResponseEntity<>(HttpStatus.CREATED); // 點讚成功
+            return new ResponseEntity<>(HttpStatus.CREATED); // like success
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); // 點讚失敗
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); // like fail
         }
     }
 
@@ -304,29 +296,14 @@ public class ArticleController {
         return ResponseEntity.ok("ok");
     }
 
-
-//    @GetMapping("/getArticlesByPageAndFavoriteTopic")
-//    public ResponseEntity<List<Article>> getArticlesByPageAndFavoriteTopic(@RequestParam(value = "paging", defaultValue = "0") int paging) {
-//
-//        int pageSize = 10;
-//        // 不分類的10筆文章資料
-//        List<Article> articleList = articleService.getArticlesByPageAndFavoriteTopic(paging, pageSize);
-//    //boolean hasMore = articleService.hasNextPage();
-//
-//
-//
-//        return ResponseEntity.ok(articleList);
-//    }
-//
-
-
-    // To Testing End Point
+    // To test end point
     @PostMapping("/calculateRecommendTopic")
     public ResponseEntity<?> calculateRecommendTopic() {
         articleService.updateUserClickDetail();
         articleService.calculateCosineSimilarity();
         return ResponseEntity.ok("Recommendation calculation completed successfully.");
     }
+
 
     @PostMapping("/sumToBigTable")
     public ResponseEntity<?> sumToBigTable() {

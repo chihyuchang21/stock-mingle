@@ -11,14 +11,9 @@ public class ArticleComment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String content;
-
-//    @ManyToOne
-//    @JoinColumn(name = "articleId") //FK
-//    private Article articleId;
-
     private String articleId;
 
     @ManyToOne
-    @JoinColumn(name = "userId") //FK
+    @JoinColumn(name = "userId") // FK
     private User userId;
 }

@@ -13,7 +13,7 @@ public class UserClickEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private Integer userId; //待改為FK
+    private Integer userId; // To-do: switch to FK
 
     @ManyToOne
     @JoinColumn(name = "category_id")

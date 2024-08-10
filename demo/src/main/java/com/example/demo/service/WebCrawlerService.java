@@ -52,7 +52,7 @@ public class WebCrawlerService {
                 JSONObject child = children.getJSONObject(i);
                 JSONObject childData = child.getJSONObject("data");
                 String linkFlairText = childData.getString("link_flair_text");
-                // 只提取特定文章的 selftext
+                // Only extract particular articles' self text
                 if (isValidLinkFlairText(linkFlairText)) {
                     String selfTextValue = childData.getString("selftext");
                     selfTextValues.add(selfTextValue);
@@ -74,7 +74,7 @@ public class WebCrawlerService {
                 JSONObject child = children.getJSONObject(i);
                 JSONObject childData = child.getJSONObject("data");
                 String linkFlairText = childData.getString("link_flair_text");
-                // 只存特定Categories的文章
+                // Only extract particular articles' categories
                 if (isValidLinkFlairText(linkFlairText)) {
                     String categoryValue = childData.getString("title");
                     categoryValues.add(categoryValue);
@@ -96,7 +96,7 @@ public class WebCrawlerService {
                 JSONObject child = children.getJSONObject(i);
                 JSONObject childData = child.getJSONObject("data");
                 String linkFlairText = childData.getString("link_flair_text");
-                // 只提取特定文章的 title
+                // Only extract particular articles' link
                 if (isValidLinkFlairText(linkFlairText)) {
                     String titleValue = childData.getString("link_flair_text");
                     titleValues.add(titleValue);
@@ -108,7 +108,7 @@ public class WebCrawlerService {
         return titleValues;
     }
 
-    // 檢查link_flair_text 是否為特定類型
+    // Check if link_flair_text is particular type
     private static boolean isValidLinkFlairText(String linkFlairText) {
         return linkFlairText != null && (linkFlairText.equals("Company News") || linkFlairText.equals("Broad market news") ||
                 linkFlairText.equals("Company Discussion") || linkFlairText.equals("Advice Request") || linkFlairText.equals("Others"));
@@ -135,7 +135,7 @@ public class WebCrawlerService {
         List<String> titles = extractCategory(responseBody);
         List<String> categories = extractTitle(responseBody);
 
-        // 文章存入DB
+        // Save articles to DB
         saveArticle(selfTexts, titles, categories);
 
         response.close();
@@ -152,7 +152,6 @@ public class WebCrawlerService {
             article.setCategory(category); // 設置 Category 物件到 Article 中
 
             article.setContent(selfTexts.get(i));
-
             webCrawlerRepository.save(article);
         }
     }
@@ -166,8 +165,6 @@ public class WebCrawlerService {
         crawlAndSaveIndex("S&P 500", "https://finance.yahoo.com/quote/%5EGSPC");
         crawlAndSaveIndex("NASDAQ Composite", "https://finance.yahoo.com/quote/%5EIXIC");
         crawlAndSaveIndex("Philadelphia Semiconductor Index", "https://finance.yahoo.com/quote/%5ESOX");
-//        crawlAndSaveIndex("Nikkei 225", "https://finance.yahoo.com/quote/%5EN225");
-//        crawlAndSaveIndex("TSEC weighted index", "https://finance.yahoo.com/quote/%5ETWII");
     }
 
     private void crawlAndSaveIndex(String indexName, String url) throws IOException {
@@ -197,10 +194,6 @@ public class WebCrawlerService {
             priceElement = doc.selectFirst("fin-streamer[data-symbol=^IXIC]");
         } else if (url.contains("%5ESOX")) {
             priceElement = doc.selectFirst("fin-streamer[data-symbol=^SOX]");
-//        } else if (url.contains("%5EN225")) {
-//            priceElement = doc.selectFirst("fin-streamer[data-symbol=^N225]");
-//        } else if (url.contains("%5ETWII")) {
-//            priceElement = doc.selectFirst("fin-streamer[data-symbol=^TWII]");
         }
 
 
@@ -218,8 +211,6 @@ public class WebCrawlerService {
         stockInformation.setTimestamp(LocalDateTime.now());
         stockInformationRepository.save(stockInformation);
     }
-
-//    private void retrieveFromDatabase
 }
 
 

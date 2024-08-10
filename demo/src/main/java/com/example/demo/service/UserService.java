@@ -192,19 +192,7 @@ public class UserService {
      * @param userId The ID of the user to retrieve matched friends for.
      * @return A stream of MatchFriendInfo objects representing the matched friends.
      */
-//    public Stream<MatchFriendInfo> getTodayMatch(Integer userId) {
-//        Timestamp timestamp = Timestamp.valueOf("2024-04-19 18:09:30");
-//        List<UserPairingHistory> pairingHistories = userPairingHistoryRepository.findByUserIdAndTimestamp(userId, timestamp);
-//        return pairingHistories.stream()
-//                .map(pairingHistory -> {
-//                    Integer otherUserId = (userId.equals(pairingHistory.getUser1Id())) ? pairingHistory.getUser2Id() : pairingHistory.getUser1Id();
-//                    User otherUser = userRepository.findById(otherUserId).orElse(null);
-//                    if (otherUser != null) {
-//                        return new MatchFriendInfo(otherUser.getNickname(), otherUser.getImage());
-//                    }
-//                    return null;
-//                });
-//    }
+
     public Stream<MatchFriendInfo> getTodayMatch(Integer userId) {
         List<UserPairingHistory> allPairingHistories = userPairingHistoryRepository.findAll();
 

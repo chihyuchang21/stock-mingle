@@ -5,5 +5,4 @@ import lombok.Data;
 @Data
 public class LikeRequest {
     private Integer articleId;
-//    private boolean isLiked;
 }

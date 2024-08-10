@@ -17,12 +17,9 @@ public class Message {
 
     @Column(columnDefinition = "TEXT")
     private String content;
-
     private Integer senderUserId;
-//    private Integer receiverUserId;
-
     private Timestamp sendTime;
 
-    @Transient //DB沒有這一欄
+    @Transient // DB does not have this column
     private String formattedSendTime;
 }

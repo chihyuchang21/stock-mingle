@@ -11,8 +11,6 @@ public interface ArticleCommentRepository extends JpaRepository<ArticleComment, 
     List<ArticleComment> findByArticleId(String articleId);
 
     String countByArticleId(String articleId);
-
-
 }
 
 

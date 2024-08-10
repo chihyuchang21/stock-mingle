@@ -9,9 +9,6 @@ public class ChatRoomInfo {
     private String otherUserNickname;
     private String otherUserImage;
 
-    public ChatRoomInfo() {
-    }
-
     public ChatRoomInfo(Integer chatroomId, Integer otherUserId, String otherUserNickname, String otherUserImage) {
         this.chatroomId = chatroomId;
         this.otherUserId = otherUserId;

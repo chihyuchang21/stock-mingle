@@ -16,7 +16,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         config.setApplicationDestinationPrefixes("/app");
     }
 
-    // 後綴加入withSockJS();
+    // add withSockJS() in suffix;
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/gs-guide-websocket").setAllowedOriginPatterns(new String[]{"*"}).withSockJS();

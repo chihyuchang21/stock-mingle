@@ -18,16 +18,8 @@ public class User {
     private String accountName;
     private String nickname;
     private String password;
-
-    //    @ManyToOne
-//    @JoinColumn(name = "gender", referencedColumnName = "id")
     private Integer genderId;
-
-    //    @ManyToOne
-//    @JoinColumn(name = "gender_match", referencedColumnName = "id")
     private Integer genderMatch;
-
-    //    @Lob
     private String image;
 
     public User() {
